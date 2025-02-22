@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding-top: 100px;
+}
+
+.form-group label {
+  display: block;
+}
+
+.form-group input[type='email'],
+.form-group input[type='password'] {
+  width: 100%;
+  height: calc(2.25rem + .75rem);
+}
