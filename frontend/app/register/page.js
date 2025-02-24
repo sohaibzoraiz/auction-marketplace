@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 function RegisterPage() {
+    const router = useRouter();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,7 +33,7 @@ function RegisterPage() {
 
             if (!response.ok) throw new Error('Failed to register');
 
-            console.log('Registration successful');
+            router.push('/login');
         } catch (error) {
             setError(error.message);
         }

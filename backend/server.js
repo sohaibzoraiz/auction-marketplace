@@ -6,9 +6,12 @@ const authController = require('./controllers/auth');
 const authMiddleware = require('./middleware/authMiddleware');
 const cors = require('cors');
 
+
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Get User
+const { getUser } = require('./controllers/auth');
 // Middleware to parse JSON requests
 app.use(express.json());
 
@@ -43,6 +46,11 @@ app.get('/', (req, res) => {
 // Authentication routes
 app.post('/auth/login', authController.login);
 app.post('/auth/register', authController.register);
+
+//Get User Details
+app.get('/api/auth/user', authMiddleware, async (req, res) => {
+    await getUser(req, res);
+});
 
 // Start server
 app.listen(port, () => {
