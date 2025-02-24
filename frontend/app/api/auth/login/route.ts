@@ -1,25 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
 
 export async function POST(request: NextRequest) {
     try {
-        const { email, password } = await request.json();
+        const { name, email, password, contactNumber, completeAddress, identificationNumber } = await request.json();
 
-        // Proxy login request to your backend API
-        const response = await fetch('http://localhost:3000/auth/login', {
+        // Proxy registration request to your backend API
+        const response = await fetch('http://localhost:3000/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                name,
                 email,
                 password,
+                contactNumber,
+                completeAddress,
+                identificationNumber
             }),
         });
 
         // Handle response from backend
-        if (response.status === 200) {
-            return NextResponse.json(await response.json(), { status: 200 });
+        if (response.status === 201) {
+            return NextResponse.json(response.json(), { status: 201 });
         } else {
-            throw new Error('Invalid credentials');
+            throw new Error('Failed to register');
         }
     } catch (error) {
         console.error(error);
