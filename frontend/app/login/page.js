@@ -30,7 +30,7 @@ function LoginPage() {
         <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-md">
             <h1>Login</h1>
             
-<Link href="/register" className="text-blue-600 hover:text-blue-800">Don't have an account? Register Here!</Link>
+<Link href="/register" className="text-blue-600 hover:text-blue-800">Don&apos;t have an account? Register Here!</Link>
 
 <form onSubmit={handleSubmit}>
     
