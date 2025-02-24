@@ -2,29 +2,48 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 function LoginPage() {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
-    async function handleSubmit(event) {
-        event.preventDefault();
-        try {
-            // Implement backend API call here (e.g., fetch or Axios)
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
+   // In LoginPage.js
+async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
 
-            if (!response.ok) throw new Error('Invalid credentials');
-
-            console.log('Login successful');
-        } catch (error) {
-            setError(error.message);
+        if (!response.ok) throw new Error('Invalid credentials');
+        
+        // Parse JSON response
+        const data = await response.json();
+        
+        if (!data || !data.accessToken) {
+            throw new Error('Invalid response from server');
         }
+        
+        const accessToken = data.accessToken;
+        localStorage.setItem('accessToken', accessToken);
+        console.log('Login successful');
+        
+        const originalUrl = new URLSearchParams(window.location.search).get('redirect');
+        if (originalUrl) {
+            router.push(originalUrl);
+        } else {
+            router.push('/'); // Default to homepage if no redirect URL
+        }
+    } catch (error) {
+        setError(error.message);
     }
+}
+
 
     return (
         <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-md">

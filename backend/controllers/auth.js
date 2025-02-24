@@ -36,17 +36,27 @@ async function register(req, res) {
         let result = await pool.query(
             "INSERT INTO users(name , contact_number , email_address , complete_address , identification_number,password )VALUES($1,$2,$3,$4,$5,$6 )RETURNING*",
             [name.trim(), contactNumber.trim(), email.trim(), completeAddress.trim(), identificationNumber.trim(), hashedPassword]
-            
-);
-        
-res.status(201).json(result.rows[0]);
+        );
 
-} catch (error) {
+        const userId = result.rows[0].id;
 
-console.error(error);
-res.status(500).send("Error");
+        // Insert default subscription entry
+        const defaultPlan = 'Basic';
+        const startDate = new Date();
+        const endDate = null; // Basic plan never expires
+
+        await pool.query(
+            "INSERT INTO subscriptions(user_id, subscription_plan_name, subscription_start_date, subscription_end_date) VALUES($1, $2, $3, $4)",
+            [userId, defaultPlan, startDate, endDate]
+        );
+
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error");
+    }
 }
-}
+
 
 
 const jwt = require('jsonwebtoken');
@@ -100,6 +110,65 @@ async function login(req, res) {
     }
 }
 
-    
+// controllers/auth.js
 
-module.exports={register ,login};
+// controllers/auth.js
+
+async function getUser(req, res) {
+    try {
+        const userId = req.user.userId;
+
+        // Fetch user data
+        const userQuery = "SELECT * FROM users WHERE id=$1";
+        const userResult = await pool.query(userQuery, [userId]);
+
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const user = userResult.rows[0];
+
+        // Fetch subscription plan
+        const subscriptionQuery = "SELECT subscription_plan_name FROM subscriptions WHERE user_id=$1 ORDER BY subscription_end_date DESC NULLS LAST LIMIT 1";
+        const subscriptionResult = await pool.query(subscriptionQuery, [userId]);
+
+        let subscriptionPlan = 'Basic'; // Default plan if no subscription found
+
+        if (subscriptionResult.rows.length > 0) {
+            subscriptionPlan = subscriptionResult.rows[0].subscription_plan_name;
+        }
+
+        // Include subscription plan in response
+        const userData = {
+            ...user,
+            plan: subscriptionPlan,
+        };
+
+        return res.json(userData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+}
+
+
+async function upgradeSubscription(req, res) {
+    try {
+        const userId = req.user.userId;
+        const planName = req.body.planName;
+        const startDate = new Date();
+        const endDate = new Date(startDate.getTime() + 365 * 24 * 60 * 60 * 1000); // One year from now
+
+        await pool.query(
+            "INSERT INTO subscriptions(user_id, subscription_plan_name, subscription_start_date, subscription_end_date) VALUES($1, $2, $3, $4)",
+            [userId, planName, startDate, endDate]
+        );
+
+        res.json({ message: "Subscription upgraded successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error");
+    }
+}
+
+module.exports={register ,login, getUser, upgradeSubscription};
