@@ -1,7 +1,7 @@
 // File Path: controllers/auth.js
 
 const { Pool } = require('pg');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // PostgreSQL connection setup (adjust as needed)
 const pool = new Pool({
@@ -51,45 +51,55 @@ res.status(500).send("Error");
 
 const jwt = require('jsonwebtoken');
 
-async function login(req,res){
-    try{
-    const {email,password}=req.body;
-    
-    // Find user by email
-    
-    const existingUserQuery=await pool.query("SELECT * FROM users WHERE email_address=$1",[email]);
-    
-    if(existingUserQuery.rows.length===0){
-    return res.status(401).json ({message:"Invalid credentials"});
+async function login(req, res) {
+    try {
+        const { email, password } = req.body;
+
+        // Find user by email
+        const existingUserQuery = await pool.query("SELECT * FROM users WHERE email_address=$1", [email]);
+
+        if (existingUserQuery.rows.length === 0) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        // Compare passwords
+        let isValidPassword = await bcrypt.compare(password.trim(), existingUserQuery.rows[0].password);
+
+        if (!isValidPassword) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        // Generate JWT tokens
+        const jwtSecret = process.env.JWT_SECRET;
+        
+        // Check if JWT_SECRET is defined
+        if (!jwtSecret) {
+            throw new Error('JWT_SECRET environment variable is not defined');
+        }
+
+        const accessToken = jwt.sign({
+            userId: existingUserQuery.rows[0].id,
+            name: existingUserQuery.rows[0].name,
+            email: existingUserQuery.rows[0].email_address
+        }, jwtSecret, { expiresIn: '1h' });
+
+        const refreshTokenSecret = process.env.JWT_REFRESH_SECRET || jwtSecret; // Use jwtSecret if refreshTokenSecret is not defined
+        const refreshToken = jwt.sign({
+            userId: existingUserQuery.rows[0].id
+        }, refreshTokenSecret, { expiresIn: '30d' });
+
+        return res.json({
+            accessToken,
+            refreshToken
+        });
+    } catch (error) {
+        console.error(error);
+        
+        // Return JSON error response
+        res.status(500).json({ message: "Server Error" });
     }
-    
-    // Compare passwords
-    
-    let isValidPassword=await bcrypt.compare(password.trim() ,existingUserQuery.rows[0].password );
-    
-    if(!isValidPassword){
-    return res.status(401).json ({message:"Invalid credentials"});
-    }
-    
-    // Generate JWT tokens
-    
-    const jwtSecret=process.env.JWT_SECRET;
-    let accessToken=jwt.sign({
-    userId:existingUserQuery.rows[0].id,
-    name:existingUserQuery.rows[0].name,
-    email:existingUserQuery.rows[0].email_address},
-    jwtSecret,{expiresIn:'1h'});
-    
-    let refreshToken=jwt.sign({
-    userId:existingUserQuery.rows[0].id},
-    process.env.JWT_REFRESH_SECRET,{expiresIn:'30d'});
-    
-    return res.json ({
-    accessToken,
-    refreshToken});
-    }catch(error){console.error(error);res.send ("Server Error");}
-    
-    }
+}
+
     
 
 module.exports={register ,login};
