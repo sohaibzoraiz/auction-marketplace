@@ -1,12 +1,21 @@
 require('dotenv').config();
-
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
 const express = require('express');
 const { Pool } = require('pg');
+const authController = require('./controllers/auth');
+const authMiddleware = require('./middleware/authMiddleware');
+const cors = require('cors');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+
+// Enable CORS
+app.use(cors({
+    origin: 'http://localhost:3001', // Allow requests from your frontend
+}));
 
 // PostgreSQL connection configuration
 const pool = new Pool({
@@ -30,6 +39,10 @@ pool.query('SELECT NOW()', (err, res) => {
 app.get('/', (req, res) => {
     res.send('<h1>Hello, Car Auction Marketplace!</h1>');
 });
+
+// Authentication routes
+app.post('/auth/login', authController.login);
+app.post('/auth/register', authController.register);
 
 // Start server
 app.listen(port, () => {
