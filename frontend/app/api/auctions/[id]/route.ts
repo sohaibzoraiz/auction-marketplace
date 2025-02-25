@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest) {
     }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE({ params }: { params: { id: string } }) {
     const { id } = params;
     try {
         const response = await fetch(`http://localhost:3000/api/auctions/${id}`, {
