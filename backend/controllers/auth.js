@@ -79,9 +79,19 @@ async function login(req, res) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
+        // Fetch subscription plan
+        const subscriptionQuery = "SELECT subscription_plan_name FROM subscriptions WHERE user_id=$1 ORDER BY subscription_end_date DESC NULLS LAST LIMIT 1";
+        const subscriptionResult = await pool.query(subscriptionQuery, [existingUserQuery.rows[0].id]);
+
+        let userPlan = 'Basic'; // Default plan if no subscription found
+
+        if (subscriptionResult.rows.length > 0) {
+            userPlan = subscriptionResult.rows[0].subscription_plan_name;
+        }
+
         // Generate JWT tokens
         const jwtSecret = process.env.JWT_SECRET;
-        
+
         // Check if JWT_SECRET is defined
         if (!jwtSecret) {
             throw new Error('JWT_SECRET environment variable is not defined');
@@ -90,7 +100,8 @@ async function login(req, res) {
         const accessToken = jwt.sign({
             userId: existingUserQuery.rows[0].id,
             name: existingUserQuery.rows[0].name,
-            email: existingUserQuery.rows[0].email_address
+            email: existingUserQuery.rows[0].email_address,
+            userPlan: userPlan // Include userPlan
         }, jwtSecret, { expiresIn: '1h' });
 
         const refreshTokenSecret = process.env.JWT_REFRESH_SECRET || jwtSecret; // Use jwtSecret if refreshTokenSecret is not defined
@@ -104,15 +115,11 @@ async function login(req, res) {
         });
     } catch (error) {
         console.error(error);
-        
+
         // Return JSON error response
         res.status(500).json({ message: "Server Error" });
     }
 }
-
-// controllers/auth.js
-
-// controllers/auth.js
 
 async function getUser(req, res) {
     try {

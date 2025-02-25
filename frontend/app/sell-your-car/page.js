@@ -1,4 +1,4 @@
-// /sell-your-car/page.js
+// frontend/app/sell-your-car/page.js
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -52,7 +52,7 @@ function CreateAuctionPage() {
                 });
                 if (!response.ok) {
                     // If not logged in, redirect to login page
-                    
+
                     const originalUrl = window.location.pathname;
                     router.push(`/login?redirect=${originalUrl}`);
                     return;
@@ -95,9 +95,9 @@ function CreateAuctionPage() {
         try {
             // Retrieve token from localStorage
             const token = localStorage.getItem('accessToken');
-            
+
             // Call the backend API to create a new auction listing
-            const response = await fetch('/api/auctions/create', {
+            const response = await fetch(`/api/auctions/create`, { // Corrected URL
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,9 +109,10 @@ function CreateAuctionPage() {
             if (!response.ok) {
                 throw new Error('Failed to create auction');
             }
+            console.log("Front End Form Data = " , formData)
 
             // Redirect to a success page or auction listing page
-            router.push('/auctions/success');
+            //router.push('/auctions/success');
         } catch (err) {
             setError(err.message || 'Failed to create auction');
         }
@@ -198,18 +199,18 @@ function CreateAuctionPage() {
                     <textarea id="carPhotosJsonb" name="carPhotosJsonb" value={formData.carPhotosJsonb} onChange={handleChange}
                         className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md"></textarea>
                 </div>
+
+                <div className="mb-4">
+                    <label htmlFor="reservePrice" className="block text-sm font-medium text-gray-700">Reserve Price:</label>
+                    <input type="number" id="reservePrice" name="reservePrice" value={formData.reservePrice} onChange={handleChange}
+                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" disabled={user && user.plan !== 'premium'} />
+                </div>
+
                 {user && user.plan === 'premium' ? (
-                    <div>
-                        <div className="mb-4">
-                            <label htmlFor="reservePrice" className="block text-sm font-medium text-gray-700">Reserve Price:</label>
-                            <input type="number" id="reservePrice" name="reservePrice" value={formData.reservePrice} onChange={handleChange}
-                                className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
-                            <input type="datetime-local" id="endTime" name="endTime" value={formData.endTime} onChange={handleChange}
-                                className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                        </div>
+                    <div className="mb-4">
+                        <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
+                        <input type="datetime-local" id="endTime" name="endTime" value={formData.endTime} onChange={handleChange}
+                            className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
                     </div>
                 ) : (
                     <div>
@@ -221,7 +222,7 @@ function CreateAuctionPage() {
             </form>
             <div className="mt-4">
                 <p>Options:</p>
-                <Link href="/subscribe" className="text-blue-600 hover:text-blue-800">Get Yearly Subscription</Link>
+                <Link href="/pricing" className="text-blue-600 hover:text-blue-800">Get Yearly Subscription</Link>
                 <Link href="/featured-listing" className="text-blue-600 hover:text-blue-800">Opt for Featured Listing</Link>
             </div>
         </div>
