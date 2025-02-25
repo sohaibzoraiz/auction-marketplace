@@ -1,8 +1,11 @@
 // frontend/app/api/auctions/[id]/route.ts
 import { NextResponse, NextRequest } from 'next/server';
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-    const { id } = params;
+export async function PUT(req: NextRequest) {
+    const id = req.nextUrl.searchParams.get('id');
+    if (!id) {
+        throw new Error('Auction ID is required');
+    }
     try {
         const response = await fetch(`http://localhost:3000/api/auctions/${id}`, {
             method: 'PUT',
