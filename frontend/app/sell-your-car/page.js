@@ -1,4 +1,3 @@
-// frontend/app/sell-your-car/page.js
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -12,6 +11,8 @@ function CreateAuctionPage() {
     const [error, setError] = useState(null);
     const [canCreateListing, setCanCreateListing] = useState(false);
     const [upgradeMessage, setUpgradeMessage] = useState('');
+    const [featuredImage, setFeaturedImage] = useState(null);
+    const [carImages, setCarImages] = useState([]);
 
     const [formData, setFormData] = useState({
         city: '',
@@ -59,7 +60,7 @@ function CreateAuctionPage() {
                 }
 
                 const userData = await response.json();
-                console.log('User Data:', userData);
+            //    console.log('User Data:', userData);
                 setUser(userData);
 
                 // Check user's plan and listing count
@@ -90,26 +91,51 @@ function CreateAuctionPage() {
         });
     };
 
+    const handleFeaturedImageChange = (e) => {
+        setFeaturedImage(e.target.files[0]);
+    };
+
+    const handleCarImagesChange = (e) => {
+        setCarImages([...e.target.files]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             // Retrieve token from localStorage
             const token = localStorage.getItem('accessToken');
 
+            // Create FormData to send files
+            const formDataWithImages = new FormData();
+
+            // Append form fields
+            for (const key in formData) {
+                formDataWithImages.append(key, formData[key]);
+            }
+
+            // Append featured image
+            if (featuredImage) {
+                formDataWithImages.append('featuredImage', featuredImage);
+            }
+
+            // Append car images
+            carImages.forEach((image) => {
+                formDataWithImages.append('carImages', image);
+            });
+
             // Call the backend API to create a new auction listing
             const response = await fetch(`/api/auctions/create`, { // Corrected URL
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`, // Include token in header
                 },
-                body: JSON.stringify(formData),
+                body: formDataWithImages, // Send FormData object
             });
 
             if (!response.ok) {
                 throw new Error('Failed to create auction');
             }
-            console.log("Front End Form Data = " , formData)
+            console.log("Front End Form Data = ", formData);
 
             // Redirect to a success page or auction listing page
             //router.push('/auctions/success');
@@ -140,6 +166,7 @@ function CreateAuctionPage() {
         <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-md">
             <h1>Create New Auction</h1>
             <form onSubmit={handleSubmit}>
+                {/* Form inputs remain same */}
                 <div className="mb-4">
                     <label htmlFor="city" className="block text-sm font-medium text-gray-700">City:</label>
                     <input type="text" id="city" name="city" value={formData.city} onChange={handleChange} required
@@ -194,10 +221,23 @@ function CreateAuctionPage() {
                         <option value="fixed-price">Fixed Price</option>
                     </select>
                 </div>
+
                 <div className="mb-4">
-                    <label htmlFor="carPhotosJsonb" className="block text-sm font-medium text-gray-700">Car Photos (JSON):</label>
-                    <textarea id="carPhotosJsonb" name="carPhotosJsonb" value={formData.carPhotosJsonb} onChange={handleChange}
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md"></textarea>
+                    <label className="block text-sm font-medium text-gray-700">Featured Image:</label>
+                    <input type="file" id="featuredImage" onChange={handleFeaturedImageChange} accept="image/*" className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
+                    {featuredImage && (
+                        <img src={URL.createObjectURL(featuredImage)} alt="Featured" className="mt-2 max-h-40" />
+                    )}
+                </div>
+
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">Car Images:</label>
+                    <input type="file" id="carImages" multiple onChange={handleCarImagesChange} accept="image/*" className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
+                    <div className="flex mt-2">
+                        {carImages.map((image, index) => (
+                            <img key={index} src={URL.createObjectURL(image)} alt={`Car ${index}`} className="max-h-40 mr-2" />
+                        ))}
+                    </div>
                 </div>
 
                 <div className="mb-4">

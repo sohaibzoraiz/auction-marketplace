@@ -3,12 +3,15 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 
 function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const { setUserData } = useContext(UserContext) ?? {};
 
    // In LoginPage.js
 async function handleSubmit(event) {
@@ -33,7 +36,15 @@ async function handleSubmit(event) {
         localStorage.setItem('accessToken', accessToken);
         console.log('Login successful');
         
+        const userResponse = await fetch('/api/auth/user', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+        const userData = await userResponse.json();
+        setUserData(userData);
         const originalUrl = new URLSearchParams(window.location.search).get('redirect');
+        
         if (originalUrl) {
             router.push(originalUrl);
         } else {

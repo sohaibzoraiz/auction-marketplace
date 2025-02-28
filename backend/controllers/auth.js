@@ -102,7 +102,7 @@ async function login(req, res) {
             name: existingUserQuery.rows[0].name,
             email: existingUserQuery.rows[0].email_address,
             userPlan: userPlan // Include userPlan
-        }, jwtSecret, { expiresIn: '1h' });
+        }, jwtSecret, { expiresIn: '30d' });
 
         const refreshTokenSecret = process.env.JWT_REFRESH_SECRET || jwtSecret; // Use jwtSecret if refreshTokenSecret is not defined
         const refreshToken = jwt.sign({
