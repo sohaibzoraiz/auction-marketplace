@@ -1,5 +1,5 @@
 // frontend/app/api/auctions/route.ts
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 export async function GET() {
     try {
@@ -8,7 +8,6 @@ export async function GET() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const auctions = await response.json();
-        //console.log("Auctions:", auctions);
         return NextResponse.json(auctions);
 
     } catch (error) {

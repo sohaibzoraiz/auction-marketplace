@@ -11,7 +11,7 @@ const pool = new Pool({
     password: 'Zoraiz1!',
     port: 5432,
 });
-async function createAuctionListing(req, res) {
+/*async function createAuctionListing(req, res) {
     try {
         const errors = validationResult(req);
 
@@ -85,6 +85,82 @@ async function createAuctionListing(req, res) {
     }
 }
 
+*/
+const createAuctionListing = async (req, res) => {
+    try {
+        const featuredImage = req.files['featuredImage'] ? req.files['featuredImage'][0].filename : null;
+        const carImages = req.files['carImages'] ? req.files['carImages'].map(file => file.filename) : [];
+        // Extract other form fields from the request body
+        const {
+            city,
+            carMake,
+            yearModel,
+            registrationCity,
+            mileage,
+            demandPrice,
+            description,
+            inspectionCompanyName,
+            inspectionReport,
+            listingType,
+            reservePrice,
+            endTime
+        } = req.body;
+        const userId = req.user?.userId; // Use optional chaining
+        const userPlan = req.user?.userPlan; // Use optional chaining // Assuming you have user information in the request
+
+        const imagePaths = [];
+
+        if (featuredImage) {
+            imagePaths.push(`/uploads/${featuredImage}`); // Add featured image first
+        }
+        
+        if (carImages) {
+            carImages.forEach(image => {
+                imagePaths.push(`/uploads/${image}`); // Then add car images
+            });
+        }
+        
+        const carPhotosJsonb = JSON.stringify(imagePaths);
+        // Insert the new auction listing into the database
+        const result = await pool.query(
+            'INSERT INTO cars(user_id, city, car_make, year_model, registration_city, mileage, demand_price, description, inspection_company_name, inspection_report, listing_type, car_photos_jsonb) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id',
+            [userId, city, carMake, yearModel, registrationCity, mileage, demandPrice, description, inspectionCompanyName, inspectionReport, listingType === 'auction', carPhotosJsonb]
+        );
+
+        const carId = result.rows[0].id;
+
+        // Determine End Time (15 days for basic users, up to 30 days for premium users)
+        let calculatedEndTime;
+        if (userPlan === 'premium' && endTime) { // Use provided end time for premium users
+            calculatedEndTime = new Date(endTime);
+        } else {
+            calculatedEndTime = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000); // 15 days from now for basic users
+        }
+
+        // Set reserve price to null for basic users if not provided
+        let auctionReservePrice = null;
+        if (userPlan === 'premium') {
+            auctionReservePrice = reservePrice ? parseFloat(reservePrice) : null; // Use parseFloat and check for undefined
+        }
+
+        // Set initial current bid to 50% of demand price
+        const initialCurrentBid = demandPrice / 2;
+
+        // Insert new auction into auctions table
+
+        const resultAuction = await pool.query(
+            "INSERT INTO auctions(car_id, end_time, current_bid, reserve_price) VALUES($1, $2, $3, $4) RETURNING*",
+            [carId, calculatedEndTime, initialCurrentBid, auctionReservePrice]
+        );
+
+        res.status(201).json({ message: 'Auction created successfully', auction: resultAuction.rows[0] });
+
+    } catch (err) {
+        console.error('Error creating auction listing:', err);
+        res.status(500).json({ message: 'Failed to create auction listing' });
+    }
+};
+
 
 async function updateAuctionListing(req, res) {
     try {
@@ -153,7 +229,7 @@ async function updateAuctionListing(req, res) {
 async function getAllAuctionListings(req, res) {
     try {
         const result = await pool.query(
-            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report, a.end_time, a.current_bid, a.reserve_price " +
+            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report,c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
             "FROM cars c JOIN auctions a ON c.id = a.car_id"
         );
 
@@ -168,7 +244,7 @@ async function getAllAuctionListings(req, res) {
 async function getFeaturedAuctionListings(req, res) {
     try {
         const result = await pool.query(
-            "SELECT c.id, c.car_make, c.demand_price, a.end_time, a.current_bid, a.reserve_price " +
+            "SELECT c.id, c.car_make, c.year_model, c.demand_price, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
             "FROM cars c LEFT JOIN auctions a ON c.id = a.car_id JOIN subscriptions s ON c.user_id = s.user_id " +
             "WHERE s.subscription_plan_name = 'premium' AND s.subscription_end_date > NOW()"
         );
@@ -183,11 +259,27 @@ async function getFeaturedAuctionListings(req, res) {
         res.status(500).json({ message: 'Failed to fetch featured auction listings' });
     }
 }
+async function getSingleAuctionListing(req, res) {
+    try {
+        const { carMake, yearMake, id } = req.query;
 
-module.exports = { getFeaturedAuctionListings };
+        const result = await pool.query(
+            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
+            "FROM cars c JOIN auctions a ON c.id = a.car_id WHERE c.car_make = $1 AND c.year_model = $2 AND c.id = $3",
+            [carMake, yearMake, id]
+        );
 
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Auction listing not found' });
+        }
 
+        res.json(result.rows[0]);
 
+    } catch (error) {
+        console.error('Error fetching single auction listing:', error);
+        res.status(500).json({ message: 'Failed to fetch single auction listing' });
+    }
+}
 
 
 
@@ -318,6 +410,7 @@ module.exports={createAuctionListing,
 updateAuctionListing, 
 getAllAuctionListings,
 getFeaturedAuctionListings, 
+getSingleAuctionListing,
 deleteAuctionListing,
 createCarListing,
 getAllCarListings,
