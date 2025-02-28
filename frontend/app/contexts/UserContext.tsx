@@ -59,11 +59,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export { UserProvider, UserContext };
-    function setLoading(arg0: boolean) {
-        throw new Error('Function not implemented.');
-    }
-
-    function setError(arg0: string) {
-        throw new Error('Function not implemented.');
-    }
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
