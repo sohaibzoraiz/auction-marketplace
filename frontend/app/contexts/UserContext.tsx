@@ -1,11 +1,11 @@
 // contexts/UserContext.tsx
 "use client"
 import { createContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 
 interface UserContextValue {
-    userData: any;
-    setUserData: (data: any) => void;
+    userData: Record<string, unknown> | null;
+    setUserData: (data: Record<string, unknown> | null) => void;
     fetchUser: () => void;
 }
 
@@ -15,7 +15,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
 
     useEffect(() => {
         fetchUser();
@@ -45,7 +44,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
             setUserData(userData);
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message);
+                setError(err.message || 'Failed to fetch user data');
             } else {
                 setError('Failed to fetch user data');
             }
