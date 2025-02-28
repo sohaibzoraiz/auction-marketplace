@@ -4,15 +4,18 @@ import { createContext, useState, useEffect } from 'react';
 //import { useRouter } from 'next/navigation';
 
 interface UserContextValue {
-    userData: Record<string, unknown> | null;
-    setUserData: React.Dispatch<React.SetStateAction<Record<string, unknown> | null>>;
+    userData: any;
+    setUserData: (data: any) => void;
     fetchUser: () => void;
 }
 
 const UserContext = createContext<UserContextValue | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [userData, setUserData] = useState<Record<string, unknown> | null>(null);
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    //const router = useRouter();
 
     useEffect(() => {
         fetchUser();
@@ -42,7 +45,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
             setUserData(userData);
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message || 'Failed to fetch user data');
+                setError(err.message);
             } else {
                 setError('Failed to fetch user data');
             }
@@ -59,6 +62,3 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export { UserProvider, UserContext };
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-
