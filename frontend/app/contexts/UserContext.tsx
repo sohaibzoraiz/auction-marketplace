@@ -5,16 +5,14 @@ import { createContext, useState, useEffect } from 'react';
 
 interface UserContextValue {
     userData: Record<string, unknown> | null;
-    setUserData: (data: Record<string, unknown> | null) => void;
+    setUserData: React.Dispatch<React.SetStateAction<Record<string, unknown> | null>>;
     fetchUser: () => void;
 }
 
 const UserContext = createContext<UserContextValue | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [userData, setUserData] = useState<Record<string, unknown> | null>(null);
 
     useEffect(() => {
         fetchUser();
@@ -61,3 +59,11 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export { UserProvider, UserContext };
+    function setLoading(arg0: boolean) {
+        throw new Error('Function not implemented.');
+    }
+
+    function setError(arg0: string) {
+        throw new Error('Function not implemented.');
+    }
+
