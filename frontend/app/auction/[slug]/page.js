@@ -1,7 +1,7 @@
 "use client";
 
 //import Image from 'next/image';
-import { useRef, useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 //import useBidding from '../../components/useBidding';
 //import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext'; 
