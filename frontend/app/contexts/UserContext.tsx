@@ -1,39 +1,50 @@
-// contexts/UserContext.tsx
-"use client"
-import { createContext, useState, useEffect } from 'react';
-//import { useRouter } from 'next/navigation';
+"use client";
+import { createContext, useState, useEffect } from "react";
 
-interface UserContextValue {
-    userData: any;
-    setUserData: (data: any) => void;
-    fetchUser: () => void;
+interface UserData {
+    id: number;
+    name: string;
+    contact_number: string;
+    email_address: string;
+    complete_address: string;
+    free_bids_remaining: string;
+    identification_number: string;
+    password?: string; // Optional if you don't want to expose it
+    plan: string;
 }
 
-const UserContext = createContext<UserContextValue | null>(null);
+interface UserContextValue {
+    userData: UserData | null;
+    setUserData: (data: UserData | null) => void;
+    fetchUser: () => Promise<void>;
+}
+
+const defaultContextValue: UserContextValue = {
+    userData: null,
+    setUserData: () => {},
+    fetchUser: async () => {},
+};
+
+const UserContext = createContext<UserContextValue>(defaultContextValue);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    //const router = useRouter();
+    const [userData, setUserData] = useState<UserData | null>(null);
 
     useEffect(() => {
         fetchUser();
     }, []);
 
-    const fetchUser = async () => {
-        setLoading(true);
+    const fetchUser = async (): Promise<void> => {
+       console.log("Fetching user data...");
         try {
-            const token = localStorage.getItem('accessToken');
+            const token = localStorage.getItem("accessToken");
             if (!token) {
                 setUserData(null);
                 return;
             }
 
-            const response = await fetch('/api/auth/user', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
+            const response = await fetch("/api/auth/user", {
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (!response.ok) {
@@ -41,16 +52,10 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 return;
             }
 
-            const userData = await response.json();
-            setUserData(userData);
+            const user = await response.json();
+            setUserData(user);
         } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('Failed to fetch user data');
-            }
-        } finally {
-            setLoading(false);
+            console.error("Failed to fetch user data:", err);
         }
     };
 

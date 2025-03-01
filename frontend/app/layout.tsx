@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { UserProvider } from './contexts/UserContext';
+import { SocketProvider } from "./contexts/socketContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <UserProvider>
+      <SocketProvider>
     <html lang="en">
      
       <body
@@ -38,6 +40,7 @@ export default function RootLayout({
       </body>
 
     </html>
+      </SocketProvider>
     </UserProvider>
   );
 }
