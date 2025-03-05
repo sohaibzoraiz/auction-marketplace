@@ -2,7 +2,7 @@
 
 import { createContext, useState, useEffect } from "react";
 import { connectSocket } from "../components/socket";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface SocketContextValue {
   socket: any;
 }
