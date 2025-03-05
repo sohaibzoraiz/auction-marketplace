@@ -3,11 +3,11 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { connectSocket } from "../components/socket";
 import { UserContext } from "./UserContext";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface SocketContextValue {
   socket: any;
 }
-
+/* eslint-enable @typescript-eslint/no-explicit-any */
 const defaultContextValue: SocketContextValue = {
   socket: null,
 };
