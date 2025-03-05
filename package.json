@@ -1,1 +1,15 @@
+<<<<<<< HEAD
 {"devDependencies":{"concurrently":"^9.1.2"},"scripts":{"start:frontend":"cd frontend && npm run dev","start:backend":"node backend/server.js","dev":"concurrently \"npm run start:frontend\" \"npm run start:backend\""},"dependencies":{"bcryptjs":"^3.0.2","cors":"^2.8.5","dotenv":"^16.4.7","multer":"^1.4.5-lts.1"}}
+=======
+{
+    "name": "auction-marketplace",
+    "version": "1.0.0",
+    "scripts": {
+      "start:frontend": "cd frontend && npm run dev"
+    },
+    "devDependencies": {
+      "concurrently": "^9.1.2"
+    }
+  }
+  
+>>>>>>> f07d511987fcee2432c1f8d9f40df7261a76e9fa
