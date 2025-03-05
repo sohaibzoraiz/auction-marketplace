@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const response = await axios.get('http://localhost:3000/api/auth/user', {
+        const response = await axios.get('http://51.20.6.53:3000/api/auth/user', {
             headers: { Authorization: token },
         });
 

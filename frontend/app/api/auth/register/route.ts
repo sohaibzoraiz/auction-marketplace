@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
         const { name, email, password, contactNumber, completeAddress, identificationNumber } = await request.json();
 
         // Proxy registration request to your backend API
-        const response = await fetch('http://localhost:3000/auth/register', {
+        const response = await fetch('http://51.20.6.53:3000/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
         const formData = await req.formData();
 
-        const response = await fetch('http://localhost:3000/api/auctions/create', {
+        const response = await fetch('http://51.20.6.53:3000/api/auctions/create', {
             method: 'POST',
             body: formData,
             headers: {
