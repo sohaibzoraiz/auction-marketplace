@@ -53,8 +53,17 @@ app.post('/auth/register', require('./controllers/auth').register);
 app.get('/api/auth/user', authMiddleware, getUser);
 
 // API routes for listings
-app.get('/api/listings/featured', require('./controllers/carController').getFeaturedAuctionListings);
-
+//app.get('/api/listings/featured', require('./controllers/carController').getFeaturedAuctionListings);
+app.get('/api/listings/featured', async (req, res) => {
+    try {
+      const listings = await require('./controllers/carController').getFeaturedAuctionListings(req, res);
+      res.json(listings);
+    } catch (error) {
+      console.error('Error fetching featured listings:', error);
+      res.status(500).json({ message: 'Failed to fetch featured listings' });
+    }
+  });
+  
 // API routes for auctions
 app.get('/api/auctions', require('./controllers/carController').getAllAuctionListings);
 app.get('/api/auctions/single', require('./controllers/carController').getSingleAuctionListing);
