@@ -6,29 +6,19 @@ const { getUser } = require('./controllers/auth');
 const authMiddleware = require('./middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const https = require('https');
-const fs = require('fs');
-
-const sslOptions = {
-  key: fs.readFileSync('/home/ubuntu/certs/privkey.pem'),
-  cert: fs.readFileSync('/home/ubuntu/certs/fullchain.pem'),
-};
-
-const httpsServer = https.createServer(sslOptions, app);
-httpsServer.listen(443, () => {
-  console.log('Server listening on port 443 over HTTPS');
-});
-
-const socketHandler = require('./socket');
-const socketIo = require('socket.io');
 
 app.use(express.json());
 app.use(cors({ origin: 'https://www.carmandi.com.pk/' }));
 
-const io = socketHandler(httpsServer);
+const server = http.createServer(app);
+
+const socketHandler = require('./socket');
+const io = socketHandler(server);
 
 // PostgreSQL connection setup
 const pool = new Pool({
@@ -87,3 +77,7 @@ app.post('/api/auctions/create', upload.fields([
 
 //serve images
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
