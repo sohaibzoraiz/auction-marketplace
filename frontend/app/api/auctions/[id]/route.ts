@@ -7,7 +7,7 @@ export async function PUT(req: NextRequest) {
         throw new Error('Auction ID is required');
     }
     try {
-        const response = await fetch(`http://localhost:3000/api/auctions/${id}`, {
+        const response = await fetch(`http://51.20.6.53:3000/api/auctions/${id}`, {
             method: 'PUT',
             body: req.body,
             headers: {
@@ -31,7 +31,7 @@ export async function PUT(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     const id = req.nextUrl.searchParams.get('id');
     try {
-        const response = await fetch(`http://localhost:3000/api/auctions/${id}`, {
+        const response = await fetch(`http://51.20.6.53:3000/api/auctions/${id}`, {
             method: 'DELETE',
         });
 

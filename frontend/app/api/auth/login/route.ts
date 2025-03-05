@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
         const { email, password } = await request.json();
 
         // Proxy login request to your backend API
-        const response = await fetch('http://localhost:3000/auth/login', {
+        const response = await fetch('http://51.20.6.53:3000/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

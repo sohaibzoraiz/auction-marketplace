@@ -10,7 +10,7 @@ function FeaturedListings({ listings }) {
         {listings.map((listing) => (
             <div key={listing.id} className="bg-white p-4 rounded shadow-md">
                 <img
-    src={`http://localhost:3000${
+    src={`http://51.20.6.53:3000${
         Array.isArray(listing.car_photos_jsonb)
             ? listing.car_photos_jsonb[0]
             : JSON.parse(listing.car_photos_jsonb)[0]

@@ -8,7 +8,7 @@ const connectSocket = () => {
             const accessToken = localStorage.getItem("accessToken");
             if (accessToken) {
                 // Initialize socket only once
-                socket = io("http://localhost:4000", {
+                socket = io("http://51.20.6.53:4000", {
                     auth: { accessToken },
                     reconnectionAttempts: Infinity,
                     reconnectionDelay: 1000,
