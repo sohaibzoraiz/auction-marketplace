@@ -17,7 +17,7 @@ const socketIo = require('socket.io');
 
 
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:3001' })); // Adjust origin as needed
+app.use(cors({ origin: 'https://www.carmandi.com.pk/' })); // Adjust origin as needed
 
 const io = socketHandler(http);
 
