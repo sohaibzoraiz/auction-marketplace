@@ -2,7 +2,7 @@
 
 const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
-require('dotenv').config();
+//require('dotenv').config();
 
 // PostgreSQL connection setup (adjust as needed)
 const pool = new Pool({
