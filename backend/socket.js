@@ -14,11 +14,12 @@ const pool = new Pool({
 const socketHandler = (httpServer) => {
     const ioInstance = io(httpServer, {
         cors: {
-            origin: 'https://carmandi.com.pk',
-            methods: ['GET', 'POST'],
-            credentials: true,
+          origin: ['https://www.carmandi.com.pk', 'https://carmandi.com.pk'],
+          methods: ['GET', 'POST'],
+          credentials: true,
         },
-    });
+      });
+      
     // Middleware to authenticate users
     const authenticate = async (socket, next) => {
         const accessToken = socket.handshake.auth.accessToken;
