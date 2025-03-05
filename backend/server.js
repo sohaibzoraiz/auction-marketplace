@@ -1,4 +1,5 @@
-require('dotenv').config();
+const path = require('path'); // Make sure to include this at the top if you haven't already
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
