@@ -12,7 +12,7 @@ const pool = new Pool({
     password: 'Zoraiz1!',
     port: 5432,
 });
-
+console.log(process.env);
 async function register(req, res) {
     try {
         const { name, contactNumber, email, completeAddress, identificationNumber, password } = req.body;
