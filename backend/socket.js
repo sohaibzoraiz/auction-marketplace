@@ -14,7 +14,7 @@ const pool = new Pool({
 const socketHandler = (httpServer) => {
     const ioInstance = io(httpServer, {
         cors: {
-            origin: 'http://localhost:3001',
+            origin: 'https://carmandi.com.pk',
             methods: ['GET', 'POST'],
             credentials: true,
         },
@@ -27,7 +27,7 @@ const socketHandler = (httpServer) => {
         }
 
         try {
-            const userData = await axios.get('http://51.20.6.53:3000/api/auth/user', {
+            const userData = await axios.get('https://api.carmandi.com.pk/api/auth/user', {
                 headers: {
                     Authorization: accessToken,
                 },
