@@ -15,9 +15,10 @@ const https = require('https');
 const fs = require('fs');
 
 const sslOptions = {
-  key: fs.readFileSync('/etc/letsencrypt/live/api.carmandi.com.pk/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/api.carmandi.com.pk/fullchain.pem'),
-};
+    key: fs.readFileSync('/home/ubuntu/certs/privkey.pem'),
+    cert: fs.readFileSync('/home/ubuntu/certs/fullchain.pem'),
+  };
+  
 
 const httpsServer = https.createServer(sslOptions, app);
 httpsServer.listen(443, () => {
