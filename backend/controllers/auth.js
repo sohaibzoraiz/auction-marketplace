@@ -89,7 +89,7 @@ async function login(req, res) {
         if (subscriptionResult.rows.length > 0) {
             userPlan = subscriptionResult.rows[0].subscription_plan_name;
         }
-        console.log(process.env);
+        //console.log(process.env);
         // Generate JWT tokens
         const jwtSecret = process.env.JWT_SECRET;
 
