@@ -12,7 +12,7 @@ const pool = new Pool({
     password: 'Zoraiz1!',
     port: 5432,
 });
-console.log(process.env);
+
 async function register(req, res) {
     try {
         const { name, contactNumber, email, completeAddress, identificationNumber, password } = req.body;
@@ -89,7 +89,7 @@ async function login(req, res) {
         if (subscriptionResult.rows.length > 0) {
             userPlan = subscriptionResult.rows[0].subscription_plan_name;
         }
-
+        console.log(process.env);
         // Generate JWT tokens
         const jwtSecret = process.env.JWT_SECRET;
 
