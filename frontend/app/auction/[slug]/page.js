@@ -44,7 +44,7 @@ function CarPage({ carMake, yearModel, id }) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(`http://51.20.6.53:3000/api/auctions/single?carMake=${carMake}&yearMake=${yearModel}&id=${id}`, {
+                const response = await fetch(`https://api.carmandi.com.pk/api/auctions/single?carMake=${carMake}&yearMake=${yearModel}&id=${id}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });

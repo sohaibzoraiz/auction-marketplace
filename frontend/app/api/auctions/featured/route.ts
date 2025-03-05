@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const response = await fetch('http://51.20.6.53:3000/api/listings/featured');
+        const response = await fetch('https://api.carmandi.com.pk/api/listings/featured');
         const listings = await response.json();
         //console.log("Listings:", listings);
         return NextResponse.json(listings);
