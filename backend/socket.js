@@ -27,7 +27,7 @@ const socketHandler = (httpServer) => {
         }
 
         try {
-            const userData = await axios.get('http://localhost:3000/api/auth/user', {
+            const userData = await axios.get('http://51.20.6.53:3000/api/auth/user', {
                 headers: {
                     Authorization: accessToken,
                 },
