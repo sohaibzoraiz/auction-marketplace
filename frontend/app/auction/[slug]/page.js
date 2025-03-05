@@ -44,7 +44,7 @@ function CarPage({ carMake, yearModel, id }) {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(`http://localhost:3000/api/auctions/single?carMake=${carMake}&yearMake=${yearModel}&id=${id}`, {
+                const response = await fetch(`http://51.20.6.53:3000/api/auctions/single?carMake=${carMake}&yearMake=${yearModel}&id=${id}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
@@ -163,11 +163,11 @@ function CarPage({ carMake, yearModel, id }) {
             {/* Left Section: Images */}
             <div className="md:w-1/2">
                 {parsedCarPhotos.length > 0 && (
-                    <img src={`http://localhost:3000${parsedCarPhotos[0]}`} alt="Featured Image" className="w-full h-96 object-cover" />
+                    <img src={`http://51.20.6.53:3000${parsedCarPhotos[0]}`} alt="Featured Image" className="w-full h-96 object-cover" />
                 )}
                 <div className="flex gap-4 mt-4">
                     {parsedCarPhotos.slice(1).map((photo, index) => (
-                        <img key={index} src={`http://localhost:3000${photo}`} alt="Thumbnail" className="w-24 h-24 object-cover rounded" />
+                        <img key={index} src={`http://51.20.6.53:3000${photo}`} alt="Thumbnail" className="w-24 h-24 object-cover rounded" />
                     ))}
                 </div>
             </div>
