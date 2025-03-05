@@ -9,31 +9,32 @@ const connectSocket = () => {
       return;
     }
 
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      reject(new Error("Access token not found"));
+      return;
+    }
+
     if (!socket) {
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
-        // Initialize socket only once
-        socket = io("http://51.20.6.53:4000", {
-          auth: { accessToken },
-          reconnectionAttempts: Infinity,
-          reconnectionDelay: 1000,
-          reconnectionDelayMax: 5000,
-          randomizationFactor: 0.5,
-        });
+      // Initialize socket only once
+      socket = io("http://51.20.6.53:4000", {
+        auth: { accessToken },
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        randomizationFactor: 0.5,
+      });
 
-        // Listen for connection events
-        socket.on("connect", () => {
-          console.log("Socket connected:", socket.id);
-          resolve(socket);
-        });
+      // Listen for connection events
+      socket.on("connect", () => {
+        console.log("Socket connected:", socket.id);
+        resolve(socket);
+      });
 
-        socket.on("connect_error", (err) => {
-          console.error("Connection error:", err.message);
-          reject(err);
-        });
-      } else {
-        reject(new Error("Access token not found"));
-      }
+      socket.on("connect_error", (err) => {
+        console.error("Connection error:", err.message);
+        reject(err);
+      });
     } else if (!socket.connected) {
       // Reconnect if disconnected
       socket.connect();
