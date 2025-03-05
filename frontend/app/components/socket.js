@@ -17,7 +17,7 @@ const connectSocket = () => {
 
     if (!socket) {
       // Initialize socket only once
-      socket = io("http://51.20.6.53:4000", {
+      socket = io("https://api.carmandi.com.pk", {
         auth: { accessToken },
         reconnectionAttempts: Infinity,
         reconnectionDelay: 1000,
