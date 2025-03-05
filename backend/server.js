@@ -6,7 +6,7 @@ const { Pool } = require('pg');
 const { getUser } = require('./controllers/auth');
 const authMiddleware = require('./middleware/authMiddleware');
 const multer = require('multer');
-const path = require('path');
+//const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
 
