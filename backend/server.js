@@ -11,7 +11,18 @@ const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const http = require('http').createServer(app);
+const https = require('https');
+const fs = require('fs');
+
+const sslOptions = {
+  key: fs.readFileSync('/etc/letsencrypt/live/api.carmandi.com.pk/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/api.carmandi.com.pk/fullchain.pem'),
+};
+
+const httpsServer = https.createServer(sslOptions, app);
+httpsServer.listen(443, () => {
+    console.log('Server listening on port 443 over HTTPS');
+  });
 const socketHandler = require('./socket');
 const socketIo = require('socket.io');
 
@@ -53,16 +64,8 @@ app.post('/auth/register', require('./controllers/auth').register);
 app.get('/api/auth/user', authMiddleware, getUser);
 
 // API routes for listings
-//app.get('/api/listings/featured', require('./controllers/carController').getFeaturedAuctionListings);
-app.get('/api/listings/featured', async (req, res) => {
-    try {
-      const listings = await require('./controllers/carController').getFeaturedAuctionListings(req, res);
-      res.json(listings);
-    } catch (error) {
-      console.error('Error fetching featured listings:', error);
-      res.status(500).json({ message: 'Failed to fetch featured listings' });
-    }
-  });
+app.get('/api/listings/featured', require('./controllers/carController').getFeaturedAuctionListings);
+
   
 // API routes for auctions
 app.get('/api/auctions', require('./controllers/carController').getAllAuctionListings);
