@@ -14,7 +14,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors({ origin: 'https://www.carmandi.com.pk/' }));
+app.use(cors({
+    origin: ['https://www.carmandi.com.pk', 'https://carmandi.com.pk'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  }));
 
 const server = http.createServer(app);
 
