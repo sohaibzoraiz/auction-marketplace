@@ -7,56 +7,50 @@ const authMiddleware = require('./middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
 
-
-
 const app = express();
 const port = process.env.PORT || 3000;
 const https = require('https');
 const fs = require('fs');
 
 const sslOptions = {
-    key: fs.readFileSync('/home/ubuntu/certs/privkey.pem'),
-    cert: fs.readFileSync('/home/ubuntu/certs/fullchain.pem'),
-  };
-  
+  key: fs.readFileSync('/home/ubuntu/certs/privkey.pem'),
+  cert: fs.readFileSync('/home/ubuntu/certs/fullchain.pem'),
+};
 
 const httpsServer = https.createServer(sslOptions, app);
 httpsServer.listen(443, () => {
-    console.log('Server listening on port 443 over HTTPS');
-  });
+  console.log('Server listening on port 443 over HTTPS');
+});
+
 const socketHandler = require('./socket');
 const socketIo = require('socket.io');
 
-
 app.use(express.json());
-app.use(cors({ origin: 'https://www.carmandi.com.pk/' })); // Adjust origin as needed
+app.use(cors({ origin: 'https://www.carmandi.com.pk/' }));
 
-const io = socketHandler(http);
+const io = socketHandler(httpsServer);
 
-http.listen(4000, () => {
-    console.log('Server listening on port 4000');
-});
 // PostgreSQL connection setup
 const pool = new Pool({
-    user: 'auction_user',
-    host: 'localhost',
-    database: 'car_auction',
-    password: 'Zoraiz1!',
-    port: 5432,
+  user: 'auction_user',
+  host: 'localhost',
+  database: 'car_auction',
+  password: 'Zoraiz1!',
+  port: 5432,
 });
 
 // Test the database connection
 pool.query('SELECT NOW()', (err, res) => {
-    if (err) {
-        console.error('PostgreSQL connection error:', err);
-    } else {
-        console.log('PostgreSQL connected', res.rows);
-    }
+  if (err) {
+    console.error('PostgreSQL connection error:', err);
+  } else {
+    console.log('PostgreSQL connected', res.rows);
+  }
 });
 
 // Sample route for testing
 app.get('/', (req, res) => {
-    res.send('<h1>Hello, Car Auction Marketplace!</h1>');
+  res.send('<h1>Hello, Car Auction Marketplace!</h1>');
 });
 
 // Authentication routes
@@ -67,7 +61,6 @@ app.get('/api/auth/user', authMiddleware, getUser);
 // API routes for listings
 app.get('/api/listings/featured', require('./controllers/carController').getFeaturedAuctionListings);
 
-  
 // API routes for auctions
 app.get('/api/auctions', require('./controllers/carController').getAllAuctionListings);
 app.get('/api/auctions/single', require('./controllers/carController').getSingleAuctionListing);
@@ -77,30 +70,20 @@ app.delete('/api/auctions/:id', require('./controllers/carController').deleteAuc
 
 //API routes for creating listing for images
 const upload = multer({
-    dest: './uploads/',
-    limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-            return cb(new Error('Only image files are allowed!'));
-        }
-        cb(undefined, true);
+  dest: './uploads/',
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error('Only image files are allowed!'));
     }
+    cb(undefined, true);
+  }
 });
 
 app.post('/api/auctions/create', upload.fields([
-    { name: 'featuredImage', maxCount: 1 },
-    { name: 'carImages', maxCount: 10 }
-]),authMiddleware, require('./controllers/carController').createAuctionListing);
+  { name: 'featuredImage', maxCount: 1 },
+  { name: 'carImages', maxCount: 10 }
+]), authMiddleware, require('./controllers/carController').createAuctionListing);
 
 //serve images
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-/* API routes for cars
-app.get('/api/cars', require('./controllers/carController').getAllCarListings);
-app.post('/api/cars/create', require('./controllers/carController').createCarListing);
-app.put('/api/cars/:id', require('./controllers/carController').updateCarListing);
-app.delete('/api/cars/:id', require('./controllers/carController').deleteCarListing);
-*/
-// Start server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
