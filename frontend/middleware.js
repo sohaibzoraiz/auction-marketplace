@@ -4,7 +4,12 @@ import { NextResponse } from 'next/server';
 const HARDCODED_PASSWORD = '1234'; // change this to your desired password
 
 export function middleware(req) {
- 
+  // Bypass authentication in production (adjust as needed)
+
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      return NextResponse.next();
+    }
 
   // Check if user is already authenticated via cookie
   const cookie = req.cookies.get('authenticated');
