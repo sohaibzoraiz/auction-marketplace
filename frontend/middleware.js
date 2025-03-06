@@ -7,7 +7,7 @@ export function middleware(req) {
   // Bypass authentication in production (adjust as needed)
 
     const token = localStorage.getItem("accessToken");
-    if (!token) {
+    if (token) {
       return NextResponse.next();
     }
 
