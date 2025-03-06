@@ -1,8 +1,16 @@
 // middleware.js
 import { NextResponse } from 'next/server';
 
+const HARDCODED_PASSWORD = '1234'; // change this to your desired password
+
 export function middleware(req) {
  
+
+  // Check if user is already authenticated via cookie
+  const cookie = req.cookies.get('authenticated');
+  if (cookie === 'true') {
+    return NextResponse.next();
+  }
 
   const auth = req.headers.get('authorization');
   const unauthorizedResponse = new Response('Authentication required', {
@@ -14,22 +22,23 @@ export function middleware(req) {
     return unauthorizedResponse;
   }
 
-  // Basic Auth header is in the form: "Basic base64(username:password)"
+  // Decode credentials: format "Basic base64(username:password)"
   const base64Credentials = auth.split(' ')[1];
   const credentials = Buffer.from(base64Credentials, 'base64').toString();
-  // Since we're ignoring the username, we only care about the password
+  // We ignore the username and only check the password
   const [, password] = credentials.split(':');
 
-  // Hardcoded password (temporary)
-  const HARDCODED_PASSWORD = '123'; // change this to your desired password
-
   if (password === HARDCODED_PASSWORD) {
-    return NextResponse.next();
+    // If correct, set a cookie to avoid repeated prompts
+    const response = NextResponse.next();
+    response.cookies.set('authenticated', 'true', { path: '/' });
+    return response;
   }
 
   return unauthorizedResponse;
 }
 
+// Apply the middleware to all routes
 export const config = {
-  matcher: '/:path*', // apply to all routes
+  matcher: '/:path*',
 };
