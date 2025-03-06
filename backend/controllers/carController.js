@@ -1,5 +1,5 @@
 // File Path: controllers/carController.js
-
+const redisClient = require('../redisClient');
 const { Pool } = require('pg');
 const { check, validationResult } = require('express-validator');
 
@@ -227,6 +227,7 @@ async function updateAuctionListing(req, res) {
 }
 
 async function getAllAuctionListings(req, res) {
+    
     try {
         const result = await pool.query(
             "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report,c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
@@ -243,6 +244,16 @@ async function getAllAuctionListings(req, res) {
 
 async function getFeaturedAuctionListings(req, res) {
     try {
+        
+            const cacheKey = 'featured_listings';
+        
+            // Attempt to fetch from Redis
+            const cachedData = await redisClient.get(cacheKey);
+            if (cachedData) {
+              console.log('Serving featured listings from cache.');
+              return res.json(JSON.parse(cachedData));
+            }
+           
         const result = await pool.query(
             "SELECT c.id, c.car_make, c.year_model, c.demand_price, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
             "FROM cars c LEFT JOIN auctions a ON c.id = a.car_id JOIN subscriptions s ON c.user_id = s.user_id " +
@@ -253,8 +264,11 @@ async function getFeaturedAuctionListings(req, res) {
             res.status(404).json({ message: 'No featured listings found' });
         } else {
             res.json(result.rows);
+            await redisClient.setEx(cacheKey, 3600, JSON.stringify(result));
+
         }
-    } catch (error) {
+    }
+     catch (error) {
         console.error('Error fetching featured auction listings:', error);
         res.status(500).json({ message: 'Failed to fetch featured auction listings' });
     }
