@@ -39,7 +39,6 @@ export function middleware(req) {
   return unauthorizedResponse;
 }
 
-// Apply the middleware to all routes
 export const config = {
-  matcher: '/:path*',
-};
+    matcher: ['/((?!login).*)'], // This excludes any route starting with /login
+  };
