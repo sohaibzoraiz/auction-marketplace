@@ -4,13 +4,6 @@ import { NextResponse } from 'next/server';
 const HARDCODED_PASSWORD = '1234'; // change this to your desired password
 
 export function middleware(req) {
-  // Bypass authentication in production (adjust as needed)
-
-    /*const token = localStorage.getItem("accessToken");
-    if (token) {
-      return NextResponse.next();
-    }*/
-
   // Check if user is already authenticated via cookie
   const cookie = req.cookies.get('authenticated');
   if (cookie === 'true') {
@@ -34,9 +27,12 @@ export function middleware(req) {
   const [, password] = credentials.split(':');
 
   if (password === HARDCODED_PASSWORD) {
-    // If correct, set a cookie to avoid repeated prompts
+    // If correct, set a cookie to avoid repeated prompts (persisting for 7 days)
     const response = NextResponse.next();
-    response.cookies.set('authenticated', 'true', { path: '/' });
+    response.cookies.set('authenticated', 'true', { 
+      path: '/', 
+      maxAge: 60 * 60 * 24 * 7 // persists for 7 days
+    });
     return response;
   }
 
