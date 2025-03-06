@@ -4,6 +4,11 @@ import { NextResponse } from 'next/server';
 const HARDCODED_PASSWORD = '1234'; // change this to your desired password
 
 export function middleware(req) {
+
+    if (req.nextUrl.pathname.startsWith('/api')) {
+        return NextResponse.next();
+      }
+    
   // Check if user is already authenticated via middleware-specific cookie
   const cookie = req.cookies.get('devAuthenticated');
   if (cookie === 'true') {
@@ -39,6 +44,7 @@ export function middleware(req) {
   return unauthorizedResponse;
 }
 
+// Apply the middleware to all routes
 export const config = {
-    matcher: ['/((?!login).*)'], // This excludes any route starting with /login
-  };
+  matcher: '/:path*',
+};
