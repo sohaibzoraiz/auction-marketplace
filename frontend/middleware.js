@@ -2,10 +2,7 @@
 import { NextResponse } from 'next/server';
 
 export function middleware(req) {
-  // Bypass authentication in production (adjust as needed)
-  if (process.env.NODE_ENV === 'production') {
-    return NextResponse.next();
-  }
+ 
 
   const auth = req.headers.get('authorization');
   const unauthorizedResponse = new Response('Authentication required', {
