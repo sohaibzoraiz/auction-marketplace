@@ -245,14 +245,14 @@ async function getAllAuctionListings(req, res) {
 async function getFeaturedAuctionListings(req, res) {
     try {
         
-            const cacheKey = 'featured_listings';
-        
-            // Attempt to fetch from Redis
-            const cachedData = await redisClient.get(cacheKey);
-            if (cachedData) {
-              console.log('Serving featured listings from cache.');
-              return res.json(JSON.parse(cachedData));
-            }
+        const cacheKey = 'featured_listings';
+    
+        // Attempt to fetch from Redis
+        const cachedData = await redisClient.get(cacheKey);
+        if (cachedData) {
+          console.log('Serving featured listings from cache.');
+          return res.json(JSON.parse(cachedData));
+        }
            
         const result = await pool.query(
             "SELECT c.id, c.car_make, c.year_model, c.demand_price, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
@@ -263,8 +263,9 @@ async function getFeaturedAuctionListings(req, res) {
         if (result.rows.length === 0) {
             res.status(404).json({ message: 'No featured listings found' });
         } else {
+            
+            await redisClient.setEx(cacheKey, 3600, JSON.stringify(result.rows));
             res.json(result.rows);
-            await redisClient.setEx(cacheKey, 3600, JSON.stringify(result));
 
         }
     }
