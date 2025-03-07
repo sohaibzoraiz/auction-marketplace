@@ -27,7 +27,7 @@ async function handleSubmit(event) {
         if (!response.ok) throw new Error('Invalid credentials');
         
         // Parse JSON response
-        const data = await response.json();
+        //const data = await response.json();
         
         /*if (!data || !data.accessToken) {
             throw new Error('Invalid response from server');
