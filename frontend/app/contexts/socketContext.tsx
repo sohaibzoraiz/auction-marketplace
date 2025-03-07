@@ -1,9 +1,9 @@
 
 'use client';
 
-import { createContext, useState, useEffect } from "react";
-import { connectSocket } from "../components/socket";
-//import { UserContext } from "./UserContext";
+import { createContext, useState, useEffect, useContext } from "react";
+import { connectSocket, disconnectSocket } from "../components/socket";
+import { UserContext } from "./UserContext";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface SocketContextValue {
   socket: any;
@@ -17,7 +17,7 @@ const SocketContext = createContext<SocketContextValue>(defaultContextValue);
 
 const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState(null);
-  //const { userData } = useContext(UserContext); // We still have userData available if needed
+  const { userData } = useContext(UserContext); // We still have userData available if needed
 
   useEffect(() => {
     // Always connect the socket on the client, regardless of userData
@@ -31,6 +31,17 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         });
     }
   }, []); // Run only once on mount
+  useEffect(() => {
+    if (socket && userData && userData.id) {
+      console.log("User logged in, reconnecting socket to update authentication...");
+      disconnectSocket()
+      connectSocket()
+        .then((newSocket) => {
+          setSocket(newSocket);
+        })
+        .catch((err) => console.error("Error reconnecting socket:", err));
+    }
+  }, [userData]); // re-run when userData changes
 
   return (
     <SocketContext.Provider value={{ socket }}>
