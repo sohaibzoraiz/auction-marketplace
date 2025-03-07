@@ -249,7 +249,7 @@ function CreateAuctionPage() {
                         className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" disabled={userData && userData.plan !== 'premium'} />
                 </div>
 
-                {user && user.plan === 'premium' ? (
+                {userData && userData.plan === 'premium' ? (
                     <div className="mb-4">
                         <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
                         <input type="datetime-local" id="endTime" name="endTime" value={formData.endTime} onChange={handleChange}
