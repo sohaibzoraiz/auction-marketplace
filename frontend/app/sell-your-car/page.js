@@ -7,8 +7,8 @@ import { UserContext } from '../contexts/UserContext';
 
 function CreateAuctionPage() {
     const router = useRouter();
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+ //   const [user, setUser] = useState(null);
+ //   const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [canCreateListing, setCanCreateListing] = useState(false);
     const [upgradeMessage, setUpgradeMessage] = useState('');
