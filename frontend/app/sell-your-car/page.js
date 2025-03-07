@@ -14,7 +14,8 @@ function CreateAuctionPage() {
     const [upgradeMessage, setUpgradeMessage] = useState('');
     const [featuredImage, setFeaturedImage] = useState(null);
     const [carImages, setCarImages] = useState([]);
-
+        //using cookies
+    const { userData } = useContext(UserContext) ?? {};
     const [formData, setFormData] = useState({
         city: '',
         carMake: '',
@@ -30,8 +31,7 @@ function CreateAuctionPage() {
         reservePrice: '',
         endTime: '',
     });
-    //using cookies
-    const { userData } = useContext(UserContext);
+
 
     useEffect(() => {
         if (!userData) {
@@ -124,47 +124,30 @@ function CreateAuctionPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Retrieve token from localStorage
-            const token = localStorage.getItem('accessToken');
-
+            // Remove token retrieval from localStorage
+            // const token = localStorage.getItem('accessToken');
+    
             // Create FormData to send files
             const formDataWithImages = new FormData();
-
-            // Append form fields
-            for (const key in formData) {
-                formDataWithImages.append(key, formData[key]);
-            }
-
-            // Append featured image
-            if (featuredImage) {
-                formDataWithImages.append('featuredImage', featuredImage);
-            }
-
-            // Append car images
-            carImages.forEach((image) => {
-                formDataWithImages.append('carImages', image);
-            });
-
+            // ... append form fields and images ...
+    
             // Call the backend API to create a new auction listing
-            const response = await fetch(`/api/auctions/create`, { // Corrected URL
+            const response = await fetch(`/api/auctions/create`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`, // Include token in header
-                },
-                body: formDataWithImages, // Send FormData object
+                credentials: 'include', // ensure HTTP-only cookies are sent automatically
+                // Removed manual Authorization header
+                body: formDataWithImages,
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to create auction');
             }
             console.log("Front End Form Data = ", formData);
-
-            // Redirect to a success page or auction listing page
-            //router.push('/auctions/success');
         } catch (err) {
             setError(err.message || 'Failed to create auction');
         }
     };
+    
 
     if (loading) {
         return <div>Loading...</div>;
@@ -265,7 +248,7 @@ function CreateAuctionPage() {
                 <div className="mb-4">
                     <label htmlFor="reservePrice" className="block text-sm font-medium text-gray-700">Reserve Price:</label>
                     <input type="number" id="reservePrice" name="reservePrice" value={formData.reservePrice} onChange={handleChange}
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" disabled={user && user.plan !== 'premium'} />
+                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" disabled={userData && userData.plan !== 'premium'} />
                 </div>
 
                 {user && user.plan === 'premium' ? (
