@@ -3,11 +3,11 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { connectSocket } from "../components/socket";
 import { UserContext } from "./UserContext";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 interface SocketContextValue {
   socket: any;
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */
+
 const defaultContextValue: SocketContextValue = {
   socket: null,
 };
@@ -16,15 +16,20 @@ const SocketContext = createContext<SocketContextValue>(defaultContextValue);
 
 const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState(null);
-  const { userData } = useContext(UserContext); // Access userData from UserContext
+  const { userData } = useContext(UserContext); // We still have userData available if needed
 
   useEffect(() => {
-    if (userData && typeof window !== 'undefined') { // Only connect if userData is available and on the client
-      connectSocket().then((sock) => {
-        setSocket(sock);
-      });
+    // Always connect the socket on the client, regardless of userData
+    if (typeof window !== 'undefined') {
+      connectSocket()
+        .then((sock) => {
+          setSocket(sock);
+        })
+        .catch((err) => {
+          console.error("Error connecting socket:", err);
+        });
     }
-  }, [userData]); // Re-run effect when userData changes
+  }, []); // Run only once on mount
 
   return (
     <SocketContext.Provider value={{ socket }}>
