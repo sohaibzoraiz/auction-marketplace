@@ -160,19 +160,22 @@ async function login(req, res) {
         res.status(500).json({ message: "Server Error" });
     }
 }
-async function logout (req, res) {
+async function logout(req, res) {
     res.clearCookie('accessToken', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
+      domain: '.carmandi.com.pk',  // Include the same domain as set in login
     });
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
+      domain: '.carmandi.com.pk',  // Include the same domain as set in login
     });
     return res.json({ message: 'Logged out successfully' });
-  }
+}
+
 async function getUser(req, res) {
     try {
         const userId = req.user.userId;
