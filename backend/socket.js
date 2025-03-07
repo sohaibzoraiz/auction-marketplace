@@ -1,8 +1,12 @@
 // socket.js
-const { Pool } = require('pg');
+//const { Pool } = require('pg');
+const pool = require('./server.js');
 const io = require('socket.io');
 const axios = require('axios');
+const cookie = require('cookie');
+const jwt = require('jsonwebtoken'); // Ensure jwt is required here (already used elsewhere)
 
+/* PostgreSQL connection setup
 const pool = new Pool({
     user: 'auction_user',
     host: 'localhost',
@@ -10,7 +14,7 @@ const pool = new Pool({
     password: 'Zoraiz1!',
     port: 5432,
 });
-
+*/
 const socketHandler = (httpServer) => {
     const ioInstance = io(httpServer, {
         cors: {
@@ -21,7 +25,7 @@ const socketHandler = (httpServer) => {
       });
       
     // Middleware to authenticate users
-    const authenticate = async (socket, next) => {
+    /*const authenticate = async (socket, next) => {
         const accessToken = socket.handshake.auth.accessToken;
         if (!accessToken) {
             return next(new Error('Unauthorized'));
@@ -40,7 +44,28 @@ const socketHandler = (httpServer) => {
             console.error('Error authenticating user:', error);
             return next(new Error('Unauthorized'));
         }
+    };*/
+    const authenticate = (socket, next) => {
+        // Parse cookies from the socket's request headers
+        const cookies = cookie.parse(socket.request.headers.cookie || '');
+        const accessToken = cookies.accessToken;
+        if (!accessToken) {
+            return next(new Error('Unauthorized'));
+        }
+    
+        try {
+            // Verify the token using your JWT secret
+            const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+            // Attach decoded user info to socket handshake
+            socket.handshake.auth.userId = decoded.userId;
+            socket.handshake.auth.userPlan = decoded.userPlan;
+            next();
+        } catch (error) {
+            console.error('Error authenticating user:', error);
+            return next(new Error('Unauthorized'));
+        }
     };
+    
 
     ioInstance.use(authenticate);
 

@@ -1,16 +1,17 @@
 // File Path: controllers/carController.js
 const redisClient = require('../redisClient');
-const { Pool } = require('pg');
+//const { Pool } = require('pg');
+const pool = require('./server.js');
 const { check, validationResult } = require('express-validator');
 
-// PostgreSQL connection setup (adjust as needed)
+/* PostgreSQL connection setup (adjust as needed)
 const pool = new Pool({
     user: 'auction_user',
     host: 'localhost',
     database: 'car_auction',
     password: 'Zoraiz1!',
     port: 5432,
-});
+});*/
 /*async function createAuctionListing(req, res) {
     try {
         const errors = validationResult(req);
