@@ -1,6 +1,6 @@
 // socket.js
 //const { Pool } = require('pg');
-const pool = require('./server.js');
+const pool = require('./db.js');
 const io = require('socket.io');
 const axios = require('axios');
 const cookie = require('cookie');
