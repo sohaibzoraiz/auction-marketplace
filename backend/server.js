@@ -3,7 +3,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express');
 const cors = require('cors');
 //const { Pool } = require('pg');
-const pool = require('./db');  // Use the new db.js file
+const pool = require('../db');  // Use the new db.js file
 const { getUser } = require('./controllers/auth');
 const authMiddleware = require('./middleware/authMiddleware');
 const multer = require('multer');
