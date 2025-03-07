@@ -12,12 +12,12 @@ const socketIo = require('socket.io');
 const cookieParser = require('cookie-parser');
 
 
-app.use(cookieParser());
+
 
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
     origin: ['https://www.carmandi.com.pk', 'https://carmandi.com.pk'],
