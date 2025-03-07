@@ -2,7 +2,8 @@ const path = require('path'); // Make sure to include this at the top if you hav
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg');
+//const { Pool } = require('pg');
+const pool = require('./db');  // Use the new db.js file
 const { getUser } = require('./controllers/auth');
 const authMiddleware = require('./middleware/authMiddleware');
 const multer = require('multer');
@@ -30,7 +31,7 @@ const server = http.createServer(app);
 const socketHandler = require('./socket');
 const io = socketHandler(server);
 
-// PostgreSQL connection setup
+/* PostgreSQL connection setup
 const pool = new Pool({
   user: 'auction_user',
   host: 'localhost',
@@ -39,7 +40,7 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Test the database connection
+// Test the database connection*/
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
     console.error('PostgreSQL connection error:', err);
@@ -48,7 +49,7 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
-module.exports = pool;
+//module.exports = pool;
 
 // Sample route for testing
 app.get('/', (req, res) => {
