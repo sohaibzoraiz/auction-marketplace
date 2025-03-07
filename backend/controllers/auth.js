@@ -98,6 +98,7 @@ async function login(req, res) {
         if (!jwtSecret) {
             throw new Error('JWT_SECRET environment variable is not defined');
         }
+        const refreshTokenSecret = process.env.JWT_REFRESH_SECRET || jwtSecret;
         // Moving to cookies from headers
         /*const accessToken = jwt.sign({
             userId: existingUserQuery.rows[0].id,
