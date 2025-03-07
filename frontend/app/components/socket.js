@@ -53,6 +53,17 @@ const connectSocket = () => {
     }
   });
 };
+const disconnectSocket = () => {
+    return new Promise((resolve) => {
+      if (socket && socket.connected) {
+        socket.disconnect();
+        console.log("Socket disconnected");
+        // Reset the socket instance if needed
+        socket = null;
+      }
+      resolve();
+    });
+  };
 
 const emitBid = (auctionId, amount) => {
   if (typeof window !== 'undefined' && socket && socket.connected) {
@@ -71,4 +82,4 @@ const listenForNewBids = (callback) => {
   }
 };
 
-export { connectSocket, emitBid, listenForNewBids };
+export { connectSocket, disconnectSocket, emitBid, listenForNewBids };
