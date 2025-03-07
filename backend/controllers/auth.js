@@ -1,7 +1,7 @@
 // File Path: controllers/auth.js
 
 //const { Pool } = require('pg');
-const pool = require('./server.js');
+const pool = require('../server.js');
 const bcrypt = require('bcryptjs');
 //require('dotenv').config();
 
