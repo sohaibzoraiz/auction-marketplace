@@ -130,17 +130,20 @@ async function login(req, res) {
         // Set tokens as HTTP-only cookies
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // only over HTTPS in production
-            sameSite: 'strict', // or adjust based on your needs
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days in milliseconds
-        });
-        
-        res.cookie('refreshToken', refreshToken, {
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            domain: '.carmandi.com.pk',  // Ensures the cookie is shared across subdomains
+            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+          });
+          
+          res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
+            domain: '.carmandi.com.pk',  // Ensure the refresh token cookie is shared too
             maxAge: 30 * 24 * 60 * 60 * 1000
-        });
+          });
+          
         
         // Optionally, send a success message and user info (without the tokens)
         return res.json({ message: 'Logged in successfully', user: {
