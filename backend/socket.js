@@ -49,8 +49,12 @@ const socketHandler = (httpServer) => {
         // Parse cookies from the socket's request headers
         const cookies = cookie.parse(socket.request.headers.cookie || '');
         const accessToken = cookies.accessToken;
+        
+        // If no token, allow connection as guest
         if (!accessToken) {
-            return next(new Error('Unauthorized'));
+            socket.handshake.auth.userId = null;  // mark as guest
+            socket.handshake.auth.userPlan = 'guest';
+            return next();
         }
     
         try {
@@ -62,9 +66,13 @@ const socketHandler = (httpServer) => {
             next();
         } catch (error) {
             console.error('Error authenticating user:', error);
-            return next(new Error('Unauthorized'));
+            // If token is invalid, still allow as guest
+            socket.handshake.auth.userId = null;
+            socket.handshake.auth.userPlan = 'guest';
+            next();
         }
     };
+    
     
 
     ioInstance.use(authenticate);
@@ -76,7 +84,10 @@ const socketHandler = (httpServer) => {
             const { auctionId, amount} = bidData;
             const userId = socket.handshake.auth.userId;
             const userPlan = socket.handshake.auth.userPlan;
-
+            if (!socket.handshake.auth.userId) {
+                socket.emit('error', 'You must be logged in to place a bid.');
+                return;
+            }
             // Check if user has free bids (if basic plan)
             if (userPlan === 'basic') {
                 const freeBids = await pool.query('SELECT free_bids FROM users WHERE id = $1', [userId]);
