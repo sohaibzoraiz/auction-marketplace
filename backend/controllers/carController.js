@@ -1,7 +1,7 @@
 // File Path: controllers/carController.js
 const redisClient = require('../redisClient');
 //const { Pool } = require('pg');
-const pool = require('./server.js');
+const pool = require('../server.js');
 const { check, validationResult } = require('express-validator');
 
 /* PostgreSQL connection setup (adjust as needed)
