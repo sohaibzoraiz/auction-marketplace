@@ -43,14 +43,35 @@ function Header() {
         );
     }
 
-    const handleLogout = async () => {
+    /* const handleLogout = async () => {
         localStorage.removeItem('accessToken');
         setUserData(null); // Update state here
         router.push('/login');
-    };
+    };*/
+    const handleLogout = async () => {
+        try {
+          const response = await fetch('/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include', // Ensures cookies are included
+          });
+      
+          if (response.ok) {
+            // Clear user data in context
+            setUserData(null);
+            // Redirect to login page
+            router.push('/login');
+          } else {
+            console.error('Failed to log out');
+          }
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      };
+      
+      
     if(userData.plan === 'premium'){
         userData.free_bids_remaining = 'unilimited';
-       }
+    }
     return (
         <nav className="bg-gray-800 text-white p-4 flex justify-between">
             <div className="flex items-center">

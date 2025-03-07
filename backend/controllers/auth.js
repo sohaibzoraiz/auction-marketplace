@@ -1,10 +1,11 @@
 // File Path: controllers/auth.js
 
-const { Pool } = require('pg');
+//const { Pool } = require('pg');
+const pool = require('./server.js');
 const bcrypt = require('bcryptjs');
 //require('dotenv').config();
 
-// PostgreSQL connection setup (adjust as needed)
+/* PostgreSQL connection setup (adjust as needed)
 const pool = new Pool({
     user: 'auction_user',
     host: 'localhost',
@@ -12,7 +13,7 @@ const pool = new Pool({
     password: 'Zoraiz1!',
     port: 5432,
 });
-
+*/
 async function register(req, res) {
     try {
         const { name, contactNumber, email, completeAddress, identificationNumber, password } = req.body;
@@ -97,8 +98,8 @@ async function login(req, res) {
         if (!jwtSecret) {
             throw new Error('JWT_SECRET environment variable is not defined');
         }
-
-        const accessToken = jwt.sign({
+        // Moving to cookies from headers
+        /*const accessToken = jwt.sign({
             userId: existingUserQuery.rows[0].id,
             name: existingUserQuery.rows[0].name,
             email: existingUserQuery.rows[0].email_address,
@@ -113,7 +114,41 @@ async function login(req, res) {
         return res.json({
             accessToken,
             refreshToken
+        });*/
+        const accessToken = jwt.sign({
+            userId: existingUserQuery.rows[0].id,
+            name: existingUserQuery.rows[0].name,
+            email: existingUserQuery.rows[0].email_address,
+            userPlan: userPlan 
+        }, jwtSecret, { expiresIn: '30d' });
+        
+        const refreshToken = jwt.sign({
+            userId: existingUserQuery.rows[0].id
+        }, refreshTokenSecret, { expiresIn: '30d' });
+        
+        // Set tokens as HTTP-only cookies
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // only over HTTPS in production
+            sameSite: 'strict', // or adjust based on your needs
+            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days in milliseconds
         });
+        
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 30 * 24 * 60 * 60 * 1000
+        });
+        
+        // Optionally, send a success message and user info (without the tokens)
+        return res.json({ message: 'Logged in successfully', user: {
+            id: existingUserQuery.rows[0].id,
+            name: existingUserQuery.rows[0].name,
+            email: existingUserQuery.rows[0].email_address,
+            userPlan: userPlan
+        }});
+        
     } catch (error) {
         console.error(error);
 
@@ -121,7 +156,19 @@ async function login(req, res) {
         res.status(500).json({ message: "Server Error" });
     }
 }
-
+async function logout (req, res) {
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+    return res.json({ message: 'Logged out successfully' });
+  }
 async function getUser(req, res) {
     try {
         const userId = req.user.userId;
@@ -179,4 +226,4 @@ async function upgradeSubscription(req, res) {
     }
 }
 
-module.exports={register ,login, getUser, upgradeSubscription};
+module.exports={register ,login, logout, getUser, upgradeSubscription};

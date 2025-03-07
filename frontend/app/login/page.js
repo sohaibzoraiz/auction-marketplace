@@ -21,6 +21,7 @@ async function handleSubmit(event) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
+            credentials: 'include',
         });
 
         if (!response.ok) throw new Error('Invalid credentials');
@@ -28,19 +29,25 @@ async function handleSubmit(event) {
         // Parse JSON response
         const data = await response.json();
         
-        if (!data || !data.accessToken) {
+        /*if (!data || !data.accessToken) {
             throw new Error('Invalid response from server');
         }
         
         const accessToken = data.accessToken;
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('accessToken', accessToken);*/
         console.log('Login successful');
         
-        const userResponse = await fetch('/api/auth/user', {
+        /*const userResponse = await fetch('/api/auth/user', {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
             },
-        });
+        });*/
+        const userResponse = await fetch('/api/auth/user', {
+            method: 'GET',
+            credentials: 'include', // Automatically sends the cookies
+            headers: { 'Content-Type': 'application/json' },
+          });
+          
         const userData = await userResponse.json();
         setUserData(userData);
         const originalUrl = new URLSearchParams(window.location.search).get('redirect');

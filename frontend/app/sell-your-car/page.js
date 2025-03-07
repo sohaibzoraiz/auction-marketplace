@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { UserContext } from '../contexts/UserContext';
 
 function CreateAuctionPage() {
     const router = useRouter();
@@ -29,8 +30,29 @@ function CreateAuctionPage() {
         reservePrice: '',
         endTime: '',
     });
+    //using cookies
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
+        if (!userData) {
+          // If not logged in, redirect
+          const originalUrl = window.location.pathname;
+          router.push(`/login?redirect=${originalUrl}`);
+        } else {
+          // Check user plan, listing count, etc.
+          if (userData.plan === 'basic') {
+            if (userData.listingCount < 1) {
+              setCanCreateListing(true);
+            } else {
+              setCanCreateListing(false);
+              setUpgradeMessage('Basic plan users can only create one listing. Upgrade to create more.');
+            }
+          } else {
+            setCanCreateListing(true);
+          }
+        }
+      }, [userData, router]);
+   /* useEffect(() => {
         const fetchUser = async () => {
             setLoading(true);
             try {
@@ -82,7 +104,7 @@ function CreateAuctionPage() {
         };
 
         fetchUser();
-    }, [router]);
+    }, [router]);*/
 
     const handleChange = (e) => {
         setFormData({

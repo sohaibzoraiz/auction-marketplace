@@ -38,7 +38,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchUser = async (): Promise<void> => {
     console.log("Fetching user data...");
     try {
-      const token = localStorage.getItem("accessToken");
+      /*const token = localStorage.getItem("accessToken");
       if (!token) {
         setUserData(null);
         return;
@@ -47,7 +47,13 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await fetch("/api/auth/user", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+        */
+      const response = await fetch("/api/auth/user", {
+        method: "GET",
+        credentials: "include", // ensures the HTTP‑only cookie is sent
+        headers: { "Content-Type": "application/json" },
+      });
+      
       if (!response.ok) {
         setUserData(null);
         return;

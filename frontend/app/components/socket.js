@@ -8,17 +8,18 @@ const connectSocket = () => {
       reject(new Error('Cannot connect to socket on server-side'));
       return;
     }
-
+/*
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       reject(new Error("Access token not found"));
       return;
-    }
+    }*/
 
     if (!socket) {
       // Initialize socket only once
       socket = io("https://api.carmandi.com.pk", {
-        auth: { accessToken },
+        //auth: { accessToken },
+        withCredentials: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,

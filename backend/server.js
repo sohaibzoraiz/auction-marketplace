@@ -9,6 +9,11 @@ const multer = require('multer');
 //const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
+const cookieParser = require('cookie-parser');
+
+
+app.use(cookieParser());
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -43,6 +48,8 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
+module.exports = pool;
+
 // Sample route for testing
 app.get('/', (req, res) => {
   res.send('<h1>Hello, Car Auction Marketplace!</h1>');
@@ -52,6 +59,8 @@ app.get('/', (req, res) => {
 app.post('/auth/login', require('./controllers/auth').login);
 app.post('/auth/register', require('./controllers/auth').register);
 app.get('/api/auth/user', authMiddleware, getUser);
+app.post('/auth/logout', require('./controllers/auth').logout);
+  
 
 // API routes for listings
 app.get('/api/listings/featured', require('./controllers/carController').getFeaturedAuctionListings);
