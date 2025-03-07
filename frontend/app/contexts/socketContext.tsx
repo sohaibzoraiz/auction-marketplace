@@ -1,13 +1,14 @@
+
 'use client';
 
 import { createContext, useState, useEffect } from "react";
 import { connectSocket } from "../components/socket";
 //import { UserContext } from "./UserContext";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface SocketContextValue {
   socket: any;
 }
-
+/* eslint-enable @typescript-eslint/no-explicit-any */
 const defaultContextValue: SocketContextValue = {
   socket: null,
 };
@@ -39,3 +40,4 @@ const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export { SocketProvider, SocketContext };
+
