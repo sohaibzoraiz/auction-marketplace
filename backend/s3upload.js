@@ -15,9 +15,8 @@ const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.AWS_S3_BUCKET, // e.g., 'carmandi'
-    acl: '', // Override default ACL to prevent sending x-amz-acl header
+    acl: undefined, // explicitly set to undefined so no ACL header is sent
     key: function (req, file, cb) {
-      // Create a unique key for each file
       cb(null, `uploads/${Date.now().toString()}_${file.originalname}`);
     },
   }),
