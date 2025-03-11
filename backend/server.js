@@ -11,6 +11,9 @@ const multer = require('multer');
 const http = require('http');
 const socketIo = require('socket.io');
 const cookieParser = require('cookie-parser');
+// Replace local multer setup with S3 upload middleware
+const upload = require('./s3upload');
+
 
 
 
@@ -74,7 +77,7 @@ app.put('/api/auctions/:id', require('./controllers/carController').updateAuctio
 app.delete('/api/auctions/:id', require('./controllers/carController').deleteAuctionListing);
 
 //API routes for creating listing for images
-const upload = multer({
+/*const upload = multer({
   dest: './uploads/',
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10 MB
   fileFilter(req, file, cb) {
@@ -85,6 +88,7 @@ const upload = multer({
   }
 });
 
+
 app.post('/api/auctions/create', upload.fields([
   { name: 'featuredImage', maxCount: 1 },
   { name: 'carImages', maxCount: 10 }
@@ -92,6 +96,15 @@ app.post('/api/auctions/create', upload.fields([
 
 //serve images
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+*/
+app.post('/api/auctions/create', 
+  upload.fields([
+    { name: 'featuredImage', maxCount: 1 },
+    { name: 'carImages', maxCount: 10 }
+  ]), 
+  authMiddleware, 
+  require('./controllers/carController').createAuctionListing
+);
 
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);

@@ -1,0 +1,106 @@
+// migrate-images.js
+
+require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
+const fs = require('fs');
+const path = require('path');
+const AWS = require('aws-sdk');
+const { Pool } = require('pg');
+
+// Configure AWS SDK
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,      // Ensure these are set in your .env
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,                  // e.g., 'us-east-1'
+});
+
+const s3 = new AWS.S3();
+
+// Initialize Postgres pool (assumes you have a db.js or similar configuration)
+const pool = new Pool({
+  user: process.env.DB_USER || 'auction_user',
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'car_auction',
+  password: process.env.DB_PASSWORD || 'Zoraiz1!',
+  port: process.env.DB_PORT || 5432,
+});
+
+// Directory where current images are stored
+const uploadsDir = path.join(__dirname, 'uploads'); // adjust path if needed
+
+// Function to upload a single file to S3
+const uploadFileToS3 = (filePath, fileName) => {
+  return new Promise((resolve, reject) => {
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.on('error', (err) => {
+      console.error('File Error', err);
+      reject(err);
+    });
+    
+    const uploadParams = {
+      Bucket: process.env.AWS_S3_BUCKET, // your bucket name
+      Key: `uploads/${Date.now().toString()}_${fileName}`, // unique key for the file
+      Body: fileStream,
+      ACL: 'public-read', // or as needed
+    };
+
+    s3.upload(uploadParams, (err, data) => {
+      if (err) {
+        console.error('S3 Upload Error', err);
+        reject(err);
+      } else {
+        console.log(`Uploaded ${fileName} successfully to ${data.Location}`);
+        resolve(data.Location); // S3 URL
+      }
+    });
+  });
+};
+
+// Function to update the database record for a given image
+// Modify this function according to your database schema.
+// Here, we assume there's a table (e.g., "cars") with a column "car_photos_jsonb".
+const updateDatabaseWithS3Url = async (oldPath, s3Url) => {
+  try {
+    // This example assumes that your database stores image paths as a JSON array.
+    // You need to adjust the query to suit your schema.
+    const query = `
+      UPDATE cars
+      SET car_photos_jsonb = jsonb_replace(car_photos_jsonb, $1::text, $2::text)
+      WHERE car_photos_jsonb::text LIKE $3
+      RETURNING id
+    `;
+    // Here, $1 is the old path, $2 is the new S3 URL, and $3 is a pattern to match the old path.
+    // You might need to update multiple records or handle this differently.
+    const pattern = `%${oldPath}%`;
+    const result = await pool.query(query, [oldPath, s3Url, pattern]);
+    console.log('Updated database records:', result.rows);
+  } catch (err) {
+    console.error('Error updating database:', err);
+  }
+};
+
+const migrateImages = async () => {
+  try {
+    const files = fs.readdirSync(uploadsDir);
+    for (const fileName of files) {
+      const filePath = path.join(uploadsDir, fileName);
+      // You might want to check if it's a file and not a directory.
+      const stats = fs.statSync(filePath);
+      if (stats.isFile()) {
+        // Upload file to S3
+        const s3Url = await uploadFileToS3(filePath, fileName);
+        // Update the database record for this file.
+        // How you identify the correct record depends on your schema.
+        // For now, we'll assume that the local path (e.g., `/uploads/filename`) is stored in the database.
+        const oldPath = `/uploads/${fileName}`;
+        await updateDatabaseWithS3Url(oldPath, s3Url);
+      }
+    }
+    console.log('Migration completed.');
+    process.exit(0);
+  } catch (error) {
+    console.error('Error during migration:', error);
+    process.exit(1);
+  }
+};
+
+migrateImages();

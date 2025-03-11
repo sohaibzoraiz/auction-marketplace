@@ -12,81 +12,7 @@ const pool = new Pool({
     password: 'Zoraiz1!',
     port: 5432,
 });*/
-/*async function createAuctionListing(req, res) {
-    try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        const { city, carMake, yearModel, registrationCity, mileage, demandPrice,
-                description, inspectionCompanyName, inspectionReport, listingType, carPhotosJsonb, reservePrice, endTime } = req.body;
-
-        console.log("req.user object:", req.user); // Debugging: Inspect req.user
-
-        const userId = req.user?.userId; // Use optional chaining
-        const userPlan = req.user?.userPlan; // Use optional chaining
-
-        if (!userId) {
-            return res.status(401).json({ message: 'User not authenticated' });
-        }
-
-        if (!city || !carMake || !yearModel || !registrationCity || !mileage || !demandPrice || !description || !inspectionCompanyName || !inspectionReport) {
-            return res.status(400).json({ message: 'Missing required fields' });
-        }
-
-        // Determine listing type as boolean
-        let isAuction = false;
-        if (listingType === 'auction') {
-            isAuction = true;
-        }
-
-        // Insert new car into cars table
-
-        const resultCar = await pool.query(
-            "INSERT INTO cars(user_id, city, car_make, year_model, registration_city, mileage, demand_price, description, inspection_company_name, inspection_report, listing_type, car_photos_jsonb) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING*",
-            [userId, city.trim(), carMake.trim(), yearModel.trim(), registrationCity.trim(),
-             mileage.toString().trim(), demandPrice.toString().trim(),
-             description.trim(), inspectionCompanyName.trim(), inspectionReport.trim(), isAuction,
-             JSON.stringify(carPhotosJsonb)]
-        );
-
-        const carId = resultCar.rows[0].id;
-
-        // Determine End Time (15 days for basic users, up to 30 days for premium users)
-        let calculatedEndTime;
-        if (userPlan === 'premium' && endTime) { // Use provided end time for premium users
-            calculatedEndTime = new Date(endTime);
-        } else {
-            calculatedEndTime = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000); // 15 days from now for basic users
-        }
-
-        // Set reserve price to null for basic users if not provided
-        let auctionReservePrice = null;
-        if (userPlan === 'premium') {
-            auctionReservePrice = reservePrice ? parseFloat(reservePrice) : null; // Use parseFloat and check for undefined
-        }
-
-        // Set initial current bid to 50% of demand price
-        const initialCurrentBid = demandPrice / 2;
-
-        // Insert new auction into auctions table
-
-        const resultAuction = await pool.query(
-            "INSERT INTO auctions(car_id, end_time, current_bid, reserve_price) VALUES($1, $2, $3, $4) RETURNING*",
-            [carId, calculatedEndTime, initialCurrentBid, auctionReservePrice]
-        );
-
-        res.status(201).json({ message: 'Auction created successfully', auction: resultAuction.rows[0] });
-
-    } catch (error) {
-        console.error('Error creating auction:', error);
-        res.status(500).json({ message: 'Failed to create auction' });
-    }
-}
-
-*/
+/*
 const createAuctionListing = async (req, res) => {
     try {
         const featuredImage = req.files['featuredImage'] ? req.files['featuredImage'][0].filename : null;
@@ -160,7 +86,106 @@ const createAuctionListing = async (req, res) => {
         console.error('Error creating auction listing:', err);
         res.status(500).json({ message: 'Failed to create auction listing' });
     }
-};
+};*/
+const createAuctionListing = async (req, res) => {
+    try {
+      // Get uploaded files from S3 via multer-s3
+      const featuredImage = req.files['featuredImage']
+        ? req.files['featuredImage'][0].location
+        : null;
+      const carImages = req.files['carImages']
+        ? req.files['carImages'].map(file => file.location)
+        : [];
+      
+      // Extract other form fields from the request body
+      const {
+        city,
+        carMake,
+        yearModel,
+        registrationCity,
+        mileage,
+        demandPrice,
+        description,
+        inspectionCompanyName,
+        inspectionReport,
+        listingType,
+        reservePrice,
+        endTime
+      } = req.body;
+      
+      const userId = req.user?.userId; // Using optional chaining for safety
+      const userPlan = req.user?.userPlan; // Assuming user information is present in the request
+  
+      // Build an array of image URLs from S3 (no local /uploads prefix)
+      const imagePaths = [];
+      if (featuredImage) {
+        imagePaths.push(featuredImage);
+      }
+      if (carImages) {
+        carImages.forEach(image => {
+          imagePaths.push(image);
+        });
+      }
+      
+      // Convert the image paths to JSON (S3 URLs)
+      const carPhotosJsonb = JSON.stringify(imagePaths);
+      
+      // Insert new car into the cars table
+      const result = await pool.query(
+        'INSERT INTO cars(user_id, city, car_make, year_model, registration_city, mileage, demand_price, description, inspection_company_name, inspection_report, listing_type, car_photos_jsonb) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id',
+        [
+          userId,
+          city,
+          carMake,
+          yearModel,
+          registrationCity,
+          mileage,
+          demandPrice,
+          description,
+          inspectionCompanyName,
+          inspectionReport,
+          listingType === 'auction',
+          carPhotosJsonb
+        ]
+      );
+  
+      const carId = result.rows[0].id;
+  
+      // Determine End Time (15 days for basic users, up to 30 days for premium users)
+      let calculatedEndTime;
+      if (userPlan === 'premium' && endTime) { 
+        // Use provided end time for premium users
+        calculatedEndTime = new Date(endTime);
+      } else {
+        // 15 days from now for basic users
+        calculatedEndTime = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000);
+      }
+  
+      // Set reserve price to null for basic users if not provided
+      let auctionReservePrice = null;
+      if (userPlan === 'premium') {
+        auctionReservePrice = reservePrice ? parseFloat(reservePrice) : null;
+      }
+  
+      // Set initial current bid to 50% of demand price
+      const initialCurrentBid = demandPrice / 2;
+  
+      // Insert new auction into the auctions table
+      const resultAuction = await pool.query(
+        "INSERT INTO auctions(car_id, end_time, current_bid, reserve_price) VALUES($1, $2, $3, $4) RETURNING*",
+        [carId, calculatedEndTime, initialCurrentBid, auctionReservePrice]
+      );
+  
+      res.status(201).json({ 
+        message: 'Auction created successfully', 
+        auction: resultAuction.rows[0] 
+      });
+    } catch (err) {
+      console.error('Error creating auction listing:', err);
+      res.status(500).json({ message: 'Failed to create auction listing' });
+    }
+  };
+  
 
 
 async function updateAuctionListing(req, res) {
