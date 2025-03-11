@@ -63,20 +63,21 @@ const uploadFileToS3 = (filePath, fileName) => {
 // This sample function assumes that the local image path is stored in a JSON array.
 const updateDatabaseWithS3Url = async (oldPath, s3Url) => {
   try {
-    // Example query - adjust based on your schema and how images are stored
+    // Use the REPLACE function on the JSONB column cast as text, then cast back to jsonb.
     const query = `
       UPDATE cars
-      SET car_photos_jsonb = jsonb_replace(car_photos_jsonb, $1::text, $2::text)
+      SET car_photos_jsonb = replace(car_photos_jsonb::text, $1, $2)::jsonb
       WHERE car_photos_jsonb::text LIKE $3
       RETURNING id
     `;
     const pattern = `%${oldPath}%`;
     const result = await pool.query(query, [oldPath, s3Url, pattern]);
-    console.log('Updated database records for', oldPath, result.rows);
+    console.log('Updated database records:', result.rows);
   } catch (err) {
     console.error('Error updating database for', oldPath, err);
   }
 };
+
 
 const migrateImages = async () => {
   try {
