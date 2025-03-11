@@ -163,17 +163,7 @@ function CarPage({ carMake, yearModel, id }) {
             {/* Left Section: Images */}
             <div className="md:w-1/2">
                 {parsedCarPhotos.length > 0 && (
-<<<<<<< HEAD
-                    <img src={`https://api.carmandi.com.pk${parsedCarPhotos[0]}`} alt="Featured Image" className="w-full h-96 object-cover" />
-                )}
-                <div className="flex gap-4 mt-4">
-                    {parsedCarPhotos.slice(1).map((photo, index) => (
-                        <img key={index} src={`https://api.carmandi.com.pk${photo}`} alt="Thumbnail" className="w-24 h-24 object-cover rounded" />
-                    ))}
-                </div>
-            </div>
 
-=======
                   <img src={parsedCarPhotos[0]} alt="Featured Image" className="w-full h-96 object-cover" />
                 )}
                 <div className="flex gap-4 mt-4">
@@ -182,7 +172,6 @@ function CarPage({ carMake, yearModel, id }) {
                  ))}
                     </div>
             </div>
->>>>>>> 14286114e6ae6e592c69c21b7a8bd797e51b17da
             {/* Right Section: Details */}
             <div className="md:w-1/2 p-4">
                 <h1 className="text-3xl font-bold">{data.car_make} {data.year_model}</h1>

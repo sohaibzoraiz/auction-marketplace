@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import Link from 'next/link';
-=======
 /*import Link from 'next/link';
->>>>>>> 14286114e6ae6e592c69c21b7a8bd797e51b17da
 
 function FeaturedListings({ listings }) {
     listings = Array.isArray(listings) ? listings : [];
@@ -36,8 +32,6 @@ function FeaturedListings({ listings }) {
 }
 
 export default FeaturedListings;
-<<<<<<< HEAD
-=======
 */
 import Link from 'next/link';
 
@@ -86,4 +80,3 @@ function FeaturedListings({ listings }) {
 }
 
 export default FeaturedListings;
->>>>>>> 14286114e6ae6e592c69c21b7a8bd797e51b17da
