@@ -6,16 +6,19 @@ const path = require('path');
 const AWS = require('aws-sdk');
 const { Pool } = require('pg');
 
+// Log AWS S3 Bucket for debugging
+console.log("AWS_S3_BUCKET:", process.env.AWS_S3_BUCKET);
+
 // Configure AWS SDK
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,      // Ensure these are set in your .env
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,      
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,                  // e.g., 'us-east-1'
+  region: process.env.AWS_REGION,                  
 });
 
 const s3 = new AWS.S3();
 
-// Initialize Postgres pool (assumes you have a db.js or similar configuration)
+// Initialize Postgres pool
 const pool = new Pool({
   user: process.env.DB_USER || 'auction_user',
   host: process.env.DB_HOST || 'localhost',
@@ -25,7 +28,7 @@ const pool = new Pool({
 });
 
 // Directory where current images are stored
-const uploadsDir = path.join(__dirname, 'uploads'); // adjust path if needed
+const uploadsDir = path.join(__dirname, 'uploads'); // Adjust path if needed
 
 // Function to upload a single file to S3
 const uploadFileToS3 = (filePath, fileName) => {
@@ -37,15 +40,15 @@ const uploadFileToS3 = (filePath, fileName) => {
     });
     
     const uploadParams = {
-      Bucket: process.env.AWS_S3_BUCKET, // your bucket name
-      Key: `uploads/${Date.now().toString()}_${fileName}`, // unique key for the file
+      Bucket: process.env.AWS_S3_BUCKET, // Ensure this variable is set
+      Key: `uploads/${Date.now().toString()}_${fileName}`, // Unique key for the file
       Body: fileStream,
-      ACL: 'public-read', // or as needed
+      ACL: 'public-read', // Or adjust according to your needs
     };
 
     s3.upload(uploadParams, (err, data) => {
       if (err) {
-        console.error('S3 Upload Error', err);
+        console.error('S3 Upload Error for file', fileName, err);
         reject(err);
       } else {
         console.log(`Uploaded ${fileName} successfully to ${data.Location}`);
@@ -56,42 +59,45 @@ const uploadFileToS3 = (filePath, fileName) => {
 };
 
 // Function to update the database record for a given image
-// Modify this function according to your database schema.
-// Here, we assume there's a table (e.g., "cars") with a column "car_photos_jsonb".
+// You need to adjust this function to match your database schema.
+// This sample function assumes that the local image path is stored in a JSON array.
 const updateDatabaseWithS3Url = async (oldPath, s3Url) => {
   try {
-    // This example assumes that your database stores image paths as a JSON array.
-    // You need to adjust the query to suit your schema.
+    // Example query - adjust based on your schema and how images are stored
     const query = `
       UPDATE cars
       SET car_photos_jsonb = jsonb_replace(car_photos_jsonb, $1::text, $2::text)
       WHERE car_photos_jsonb::text LIKE $3
       RETURNING id
     `;
-    // Here, $1 is the old path, $2 is the new S3 URL, and $3 is a pattern to match the old path.
-    // You might need to update multiple records or handle this differently.
     const pattern = `%${oldPath}%`;
     const result = await pool.query(query, [oldPath, s3Url, pattern]);
-    console.log('Updated database records:', result.rows);
+    console.log('Updated database records for', oldPath, result.rows);
   } catch (err) {
-    console.error('Error updating database:', err);
+    console.error('Error updating database for', oldPath, err);
   }
 };
 
 const migrateImages = async () => {
   try {
+    // Check if uploads directory exists
+    if (!fs.existsSync(uploadsDir)) {
+      console.error("Uploads directory does not exist:", uploadsDir);
+      process.exit(1);
+    }
+
     const files = fs.readdirSync(uploadsDir);
+    console.log(`Found ${files.length} files in ${uploadsDir}`);
+    
     for (const fileName of files) {
       const filePath = path.join(uploadsDir, fileName);
-      // You might want to check if it's a file and not a directory.
       const stats = fs.statSync(filePath);
       if (stats.isFile()) {
+        console.log("Processing file:", fileName);
         // Upload file to S3
         const s3Url = await uploadFileToS3(filePath, fileName);
         // Update the database record for this file.
-        // How you identify the correct record depends on your schema.
-        // For now, we'll assume that the local path (e.g., `/uploads/filename`) is stored in the database.
-        const oldPath = `/uploads/${fileName}`;
+        const oldPath = `/uploads/${fileName}`; // Old local path stored in DB
         await updateDatabaseWithS3Url(oldPath, s3Url);
       }
     }
