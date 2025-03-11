@@ -16,7 +16,7 @@ const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.AWS_S3_BUCKET, // e.g., 'your-app-images'
-    acl: 'public-read',                // Adjust ACL as needed
+   // acl: 'public-read',                // Adjust ACL as needed
     key: function (req, file, cb) {
       // Create a unique key for each file
       cb(null, `uploads/${Date.now().toString()}_${file.originalname}`);
