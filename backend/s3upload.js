@@ -1,4 +1,3 @@
-// s3upload.js
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
@@ -15,8 +14,8 @@ const s3 = new AWS.S3();
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: process.env.AWS_S3_BUCKET, // e.g., 'your-app-images'
-   // acl: 'public-read',                // Adjust ACL as needed
+    bucket: process.env.AWS_S3_BUCKET, // e.g., 'carmandi'
+    acl: '', // Override default ACL to prevent sending x-amz-acl header
     key: function (req, file, cb) {
       // Create a unique key for each file
       cb(null, `uploads/${Date.now().toString()}_${file.originalname}`);
