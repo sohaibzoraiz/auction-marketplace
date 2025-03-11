@@ -163,6 +163,7 @@ function CarPage({ carMake, yearModel, id }) {
             {/* Left Section: Images */}
             <div className="md:w-1/2">
                 {parsedCarPhotos.length > 0 && (
+<<<<<<< HEAD
                     <img src={`https://api.carmandi.com.pk${parsedCarPhotos[0]}`} alt="Featured Image" className="w-full h-96 object-cover" />
                 )}
                 <div className="flex gap-4 mt-4">
@@ -172,6 +173,16 @@ function CarPage({ carMake, yearModel, id }) {
                 </div>
             </div>
 
+=======
+                  <img src={parsedCarPhotos[0]} alt="Featured Image" className="w-full h-96 object-cover" />
+                )}
+                <div className="flex gap-4 mt-4">
+                  {parsedCarPhotos.slice(1).map((photo, index) => (
+                       <img key={index} src={photo} alt="Thumbnail" className="w-24 h-24 object-cover rounded" />
+                 ))}
+                    </div>
+            </div>
+>>>>>>> 14286114e6ae6e592c69c21b7a8bd797e51b17da
             {/* Right Section: Details */}
             <div className="md:w-1/2 p-4">
                 <h1 className="text-3xl font-bold">{data.car_make} {data.year_model}</h1>
@@ -180,7 +191,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <span>{data.mileage}</span>
                     <span className="text-gray-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM14.5 7.5h-.79l-.28-.27a6.5 6.5 0 00-7.78 7.77l.27.28v.79a1 1 0 001 1h6a1 1 0 001-1v-.79z" clipRule="evenodd" />
+≈                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM14.5 7.5h-.79l-.28-.27a6.5 6.5 0 00-7.78 7.77l.27.28v.79a1 1 0 001 1h6a1 1 0 001-1v-.79z" clipRule="evenodd" />
                         </svg>
                     </span>
                     <span>Registered in {data.registration_city}</span>
