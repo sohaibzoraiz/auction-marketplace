@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 // Replace local multer setup with S3 upload middleware
 const upload = require('./s3upload');
 
-
+console.log("AWS_S3_BUCKET:", process.env.AWS_S3_BUCKET);
 
 
 

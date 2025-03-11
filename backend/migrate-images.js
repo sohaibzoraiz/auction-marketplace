@@ -28,7 +28,7 @@ const pool = new Pool({
 });
 
 // Directory where current images are stored
-const uploadsDir = path.join(__dirname, 'uploads'); // Adjust path if needed
+const uploadsDir = path.join(__dirname, '..', 'uploads'); 
 
 // Function to upload a single file to S3
 const uploadFileToS3 = (filePath, fileName) => {
