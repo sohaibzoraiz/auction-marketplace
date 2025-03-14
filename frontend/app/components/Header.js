@@ -1,17 +1,30 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useReducer, useContext, useState } from "react";
+import React, { useReducer, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useRouter } from "next/navigation";
 
 // Initial state for reducer
 const initialState = {
+  activeMenu: "",
+  activeSubMenu: "",
   isSidebarOpen: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case "TOGGLE_MENU":
+      return {
+        ...state,
+        activeMenu: state.activeMenu === action.menu ? "" : action.menu,
+        activeSubMenu: state.activeMenu === action.menu ? state.activeSubMenu : "",
+      };
+    case "TOGGLE_SUB_MENU":
+      return {
+        ...state,
+        activeSubMenu: state.activeSubMenu === action.subMenu ? "" : action.subMenu,
+      };
     case "TOGGLE_SIDEBAR":
       return {
         ...state,
@@ -24,10 +37,10 @@ function reducer(state, action) {
 
 const Header = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isMenuOpen, setMenuOpen] = useState(false);
   const { userData, setUserData } = useContext(UserContext) ?? {};
   const router = useRouter();
   const pathName = usePathname();
-  const [searchQuery, setSearchQuery] = useState("");
 
   // Logout function
   const handleLogout = async () => {
@@ -47,86 +60,114 @@ const Header = () => {
     }
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    router.push(`/search?query=${searchQuery}`);
-  };
+  // Function to toggle mobile menu
+  const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
   return (
-    <header className="header-topbar-area bg-white shadow-sm border-b border-gray-200">
-      <div className="topbar-area py-2 text-sm text-gray-700">
-        <div className="container flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <a href="mailto:info@example.com" className="flex items-center space-x-1">
-              <span className="material-icons text-gray-500">email</span>
-              <span>info@example.com</span>
-            </a>
-            <span className="border-l border-gray-300 h-4"></span>
-            <a href="#" className="flex items-center space-x-1">
-              <span className="material-icons text-gray-500">support_agent</span>
-              <span>Customer support</span>
-            </a>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link href="/how-to-buy" className="border px-3 py-1 rounded-full text-sm">HOW TO BID</Link>
-            <Link href="/how-to-sell" className="border px-3 py-1 rounded-full text-sm">SELL YOUR ITEM</Link>
+    <header className="header-topbar-area">
+      <div className="topbar-area">
+        <div className="container">
+          <div className="topbar-wrap flex justify-between">
+            <div className="topbar-left">
+              <ul className="contact-area flex space-x-4">
+                <li>
+                  <a href="mailto:info@example.com" className="text-gray-700">
+                    info@example.com
+                  </a>
+                </li>
+                <li>
+                  <Link href="/how-to-buy">HOW TO BID</Link>
+                </li>
+                <li>
+                  <Link href="/how-to-sell">SELL YOUR ITEM</Link>
+                </li>
+              </ul>
+            </div>
+            <div className="topbar-right">
+              {!userData ? (
+                <ul className="flex space-x-4">
+                  <li>
+                    <Link href="/login">Login</Link>
+                  </li>
+                  <li>
+                    <Link href="/register">Register</Link>
+                  </li>
+                </ul>
+              ) : (
+                <ul className="flex space-x-4">
+                  <li>
+                    <p>Free Bids: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}</p>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout} className="text-red-500">
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      
-      <nav className="container flex justify-between items-center py-4">
-        <Link href="/">
-          <img src="/assets/img/logo.svg" alt="ProBid" className="h-12" />
-        </Link>
-        
-        <form onSubmit={handleSearch} className="flex bg-gray-100 p-2 rounded-full border border-gray-300 order-last md:order-none">
-          <input 
-            type="text" 
-            className="px-3 py-2 border-none outline-none bg-transparent w-64" 
-            placeholder="Search your product..." 
-            value={searchQuery} 
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-full">
-            <span className="material-icons">search</span>
-          </button>
-        </form>
 
-        <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
-          <li className={pathName === "/" ? "text-black font-bold" : ""}>
-            <Link href="/">Home</Link>
-          </li>
-          <li className={pathName.startsWith("/auction") ? "text-black font-bold" : ""}>
-            <Link href="/auction-grid">Auctions</Link>
-          </li>
-          <li className={pathName.startsWith("/blog") ? "text-black font-bold" : ""}>
-            <Link href="/blog-grid">Blog</Link>
-          </li>
-          <li className={pathName === "/contact" ? "text-black font-bold" : ""}>
-            <Link href="/contact">Contact</Link>
-          </li>
-        </ul>
+      <nav className="header-area bg-white shadow-md">
+        <div className="container flex justify-between items-center py-4">
+          <Link href="/" className="text-lg font-bold">
+            <img src="/assets/img/logo.svg" alt="Carmandi" className="h-10" />
+          </Link>
+          <ul className="hidden md:flex space-x-6">
+            <li className={pathName === "/" ? "font-bold text-blue-600" : ""}>
+              <Link href="/">Home</Link>
+            </li>
+            <li className={pathName.startsWith("/auction") ? "font-bold text-blue-600" : ""}>
+              <Link href="/auction-grid">Auctions</Link>
+            </li>
+            <li className={pathName.startsWith("/blog") ? "font-bold text-blue-600" : ""}>
+              <Link href="/blog-grid">Blog</Link>
+            </li>
+            <li className={pathName === "/contact" ? "font-bold text-blue-600" : ""}>
+              <Link href="/contact">Contact</Link>
+            </li>
+          </ul>
 
-        <div className="hidden md:block order-last md:order-none">
-          {userData ? (
-            <div className="flex items-center space-x-4">
-              <span className="text-sm">Free Bids: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}</span>
-              <button onClick={handleLogout} className="text-red-500">Logout</button>
-              <Link href="/account" className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-1">
-                <span className="material-icons">person</span>
-                <span>My Account</span>
-              </Link>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-4">
-              <Link href="/login" className="text-gray-700">Login</Link>
-              <Link href="/register" className="text-gray-700">Register</Link>
-              <Link href="/account" className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-1">
-                <span className="material-icons">person</span>
-                <span>My Account</span>
-              </Link>
-            </div>
-          )}
+          <div className="md:hidden">
+            <button onClick={toggleMenu} className="text-gray-600">
+              ☰
+            </button>
+          </div>
+
+          <div className={`mobile-menu ${isMenuOpen ? "block" : "hidden"} md:hidden absolute bg-white w-full p-4 top-full left-0`}>
+            <ul className="flex flex-col space-y-4">
+              <li>
+                <Link href="/">Home</Link>
+              </li>
+              <li>
+                <Link href="/auction-grid">Auctions</Link>
+              </li>
+              <li>
+                <Link href="/blog-grid">Blog</Link>
+              </li>
+              <li>
+                <Link href="/contact">Contact</Link>
+              </li>
+              {userData ? (
+                <li>
+                  <button onClick={handleLogout} className="text-red-500">
+                    Logout
+                  </button>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <Link href="/login">Login</Link>
+                  </li>
+                  <li>
+                    <Link href="/register">Register</Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
         </div>
       </nav>
     </header>
