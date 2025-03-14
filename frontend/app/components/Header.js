@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useReducer, useState, useContext } from "react";
+import React, { useReducer, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { useRouter } from "next/navigation";
 
