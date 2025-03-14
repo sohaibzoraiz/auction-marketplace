@@ -108,10 +108,25 @@ const Header = () => {
         </ul>
 
         <div className="hidden md:block order-last md:order-none">
-          <Link href="/account" className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-1">
-            <span className="material-icons">person</span>
-            <span>My Account</span>
-          </Link>
+          {userData ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-sm">Free Bids: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}</span>
+              <button onClick={handleLogout} className="text-red-500">Logout</button>
+              <Link href="/account" className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-1">
+                <span className="material-icons">person</span>
+                <span>My Account</span>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4">
+              <Link href="/login" className="text-gray-700">Login</Link>
+              <Link href="/register" className="text-gray-700">Register</Link>
+              <Link href="/account" className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-1">
+                <span className="material-icons">person</span>
+                <span>My Account</span>
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
     </header>
