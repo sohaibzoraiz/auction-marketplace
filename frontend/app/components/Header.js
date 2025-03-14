@@ -7,29 +7,13 @@ import { useRouter } from "next/navigation";
 
 // Initial state for reducer
 const initialState = {
-  activeMenu: "",
-  activeSubMenu: "",
   isSidebarOpen: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "TOGGLE_MENU":
-      return {
-        ...state,
-        activeMenu: state.activeMenu === action.menu ? "" : action.menu,
-        activeSubMenu: state.activeMenu === action.menu ? state.activeSubMenu : "",
-      };
-    case "TOGGLE_SUB_MENU":
-      return {
-        ...state,
-        activeSubMenu: state.activeSubMenu === action.subMenu ? "" : action.subMenu,
-      };
     case "TOGGLE_SIDEBAR":
-      return {
-        ...state,
-        isSidebarOpen: !state.isSidebarOpen,
-      };
+      return { ...state, isSidebarOpen: !state.isSidebarOpen };
     default:
       return state;
   }
@@ -37,7 +21,6 @@ function reducer(state, action) {
 
 const Header = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [isMenuOpen, setMenuOpen] = useState(false);
   const { userData, setUserData } = useContext(UserContext) ?? {};
   const router = useRouter();
   const pathName = usePathname();
@@ -60,11 +43,9 @@ const Header = () => {
     }
   };
 
-  // Function to toggle mobile menu
-  const toggleMenu = () => setMenuOpen(!isMenuOpen);
-
   return (
     <header className="header-topbar-area">
+      {/* Top Bar */}
       <div className="topbar-area">
         <div className="container">
           <div className="topbar-wrap flex justify-between">
@@ -110,6 +91,7 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Main Navigation */}
       <nav className="header-area bg-white shadow-md">
         <div className="container flex justify-between items-center py-4">
           <Link href="/" className="text-lg font-bold">
@@ -130,13 +112,19 @@ const Header = () => {
             </li>
           </ul>
 
+          {/* Mobile Toggle Button */}
           <div className="md:hidden">
-            <button onClick={toggleMenu} className="text-gray-600">
+            <button onClick={() => dispatch({ type: "TOGGLE_SIDEBAR" })} className="text-gray-600">
               ☰
             </button>
           </div>
 
-          <div className={`mobile-menu ${isMenuOpen ? "block" : "hidden"} md:hidden absolute bg-white w-full p-4 top-full left-0`}>
+          {/* Mobile Sidebar */}
+          <div
+            className={`mobile-menu ${
+              state.isSidebarOpen ? "block" : "hidden"
+            } md:hidden absolute bg-white w-full p-4 top-full left-0`}
+          >
             <ul className="flex flex-col space-y-4">
               <li>
                 <Link href="/">Home</Link>
