@@ -53,112 +53,67 @@ const Header = () => {
   };
 
   return (
-    <header className="header-topbar-area bg-white shadow-md">
-      <div className="topbar-area py-2 border-b">
+    <header className="header-topbar-area bg-white shadow-sm border-b border-gray-200">
+      <div className="topbar-area py-2 text-sm text-gray-700">
         <div className="container flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <a href="mailto:info@example.com" className="text-gray-600">
-              info@example.com
+            <a href="mailto:info@example.com" className="flex items-center space-x-1">
+              <span className="material-icons text-gray-500">email</span>
+              <span>info@example.com</span>
             </a>
-            <Link href="/how-to-buy">HOW TO BID</Link>
-            <Link href="/sell-your-car">SELL YOUR CAR</Link>
+            <span className="border-l border-gray-300 h-4"></span>
+            <a href="#" className="flex items-center space-x-1">
+              <span className="material-icons text-gray-500">support_agent</span>
+              <span>Customer support</span>
+            </a>
           </div>
           <div className="flex items-center space-x-4">
-            {userData ? (
-              <>
-                <p className="text-sm">Free Bids: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}</p>
-                <button onClick={handleLogout} className="text-red-500">Logout</button>
-              </>
-            ) : (
-              <>
-                <Link href="/login">Login</Link>
-                <Link href="/register">Register</Link>
-              </>
-            )}
+            <Link href="/how-to-buy" className="border px-3 py-1 rounded-full text-sm">HOW TO BID</Link>
+            <Link href="/how-to-sell" className="border px-3 py-1 rounded-full text-sm">SELL YOUR ITEM</Link>
           </div>
         </div>
       </div>
       
       <nav className="container flex justify-between items-center py-4">
         <Link href="/">
-          <img src="/assets/img/logo.svg" alt="Carmandi" className="h-12" />
+          <img src="/assets/img/logo.svg" alt="ProBid" className="h-12" />
         </Link>
         
-        <form onSubmit={handleSearch} className="hidden md:flex bg-gray-100 p-2 rounded-lg">
+        <form onSubmit={handleSearch} className="flex bg-gray-100 p-2 rounded-full border border-gray-300 order-last md:order-none">
           <input 
             type="text" 
-            className="px-3 py-2 border-none outline-none bg-transparent" 
+            className="px-3 py-2 border-none outline-none bg-transparent w-64" 
             placeholder="Search your product..." 
             value={searchQuery} 
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit" className="text-white bg-green-500 px-4 py-2 rounded-md">Search</button>
+          <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-full">
+            <span className="material-icons">search</span>
+          </button>
         </form>
 
-        <ul className="hidden md:flex space-x-6">
-          <li className={pathName === "/" ? "font-bold text-blue-600" : ""}>
+        <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
+          <li className={pathName === "/" ? "text-black font-bold" : ""}>
             <Link href="/">Home</Link>
           </li>
-          <li className={pathName.startsWith("/auction") ? "font-bold text-blue-600" : ""}>
+          <li className={pathName.startsWith("/auction") ? "text-black font-bold" : ""}>
             <Link href="/auction-grid">Auctions</Link>
           </li>
-          <li className={pathName.startsWith("/blog") ? "font-bold text-blue-600" : ""}>
+          <li className={pathName.startsWith("/blog") ? "text-black font-bold" : ""}>
             <Link href="/blog-grid">Blog</Link>
           </li>
-          <li className={pathName === "/contact" ? "font-bold text-blue-600" : ""}>
+          <li className={pathName === "/contact" ? "text-black font-bold" : ""}>
             <Link href="/contact">Contact</Link>
           </li>
         </ul>
 
-        <div className="md:hidden">
-          <button onClick={() => dispatch({ type: "TOGGLE_SIDEBAR" })} className="text-gray-600">
-            ☰
-          </button>
-        </div>
-        
-        <div className="hidden md:block">
-          {userData ? (
-            <Link href="/account" className="bg-black text-white px-4 py-2 rounded-md">My Account</Link>
-          ) : (
-            <Link href="/login" className="bg-black text-white px-4 py-2 rounded-md">My Account</Link>
-          )}
+        <div className="hidden md:block order-last md:order-none">
+          <Link href="/account" className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-1">
+            <span className="material-icons">person</span>
+            <span>My Account</span>
+          </Link>
         </div>
       </nav>
-
-      {/* Mobile Menu */}
-      {state.isSidebarOpen && (
-        <div className="md:hidden bg-white absolute top-0 left-0 w-full h-screen p-6 shadow-lg z-50">
-          <button onClick={() => dispatch({ type: "TOGGLE_SIDEBAR" })} className="text-gray-600 text-xl">✖</button>
-          <ul className="flex flex-col space-y-4 mt-6">
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/auction-grid">Auctions</Link>
-            </li>
-            <li>
-              <Link href="/blog-grid">Blog</Link>
-            </li>
-            <li>
-              <Link href="/contact">Contact</Link>
-            </li>
-            {userData ? (
-              <li>
-                <button onClick={handleLogout} className="text-red-500">Logout</button>
-              </li>
-            ) : (
-              <>
-                <li>
-                  <Link href="/login">Login</Link>
-                </li>
-                <li>
-                  <Link href="/register">Register</Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
-      )}
     </header>
   );
 };
