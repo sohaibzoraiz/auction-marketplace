@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   useWow(); // Template animations
 
   useEffect(() => {
-    //@ts-expect-error
+    //@ts-expect-error TypeScript doesn't have type definitions for Bootstrap JS
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
