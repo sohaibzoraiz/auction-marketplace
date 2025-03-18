@@ -70,7 +70,7 @@ const Header = () => {
                     >
                       <path d="M18.2422 0.96875H1.75781C0.786602 0.96875 0 1.76023 0 2.72656V13.2734C0 14.2455 0.792383 15.0312 1.75781 15.0312H18.2422C19.2053 15.0312 20 14.2488 20 13.2734V2.72656C20 1.76195 19.2165 0.96875 18.2422 0.96875ZM17.996 2.14062L11.243 8.85809C10.9109 9.19012 10.4695 9.37293 10 9.37293C9.53047 9.37293 9.08906 9.19008 8.75594 8.85699L2.00398 2.14062H17.996ZM1.17188 13.0349V2.96582L6.23586 8.00312L1.17188 13.0349ZM2.00473 13.8594L7.06672 8.82957L7.9284 9.68672C8.48176 10.2401 9.21746 10.5448 10 10.5448C10.7825 10.5448 11.5182 10.2401 12.0705 9.68781L12.9333 8.82957L17.9953 13.8594H2.00473ZM18.8281 13.0349L13.7641 8.00312L18.8281 2.96582V13.0349Z" />
                     </svg>
-                    info@example.com
+                    info@Carmandi.pk
                   </a>
                 </li>
                 <li>
@@ -150,46 +150,13 @@ const Header = () => {
               </div>
             </div>
             <ul className="menu-list">
-              <li
-                className={`menu-item-has-children ${state.activeMenu === "home" ? "" : ""
-                  }`}
-              >
+                
+            <li className={pathName==="/"?"active":""}> 
+              
                 <Link href="/" className="drop-down">
                   Home
                 </Link>
-                <i
-                  className={`dropdown-icon ${state.activeMenu === "home" ? "bi bi-dash" : "bi bi-plus"
-                    }`}
-                  onClick={() => collapseMenu("home")}
-                />
-                <ul
-                  className={`sub-menu ${state.activeMenu === "home" ? "d-block" : ""
-                    }`}
-                >
-                  <li className="active">
-                    <Link href="/">Multipurpose 01</Link>
-                  </li>
-                  <li>
-                    <Link href="/car-auction">Car Auction</Link>
-                  </li>
-                  <li>
-                    <Link href="/antiques-auction">Antiques Auction</Link>
-                  </li>
-                  <li>
-                    <Link href="/art-auction">Art Auction</Link>
-                  </li>
-                  <li>
-                    <Link href="/gadget-and-technology">
-                      Gadget &amp; Technology
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/book-and-comic">Book &amp; Comic</Link>
-                  </li>
-                  <li>
-                    <Link href="/multipurpose2">Multipurpose 02</Link>
-                  </li>
-                </ul>
+           
               </li>
               <li
                className={`menu-item-has-children ${pathName === "/auction-grid"&& "/auction-sidebar"&&"/auction-details"&&"/auction-details2" ? "active" : ""

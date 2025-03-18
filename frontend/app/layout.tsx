@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <link rel="icon" href="/assets/img/fav-icon.svg" type="image/x-icon" sizes="16x16" />
             <meta name="description" content="Your description here" />
             <meta name="keywords" content="next.js, SEO, meta tags" />
-            <title>Probid - Multi Vendor Auction & Bidding</title>
+            <title>Carmandi - Premium Car Auction & Bidding</title>
           </head>
           <body className="antialiased">
             <Header />
