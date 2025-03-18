@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   useWow(); // Template animations
 
   useEffect(() => {
-    //@ts-ignore
+    //@ts-expect-error
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
