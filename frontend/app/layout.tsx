@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   useWow(); // Template animations
 
   useEffect(() => {
-    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+    import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
   return (
