@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import Home2Banner from "./components/slider/Home2Banner";
 import Home2Category from "./components/category/Home2Category";
 import Home2Banner2 from "./components/slider/Home2Banner2";
-import Home2Banner3 from "./components/slider/Home2Banner3";
+//import Home2Banner3 from "./components/slider/Home2Banner3";
 import Home2latestAuction from "./components/latest-auction/Home2latestAuction";
 import FeaturedListings from './components/FeaturedListings';
 import AllListings from './components/AllListings';
