@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const response = await fetch('https://api.carmandi.com.pk/api/auctions/latest');
+        const response = await fetch('https://api.carmandi.com.pk/api/listings/latest');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
