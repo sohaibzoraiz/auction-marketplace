@@ -68,6 +68,7 @@ app.post('/auth/logout', require('./controllers/auth').logout);
 
 // API routes for listings
 app.get('/api/listings/featured', require('./controllers/carController').getFeaturedAuctionListings);
+app.get('/api/listings/latest', require('./controllers/carController').getLatestListings);
 
 // API routes for auctions
 app.get('/api/auctions', require('./controllers/carController').getAllAuctionListings);

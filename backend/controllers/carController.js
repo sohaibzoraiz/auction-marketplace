@@ -268,6 +268,23 @@ async function getAllAuctionListings(req, res) {
     }
 }
 
+async function getLatestListings(req, res) {
+    try {
+        const result = await pool.query(
+            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
+            "FROM cars c JOIN auctions a ON c.id = a.car_id " +
+            "ORDER BY a.end_time DESC " +  // Sort by the most recent auctions
+            "LIMIT 7"  // Get only the latest 7 listings
+        );
+        console.log(result.rows);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching auction listings:', error);
+        res.status(500).json({ message: 'Failed to fetch auction listings' });
+    }
+}
+
+
 async function getFeaturedAuctionListings(req, res) {
     try {
         
@@ -450,6 +467,7 @@ res.json(result.rows[0]);
 module.exports={createAuctionListing, 
 updateAuctionListing, 
 getAllAuctionListings,
+getLatestListings,
 getFeaturedAuctionListings, 
 getSingleAuctionListing,
 deleteAuctionListing,
