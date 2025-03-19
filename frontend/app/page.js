@@ -14,6 +14,7 @@ import AllListings from './components/AllListings';
 
 function HomePage() {
     const [featuredListings, setFeaturedListings] = useState([]);
+    const [latestListings, setlatestListings] = useState([]);
     const [allListings, setAllListings] = useState([]);
 
     useEffect(() => {
@@ -43,7 +44,7 @@ function HomePage() {
 
                 try {
                     const latestData = await latestResponse.json();
-                    setFeaturedListings(latestData);
+                    setlatestListings(latestData);
                 } catch (error) {
                     console.error('Error parsing JSON:', error);
                     const text = await latestResponse.text();
@@ -77,7 +78,7 @@ function HomePage() {
             
             <Home2Banner />
             <Home2Category />
-            <Home2latestAuction />
+            <Home2latestAuction listings={latestListings}/>
             <Home2Banner2 />
             <FeaturedListings listings={featuredListings} />
             <AllListings listings={allListings} />

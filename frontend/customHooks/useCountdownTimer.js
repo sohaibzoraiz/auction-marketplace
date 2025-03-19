@@ -1,53 +1,43 @@
 import { useState, useEffect } from "react";
 
 // Function to calculate the time remaining
-function calculateTimeRemaining(endTime) {
+const calculateTimeRemaining = (endTime) => {
   const currentTime = new Date();
   const timeDifference = new Date(endTime) - currentTime;
 
   if (timeDifference <= 0) {
-    return {
-      days: "00",
-      hours: "00",
-      minutes: "00",
-      seconds: "00",
-    };
+    return { days: "00", hours: "00", minutes: "00", seconds: "00" };
   }
 
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
   return {
-    days: days.toString().padStart(2, "0"),
-    hours: hours.toString().padStart(2, "0"),
-    minutes: minutes.toString().padStart(2, "0"),
-    seconds: seconds.toString().padStart(2, "0"),
+    days: String(Math.floor(timeDifference / (1000 * 60 * 60 * 24))).padStart(2, "0"),
+    hours: String(Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, "0"),
+    minutes: String(Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0"),
+    seconds: String(Math.floor((timeDifference % (1000 * 60)) / 1000)).padStart(2, "0"),
   };
-}
+};
 
-export function useCountdownTimer(endTime) {
-  const [timeRemaining, setTimeRemaining] = useState({
-    // Initialize with zeros
-    days: "00",
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
-  });
+// Custom hook to track countdown timers for multiple items
+export function useCountdownTimer(listings) {
+  const [timers, setTimers] = useState({});
 
   useEffect(() => {
-    const timerInterval = setInterval(() => {
-      const newTimeRemaining = calculateTimeRemaining(endTime);
-      setTimeRemaining(newTimeRemaining);
-    }, 1000);
+    if (!Array.isArray(listings) || listings.length === 0) return;
 
-    return () => {
-      clearInterval(timerInterval);
+    const updateTimers = () => {
+      setTimers(
+        listings.reduce((acc, listing) => {
+          acc[listing.id] = calculateTimeRemaining(listing.end_time);
+          return acc;
+        }, {})
+      );
     };
-  }, [endTime]);
 
-  return timeRemaining;
+    updateTimers(); // Initial calculation
+    const interval = setInterval(updateTimers, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, [listings]);
+
+  return timers;
 }
