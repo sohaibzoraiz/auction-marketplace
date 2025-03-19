@@ -278,7 +278,7 @@ async function getLatestListings(req, res) {
             "LIMIT 7"  // Get only the latest 7 valid listings
         );
         
-        console.log(result.rows); // Log results for debugging
+        
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching auction listings:', error);
