@@ -4,14 +4,11 @@ import { NextResponse } from 'next/server';
 export async function GET() {
     try {
         const response = await fetch('https://api.carmandi.com.pk/api/listings/latest');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const auctions = await response.json();
-        return NextResponse.json(auctions);
-
+        const listings = await response.json();
+        //console.log("Listings:", listings);
+        return NextResponse.json(listings);
     } catch (error) {
-        console.error("Error fetching all auctions:", error);
-        return NextResponse.json({ message: 'Failed to fetch all auctions' }, { status: 500 });
+        console.error("Error:", error);
+        return NextResponse.json({ message: 'Failed to fetch latest listings' }, { status: 500 });
     }
 }

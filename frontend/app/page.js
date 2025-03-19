@@ -34,7 +34,21 @@ function HomePage() {
                     const text = await featuredResponse.text();
                     console.log('Non-JSON response:', text);
                 }
+                // Fetch latest listings
+                const latestResponse = await fetch('/api/auctions/latest');
+                if (!latestResponse.ok) {
+                    console.error('Error fetching latest listings:', latestResponse.statusText);
+                    return;
+                }
 
+                try {
+                    const latestData = await latestResponse.json();
+                    setFeaturedListings(latestData);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    const text = await latestResponse.text();
+                    console.log('Non-JSON response:', text);
+                }
                 // Fetch all listings
                 const allResponse = await fetch('/api/auctions');
                 if (!allResponse.ok) {
