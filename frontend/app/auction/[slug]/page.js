@@ -88,6 +88,28 @@ function CarPage({ carMake, yearModel, id }) {
         return cleanup;
     }, [data]);
     
+    const settingsForUpcomingAuction = useMemo(() => ({
+        slidesPerView: "auto",
+        speed: 1500,
+        spaceBetween: 25,
+        autoplay: {
+            delay: 2500, // Autoplay duration in milliseconds
+            disableOnInteraction: false,
+          },
+          navigation: {
+            nextEl: ".category-slider-next",
+            prevEl: ".category-slider-prev",
+          },
+           
+        modules: [Autoplay, EffectFade,  Navigation, Pagination],
+        breakpoints: {
+          280: { slidesPerView: 1 },
+          576: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          992: { slidesPerView: 3 },
+          1200: { slidesPerView: 4 },
+        },
+      }), []);
     
     if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
@@ -117,28 +139,7 @@ function CarPage({ carMake, yearModel, id }) {
         }
     };
     
-    const settingsForUpcomingAuction = useMemo(() => ({
-        slidesPerView: "auto",
-        speed: 1500,
-        spaceBetween: 25,
-        autoplay: {
-            delay: 2500, // Autoplay duration in milliseconds
-            disableOnInteraction: false,
-          },
-          navigation: {
-            nextEl: ".category-slider-next",
-            prevEl: ".category-slider-prev",
-          },
-           
-        modules: [Autoplay, EffectFade,  Navigation, Pagination],
-        breakpoints: {
-          280: { slidesPerView: 1 },
-          576: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          992: { slidesPerView: 3 },
-          1200: { slidesPerView: 4 },
-        },
-      }), []);
+    
       
       
     return (
