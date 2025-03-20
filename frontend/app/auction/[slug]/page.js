@@ -60,6 +60,7 @@ function CarPage({ carMake, yearModel, id }) {
     
                 const result = await response.json();
                 setData(result);
+                console.log("Data in useEffect:", result); // Debugging log
                 setCurrentBid(parseFloat(result.current_bid || 0));
             } catch (error) {
                 console.error("Failed to fetch car data:", error);
