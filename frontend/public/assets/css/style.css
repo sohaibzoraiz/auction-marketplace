@@ -24008,6 +24008,7 @@ footer.style-7 .footer-wrapper.two .footer-menu-wrap {
 .auction-details-section.style-2 .auction-details-img {
   margin-right: 0;
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 @media (max-width: 1199px) {
@@ -24017,7 +24018,7 @@ footer.style-7 .footer-wrapper.two .footer-menu-wrap {
 }
 .auction-details-section.style-2 .auction-details-img .nav-pills {
   display: flex;
-  flex-direction: column;
+  
   gap: 20px;
   padding-top: 0;
 }

@@ -150,7 +150,7 @@ const Header = () => {
               </div>
             </div>
             <ul className="menu-list">
-                
+
             <li className={pathName==="/"?"active":""}> 
               
                 <Link href="/" className="drop-down">
@@ -321,7 +321,7 @@ const Header = () => {
               </div>
             </form>
             <div className="btn-area d-lg-none d-flex">
-              <a href="#" className="login-btn btn-hover">
+              <a href="/dashboard" className="login-btn btn-hover">
                 <svg
                   width={15}
                   height={19}
@@ -374,7 +374,7 @@ const Header = () => {
               </form>
             </div>
           </div>
-          <a href="#" className="login-btn btn-hover d-lg-flex d-none">
+          <a href="/dashboard" className="login-btn btn-hover d-lg-flex d-none">
             <svg
               width={15}
               height={19}

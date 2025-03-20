@@ -145,9 +145,9 @@ const Footer2 = () => {
               </div>
               <div className="footer-bottom-right">
                 <ul>
-                  <li><Link href="/car-auction/support-center">Support Center</Link></li>
-                  <li><Link href="/car-auction/terms-condition">Terms &amp; Conditions</Link></li>
-                  <li><Link href="/car-auction/privacy-policy">Privacy Policy</Link></li>
+                  <li><Link href="/support-center">Support Center</Link></li>
+                  <li><Link href="/terms-condition">Terms &amp; Conditions</Link></li>
+                  <li><Link href="/privacy-policy">Privacy Policy</Link></li>
                 </ul>
               </div>
             </div>

@@ -12,7 +12,7 @@ import FeaturedListings from './components/FeaturedListings';
 import Home2ProcessSection from "./components/process-section/Home2ProcessSection";
 //import Home2Testimonial from "./components/testimonial/Home2Testimonial";
 import Home2Faq from "./components/faq/Home2Faq";
-import Footer2 from "./components/footer/Footer2";
+//import Footer2 from "./components/footer/Footer2";
 //import AllListings from './components/AllListings';
 
 
@@ -88,7 +88,7 @@ function HomePage() {
             <Home2Banner3 />
             <Home2ProcessSection />
             <Home2Faq />
-            <Footer2 />
+           
             
             
         </div>
