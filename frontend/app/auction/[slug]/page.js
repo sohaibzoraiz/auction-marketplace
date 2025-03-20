@@ -195,10 +195,10 @@ function CarPage({ carMake, yearModel, id }) {
                   <div className="quantity-counter-and-btn-area">
                     <HandleQuantity />
 
-                    <Button className="primary-btn btn-hover" onClick={() => handleBid(data.id)}>
+                    <button className="primary-btn btn-hover" onClick={() => handleBid(data.id)}>
                       Place Bid
                       <span style={{ top: '40.5px', left: '84.2344px' }} />
-                    </Button>
+                    </button>
                   </div>
                 </div>
                 <div className="payment-method">
