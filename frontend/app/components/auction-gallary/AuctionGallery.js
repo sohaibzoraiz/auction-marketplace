@@ -2,17 +2,8 @@ import React, { useState, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, EffectFade, Pagination } from "swiper/modules";
 
-
-const images = [
-  "/assets/img/inner-pages/auction-details-img1.jpg",
-  "/assets/img/inner-pages/auction-details-img2.jpg",
-  "/assets/img/inner-pages/auction-details-img3.jpg",
-  "/assets/img/inner-pages/auction-details-img4.jpg",
-  "/assets/img/inner-pages/auction-details-img5.jpg",
-];
-
-
-const AuctionDetailsSlider = () => {
+const AuctionDetailsSlider = ({images}) => {
+    console.log(images);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const settings = useMemo(() => ({
