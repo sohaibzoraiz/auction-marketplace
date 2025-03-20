@@ -3,10 +3,10 @@
 //import Image from 'next/image';
 import Breadcrumb2 from "../../components/common/Breadcrumb2";
 import AuctionGallery from "../../components/auction-gallary/AuctionGallery";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useContext } from "react";
 import ModalVideo from "react-modal-video";
-//import { UserContext } from '../../contexts/UserContext'; 
-//import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
+import { UserContext } from '../../contexts/UserContext'; 
+import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
 import CountdownTimer from '../../components/CountdownTimer';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
@@ -42,10 +42,10 @@ function CarPage({ carMake, yearModel, id }) {
     const [isOpen, setOpen] = useState(false);
     //console.log("CarPage component mounted or re-rendered");
     const [data, setData] = useState(null);
-    //const [currentBid, setCurrentBid] = useState(0);
-    //const [countdown, setCountdown] = useState(null); // Initialize 
-   // const { userData } = useContext(UserContext) ?? {};
-    //const intervalIdRef = useRef(null);
+    const [currentBid, setCurrentBid] = useState(0);
+    const [countdown, setCountdown] = useState(null); // Initialize 
+    const { userData } = useContext(UserContext) ?? {};
+    const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
     //console.log(userData);
     
@@ -60,7 +60,7 @@ function CarPage({ carMake, yearModel, id }) {
     
                 const result = await response.json();
                 setData(result);
-                //setCurrentBid(parseFloat(result.current_bid || 0));
+                setCurrentBid(parseFloat(result.current_bid || 0));
             } catch (error) {
                 console.error("Failed to fetch car data:", error);
             }
@@ -92,13 +92,13 @@ function CarPage({ carMake, yearModel, id }) {
     //if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
 
-    //const parsedCarPhotos = data.car_photos_jsonb || [];
+    const parsedCarPhotos = data.car_photos_jsonb || [];
 
     /*const increaseBid = () => {
         setCurrentBid(currentBid + 10000);
     };
    */
-    /*const handleBid = async (carid) => {
+    const handleBid = async (carid) => {
         if (!userData) {
             window.location.href = `/login?redirect=${window.location.pathname}`;
             return;
@@ -115,7 +115,7 @@ function CarPage({ carMake, yearModel, id }) {
         } catch (error) {
             console.error("Failed to connect socket:", error);
         }
-    };*/
+    };
     
     const settingsForUpcomingAuction = useMemo(() => ({
         slidesPerView: "auto",
@@ -148,18 +148,18 @@ function CarPage({ carMake, yearModel, id }) {
         <div className="container-fluid">
           <div className="row gy-5">
             <div className="col-xl-7">
-            <AuctionGallery />
+            <AuctionGallery images = {parsedCarPhotos}/>
             </div>
             <div className="col-xl-5">
               <div className="auction-details-content">
                 <div className="batch">
                   <span>Lot: # 25896742</span>
                 </div>
-                <h1>Zenith Auto Elevating Driving Your Automotive Experience</h1>
+                <h1>{data.car_make} {data.year_model}</h1>
                 <p>Aptent tacit sociosq  litor torquen per conubia nostra, per incep placerat felis non aliquam.Mauris nec justo vitae ante auctor.</p>
                 <div className="price-area">
-                  <span>Current Bid at:</span>
-                  <strong>$2,898</strong>
+                  <span>Current Bid at: <strong>{data.current_bid}</strong></span>
+               
                 </div>
                 <div className="coundown-area">
                   <h6>Auction Will Be End:</h6>
@@ -193,7 +193,7 @@ function CarPage({ carMake, yearModel, id }) {
                   <div className="quantity-counter-and-btn-area">
                     <HandleQuantity />
 
-                    <Link className="primary-btn btn-hover" href="/car-auction/auction-grid">
+                    <Link className="primary-btn btn-hover" onClick={() => handleBid(data.id)}>
                       Place Bid
                       <span style={{ top: '40.5px', left: '84.2344px' }} />
                     </Link>
