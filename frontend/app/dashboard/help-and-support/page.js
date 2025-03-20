@@ -1,6 +1,5 @@
-import Breadcrumb2 from "@/components/common/Breadcrumb2";
-import Footer2 from "@/components/footer/Footer2";
-import Header2 from "@/components/header/Header2";
+import Breadcrumb2 from "../../components/common/Breadcrumb2";
+
 import Link from "next/link";
 import React from "react";
 export const metadata = {
@@ -12,7 +11,7 @@ export const metadata = {
 const helpAndSupport = () => {
   return (
     <>
-      <Header2 />
+      
       <Breadcrumb2 pagetitle={"Profile"} currentPage={"Profile"} />
       <div className="dashboard-section pt-110 mb-110">
         <div className="container">
@@ -337,7 +336,7 @@ const helpAndSupport = () => {
           </div>
         </div>
       </div>
-      <Footer2 />
+      
     </>
   );
 };
