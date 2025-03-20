@@ -11,7 +11,7 @@ const Home2latestAuction = ({ listings = [] }) => {
     slidesPerView: 1,
     speed: 1500,
     spaceBetween: 25,
-    autoplay: { delay: 2500, disableOnInteraction: false },
+    autoplay: { delay: 2500, disableOnInteraction: false, pauseOnMouseEnter: true },
     navigation: { nextEl: ".auction-slider-next", prevEl: ".auction-slider-prev" },
     pagination: { clickable: true },
     modules: [Autoplay, Navigation, Pagination],

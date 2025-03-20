@@ -18,7 +18,7 @@ import { dmsans, playfair_display } from "@/fonts/font";
 import ScrollTopBtn from "./components/common/ScrollTopBtn";
 import useWow from "@/customHooks/useWow";
 import Header from "./components/header.jsx";
-import Footer from "./components/Footer";
+//import Footer from "./components/Footer";
 import { UserProvider } from "./contexts/UserContext";
 import { SocketProvider } from "./contexts/socketContext";
 
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <body className="antialiased">
             <Header />
             <main>{children}</main>
-            <Footer />
+            
             <ScrollTopBtn />
           </body>
         </html>

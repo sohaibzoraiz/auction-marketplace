@@ -6,16 +6,20 @@ import { useState, useEffect } from 'react';
 import Home2Banner from "./components/slider/Home2Banner";
 import Home2Category from "./components/category/Home2Category";
 import Home2Banner2 from "./components/slider/Home2Banner2";
-//import Home2Banner3 from "./components/slider/Home2Banner3";
+import Home2Banner3 from "./components/slider/Home2Banner3";
 import Home2latestAuction from "./components/latest-auction/Home2latestAuction";
 import FeaturedListings from './components/FeaturedListings';
-import AllListings from './components/AllListings';
+import Home2ProcessSection from "./components/process-section/Home2ProcessSection";
+//import Home2Testimonial from "./components/testimonial/Home2Testimonial";
+import Home2Faq from "./components/faq/Home2Faq";
+import Footer2 from "./components/footer/Footer2";
+//import AllListings from './components/AllListings';
 
 
 function HomePage() {
     const [featuredListings, setFeaturedListings] = useState([]);
     const [latestListings, setlatestListings] = useState([]);
-    const [allListings, setAllListings] = useState([]);
+   // const [allListings, setAllListings] = useState([]);
 
     useEffect(() => {
         const fetchListings = async () => {
@@ -81,10 +85,15 @@ function HomePage() {
             <Home2latestAuction listings={latestListings}/>
             <Home2Banner2 />
             <FeaturedListings listings={featuredListings} />
-            <AllListings listings={allListings} />
+            <Home2Banner3 />
+            <Home2ProcessSection />
+            <Home2Faq />
+            <Footer2 />
+            
             
         </div>
     );
 }
 
 export default HomePage;
+//<AllListings listings={allListings} />
