@@ -89,7 +89,7 @@ function CarPage({ carMake, yearModel, id }) {
         return cleanup;
     }, [data]);
     
-    const settingsForUpcomingAuction = useMemo(() => ({
+    const settingsForUpcomingAuction = useEffect(() => ({
         slidesPerView: "auto",
         speed: 1500,
         spaceBetween: 25,
