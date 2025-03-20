@@ -3,7 +3,7 @@
 //import Image from 'next/image';
 import Breadcrumb2 from "../../components/common/Breadcrumb2";
 import AuctionGallery from "../../components/auction-gallary/AuctionGallery";
-import React, { useEffect, useMemo, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ModalVideo from "react-modal-video";
 import { UserContext } from '../../contexts/UserContext'; 
 import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
