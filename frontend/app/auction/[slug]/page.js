@@ -3,7 +3,7 @@
 //import Image from 'next/image';
 import Breadcrumb2 from "../../components/common/Breadcrumb2";
 import AuctionGallery from "../../components/auction-gallary/AuctionGallery";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import ModalVideo from "react-modal-video";
 import { UserContext } from '../../contexts/UserContext'; 
 import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
@@ -44,7 +44,7 @@ function CarPage({ carMake, yearModel, id }) {
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     //const [countdown, setCountdown] = useState(null); // Initialize 
-    const { userData } = useContext(UserContext) ?? {};
+    const { userData = {} } = useContext(UserContext) ?? {};
     //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
     console.log(userData);
@@ -89,7 +89,7 @@ function CarPage({ carMake, yearModel, id }) {
         return cleanup;
     }, [data]);
     
-    const settingsForUpcomingAuction = useEffect(() => ({
+    const settingsForUpcomingAuction = useMemo(() => ({
         slidesPerView: "auto",
         speed: 1500,
         spaceBetween: 25,
