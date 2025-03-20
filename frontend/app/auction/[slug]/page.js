@@ -98,7 +98,7 @@ function CarPage({ carMake, yearModel, id }) {
         setCurrentBid(currentBid + 10000);
     };
    */
-    const handleBid = async (carid) => {
+    /*const handleBid = async (carid) => {
         if (!userData) {
             window.location.href = `/login?redirect=${window.location.pathname}`;
             return;
@@ -115,7 +115,7 @@ function CarPage({ carMake, yearModel, id }) {
         } catch (error) {
             console.error("Failed to connect socket:", error);
         }
-    };
+    };*/
     
     const settingsForUpcomingAuction = useMemo(() => ({
         slidesPerView: "auto",
@@ -387,7 +387,7 @@ function CarPage({ carMake, yearModel, id }) {
                                     <li><i className="bi bi-star-fill" /></li>
                                   </ul>
                                 </div>
-                                <p>However, here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It's always a good idea to research and read reviews specific...</p>
+                                <p>However here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It&#39;s always a good idea to research and read reviews specific...</p>
                               </div>
                             </div>
                           </li>
@@ -410,7 +410,7 @@ function CarPage({ carMake, yearModel, id }) {
                                     <li><i className="bi bi-star" /></li>
                                   </ul>
                                 </div>
-                                <p>However, here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It's always a good idea to research and read reviews specific...</p>
+                                <p>However here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It's always a good idea to research and read reviews specific...</p>
                               </div>
                             </div>
                           </li>
@@ -433,7 +433,7 @@ function CarPage({ carMake, yearModel, id }) {
                                     <li><i className="bi bi-star-half" /></li>
                                   </ul>
                                 </div>
-                                <p>However, here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It's always a good idea to research and read reviews specific...</p>
+                                <p>However here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It's always a good idea to research and read reviews specific...</p>
                               </div>
                             </div>
                           </li>

@@ -10,7 +10,7 @@ export const metadata = {
 const SettingsPage = () => {
   return (
     <div>
-      <Header2 />
+      
       <Breadcrumb2 pagetitle={"Profile"} currentPage={"Profile"} />
       <div className="dashboard-section pt-110 mb-110">
         <div className="container">
@@ -220,7 +220,7 @@ const SettingsPage = () => {
           </div>
         </div>
       </div>
-      <Footer2 />
+      
     </div>
   );
 };
