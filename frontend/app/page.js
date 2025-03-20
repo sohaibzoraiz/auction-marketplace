@@ -54,7 +54,7 @@ function HomePage() {
                     const text = await latestResponse.text();
                     console.log('Non-JSON response:', text);
                 }
-                // Fetch all listings
+                /* Fetch all listings
                 const allResponse = await fetch('/api/auctions');
                 if (!allResponse.ok) {
                     console.error('Error fetching all listings:', allResponse.statusText);
@@ -68,7 +68,7 @@ function HomePage() {
                     console.error('Error parsing JSON:', error);
                     const text = await allResponse.text();
                     console.log('Non-JSON response:', text);
-                }
+                }*/
             } catch (error) {
                 console.error('Error fetching listings:', error);
             }

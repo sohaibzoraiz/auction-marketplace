@@ -117,7 +117,7 @@ function FeaturedListings({ listings }) {
         el: ".progress-pagination",
         type: "progressbar",
       },
-    modules: [Autoplay, Navigation, Pagination],
+    modules: [Autoplay, EffectFade,  Navigation, Pagination],
     breakpoints: {
       280: { slidesPerView: 1 },
       576: { slidesPerView: 2 },
@@ -178,7 +178,7 @@ function FeaturedListings({ listings }) {
               listings.map((listing) => {
                 const timer = timers[listing.id] || { days: "00", hours: "00", minutes: "00", seconds: "00" };
                 return (
-                  <SwiperSlide className="swiper-slide">
+                  <SwiperSlide key={listing.id} className="swiper-slide">
                     <div className="auction-card style-2">
                       <div className="auction-card-img-wrap">
                       <Link href={`/auction/${listing.car_make}-${listing.year_model}-${listing.id}`} className="card-img">
