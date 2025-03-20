@@ -47,7 +47,7 @@ function CarPage({ carMake, yearModel, id }) {
     const { userData } = useContext(UserContext) ?? {};
     //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
-    //console.log(userData);
+    console.log(userData);
     
     //fetching car data from api
     useEffect(() => {
