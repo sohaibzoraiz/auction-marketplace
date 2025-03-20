@@ -222,7 +222,7 @@ function FeaturedListings({ listings }) {
                         </div>
                       </div>
                       <div className="auction-card-content">
-                        <h6><Link href="/car-auction/auction-details">Genesis motors pioneering on tomorrow's drive.</Link></h6>
+                        <h6><Link href="/car-auction/auction-details">Genesis motors pioneering on tomorrow&apos;s drive.</Link></h6>
                         <div className="price-and-code-area">
                           <div className="price">
                             <span>Current Bid at:</span>
