@@ -43,9 +43,9 @@ function CarPage({ carMake, yearModel, id }) {
     //console.log("CarPage component mounted or re-rendered");
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
-    const [countdown, setCountdown] = useState(null); // Initialize 
+    //const [countdown, setCountdown] = useState(null); // Initialize 
     const { userData } = useContext(UserContext) ?? {};
-    const intervalIdRef = useRef(null);
+    //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
     //console.log(userData);
     
