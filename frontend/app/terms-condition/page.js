@@ -66,7 +66,7 @@ const TermsConditionPage = () => {
                   </li>
                 </ul>
                 <p>
-                  It's important to have your terms and conditions reviewed by
+                  It&apos;s important to have your terms and conditions reviewed by
                   legal counsel to ensure they comply with applicable laws and
                   regulations and to protect your interests. Customize the terms
                   to fit the specific requirements of your Bidding.
@@ -89,7 +89,7 @@ const TermsConditionPage = () => {
                   velgeria fringilla tellus varius ut. Morbi non velit odio.
                 </p>
                 <p>
-                  It's important to have your terms and conditions reviewed by
+                  It&apos;s important to have your terms and conditions reviewed by
                   legal counsel to ensure they comply with applicable laws and
                   regulations and to protect your interests. Customize the terms
                   to fit the specific requirements of your consulting business

@@ -42,9 +42,9 @@ function CarPage({ carMake, yearModel, id }) {
     const [isOpen, setOpen] = useState(false);
     //console.log("CarPage component mounted or re-rendered");
     const [data, setData] = useState(null);
-    const [currentBid, setCurrentBid] = useState(0);
+    //const [currentBid, setCurrentBid] = useState(0);
     //const [countdown, setCountdown] = useState(null); // Initialize 
-    const { userData } = useContext(UserContext) ?? {};
+   // const { userData } = useContext(UserContext) ?? {};
     //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
     //console.log(userData);
@@ -60,7 +60,7 @@ function CarPage({ carMake, yearModel, id }) {
     
                 const result = await response.json();
                 setData(result);
-                setCurrentBid(parseFloat(result.current_bid || 0));
+                //setCurrentBid(parseFloat(result.current_bid || 0));
             } catch (error) {
                 console.error("Failed to fetch car data:", error);
             }
@@ -410,7 +410,7 @@ function CarPage({ carMake, yearModel, id }) {
                                     <li><i className="bi bi-star" /></li>
                                   </ul>
                                 </div>
-                                <p>However here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It's always a good idea to research and read reviews specific...</p>
+                                <p>However here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It&apos;s always a good idea to research and read reviews specific...</p>
                               </div>
                             </div>
                           </li>
@@ -433,7 +433,7 @@ function CarPage({ carMake, yearModel, id }) {
                                     <li><i className="bi bi-star-half" /></li>
                                   </ul>
                                 </div>
-                                <p>However here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It's always a good idea to research and read reviews specific...</p>
+                                <p>However, here are some well-regarded car dealerships known for their customer service, inventory, and overall reputation. It&apos;s always a good idea to research and read reviews specific...</p>
                               </div>
                             </div>
                           </li>

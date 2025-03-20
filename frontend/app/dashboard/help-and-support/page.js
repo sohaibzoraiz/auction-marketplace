@@ -319,7 +319,7 @@ const helpAndSupport = () => {
                         </div>
                         <div className="content">
                           <h3>
-                            <a href="#">What's New</a>
+                            <a href="#">What&apos;s New</a>
                           </h3>
                           <span>Advisory</span>
                           <p>

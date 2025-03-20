@@ -303,7 +303,7 @@ const SupportCenterPage = () => {
                 </div>
                 <div className="content">
                   <h3>
-                    <a href="#">What's New</a>
+                    <a href="#">What&apos;s New</a>
                   </h3>
                   <span>Advisory</span>
                   <p>
@@ -490,7 +490,7 @@ const SupportCenterPage = () => {
                         data-bs-parent="#accordionGeneral"
                       >
                         <div className="accordion-body">
-                          If you win an auction, you're obligated to purchase
+                          If you win an auction, you&apos;re obligated to purchase
                           the item at the winning bid price. Follow payment
                           instructions provided by the auction platform.
                           Non-compliance may lead to penalties or account
