@@ -2,14 +2,11 @@
 
 //import Image from 'next/image';
 import { useContext, useState, useEffect } from 'react';
-import ModalVideo from "react-modal-video";
+//import useBidding from '../../components/useBidding';
+//import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext'; 
 import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
 import CountdownTimer from '../../components/CountdownTimer';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
-import Link from "next/link";
-import { useMemo } from "react";
 
 
 export default function Page({ params }) {
@@ -66,7 +63,39 @@ function CarPage({ carMake, yearModel, id }) {
         fetchData();
     }, [carMake, yearModel, id]);
    
-    
+    /*useEffect(() => {
+        if (!data) return;
+
+        const endTime = new Date(data.end_time);
+        const updateCountdown = () => {
+            const now = new Date();
+            if (endTime <= now) {
+                setCountdown('Auction Ended');
+                clearInterval(intervalIdRef.current);
+                return;
+            }
+
+            const diff = endTime.getTime() - now.getTime();
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            setCountdown(`${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`);
+        };
+
+        if (intervalIdRef.current) {
+            clearInterval(intervalIdRef.current); // Clear previous interval if exists
+        }
+
+        intervalIdRef.current = setInterval(updateCountdown, 1000);
+
+        return () => {
+            clearInterval(intervalIdRef.current); // Clear interval on cleanup
+        };
+    }, [data]);*/
+
+    // Inside useEffect
     useEffect(() => {
         console.log("Data in useEffect:", data); // Debugging log
         if (!data) return;
