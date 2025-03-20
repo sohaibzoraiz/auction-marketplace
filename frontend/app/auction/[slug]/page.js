@@ -89,7 +89,7 @@ function CarPage({ carMake, yearModel, id }) {
     }, [data]);
     
     
-    //if (!data) return <div>Loading...</div>;
+    if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
 
     const parsedCarPhotos = data.car_photos_jsonb || [];
