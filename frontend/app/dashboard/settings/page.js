@@ -1,6 +1,4 @@
-import Breadcrumb2 from "@/components/common/Breadcrumb2";
-import Footer2 from "@/components/footer/Footer2";
-import Header2 from "@/components/header/Header2";
+import Breadcrumb2 from "../../components/common/Breadcrumb2";
 import Link from "next/link";
 import React from "react";
 export const metadata = {
