@@ -18,7 +18,7 @@ const SettingsPage = () => {
             <div className="dashboard-sidebar-menu">
               <ul>
                 <li>
-                  <Link href="/antiques-auction/dashboard">
+                  <Link href="/dashboard">
                     <svg
                       width={18}
                       height={18}
@@ -31,7 +31,7 @@ const SettingsPage = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/antiques-auction/dashboard/my-auction">
+                  <Link href="/dashboard/my-auction">
                     <svg
                       width={18}
                       height={18}
@@ -46,7 +46,7 @@ const SettingsPage = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/antiques-auction/dashboard/payment">
+                  <Link href="/dashboard/payment">
                     <svg
                       width={18}
                       height={18}
@@ -62,7 +62,7 @@ const SettingsPage = () => {
                   </Link>
                 </li>
                 <li className="active">
-                  <Link href="/antiques-auction/dashboard/settings">
+                  <Link href="/dashboard/settings">
                     <svg
                       width={18}
                       height={18}
@@ -78,7 +78,7 @@ const SettingsPage = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/antiques-auction/dashboard/change-password">
+                  <Link href="/dashboard/change-password">
                     <svg
                       width={18}
                       height={18}
@@ -94,7 +94,7 @@ const SettingsPage = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/antiques-auction/dashboard/help-and-support">
+                  <Link href="/dashboard/help-and-support">
                     <svg
                       width={18}
                       height={18}

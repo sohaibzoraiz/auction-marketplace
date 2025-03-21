@@ -15,7 +15,7 @@ function CreateAuctionPage() {
     const [featuredImage, setFeaturedImage] = useState(null);
     const [carImages, setCarImages] = useState([]);
         //using cookies
-    const { userData } = useContext(UserContext) ?? {};
+    const { userData, isLoading } = useContext(UserContext) ?? {};
     const [formData, setFormData] = useState({
         city: '',
         carMake: '',
@@ -34,6 +34,8 @@ function CreateAuctionPage() {
 
 
     useEffect(() => {
+        if (!isLoading) {
+
         if (!userData) {
           // If not logged in, redirect
           const originalUrl = window.location.pathname;
@@ -51,7 +53,8 @@ function CreateAuctionPage() {
             setCanCreateListing(true);
           }
         }
-      }, [userData, router]);
+    }
+      }, [userData, router, isLoading]);
    /* useEffect(() => {
         const fetchUser = async () => {
             setLoading(true);

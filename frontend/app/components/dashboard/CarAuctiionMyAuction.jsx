@@ -13,7 +13,7 @@ const CarAuctiionMyAuction = () => {
                         <div className="dashboard-sidebar-menu">
                             <ul>
                                 <li>
-                                    <Link href="/car-auction/dashboard">
+                                    <Link href="/dashboard">
                                         <svg
                                             width={18}
                                             height={18}
@@ -26,7 +26,7 @@ const CarAuctiionMyAuction = () => {
                                     </Link>
                                 </li>
                                 <li className="active">
-                                    <Link href="/car-auction/dashboard/my-auction">
+                                    <Link href="/dashboard/my-auction">
                                         <svg
                                             width={18}
                                             height={18}
@@ -41,7 +41,7 @@ const CarAuctiionMyAuction = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/car-auction/dashboard/payment">
+                                    <Link href="/dashboard/payment">
                                         <svg
                                             width={18}
                                             height={18}
@@ -57,7 +57,7 @@ const CarAuctiionMyAuction = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/car-auction/dashboard/settings">
+                                    <Link href="/dashboard/settings">
                                         <svg
                                             width={18}
                                             height={18}
@@ -73,7 +73,7 @@ const CarAuctiionMyAuction = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/car-auction/dashboard/change-password">
+                                    <Link href="/dashboard/change-password">
                                         <svg
                                             width={18}
                                             height={18}
@@ -89,7 +89,7 @@ const CarAuctiionMyAuction = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/car-auction/dashboard/help-and-support">
+                                    <Link href="/dashboard/help-and-support">
                                         <svg
                                             width={18}
                                             height={18}
@@ -239,7 +239,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -312,7 +312,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Zenith auto elevating driving your experience
                                                             </Link>
                                                         </h6>
@@ -327,7 +327,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -341,7 +341,7 @@ const CarAuctiionMyAuction = () => {
                                                                 </div>
                                                             </Link>
                                                             <Link
-                                                                href="/car-auction/auction-details"
+                                                                href="/auction-details"
                                                                 className="bid-btn"
                                                             >
                                                                 Bid Now
@@ -354,7 +354,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -427,7 +427,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Heritage had curating watch time treasures.
                                                             </Link>
                                                         </h6>
@@ -442,7 +442,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -456,7 +456,7 @@ const CarAuctiionMyAuction = () => {
                                                                 </div>
                                                             </Link>
                                                             <Link
-                                                                href="/car-auction/auction-details"
+                                                                href="/auction-details"
                                                                 className="bid-btn"
                                                             >
                                                                 Bid Now
@@ -469,7 +469,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -542,7 +542,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Canvas code redefining art in the digital realm.
                                                             </Link>
                                                         </h6>
@@ -557,7 +557,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -571,7 +571,7 @@ const CarAuctiionMyAuction = () => {
                                                                 </div>
                                                             </Link>
                                                             <Link
-                                                                href="/car-auction/auction-details"
+                                                                href="/auction-details"
                                                                 className="bid-btn"
                                                             >
                                                                 Bid Now
@@ -584,7 +584,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -657,7 +657,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Nomism on nexus connecting collectors to coins.
                                                             </Link>
                                                         </h6>
@@ -672,7 +672,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -686,7 +686,7 @@ const CarAuctiionMyAuction = () => {
                                                                 </div>
                                                             </Link>
                                                             <Link
-                                                                href="/car-auction/auction-details"
+                                                                href="/auction-details"
                                                                 className="bid-btn"
                                                             >
                                                                 Bid Now
@@ -699,7 +699,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -772,7 +772,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Vintage valor embracing then elegance of eras
                                                                 past.
                                                             </Link>
@@ -788,7 +788,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -802,7 +802,7 @@ const CarAuctiionMyAuction = () => {
                                                                 </div>
                                                             </Link>
                                                             <Link
-                                                                href="/car-auction/auction-details"
+                                                                href="/auction-details"
                                                                 className="bid-btn"
                                                             >
                                                                 Bid Now
@@ -815,7 +815,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -888,7 +888,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Canvas &amp; culture brush withn elegance
                                                                 auction.
                                                             </Link>
@@ -904,7 +904,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -918,7 +918,7 @@ const CarAuctiionMyAuction = () => {
                                                                 </div>
                                                             </Link>
                                                             <Link
-                                                                href="/car-auction/auction-details"
+                                                                href="/auction-details"
                                                                 className="bid-btn"
                                                             >
                                                                 Bid Now
@@ -940,7 +940,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -978,7 +978,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Zenith auto elevating driving your experience
                                                             </Link>
                                                         </h6>
@@ -993,7 +993,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -1015,7 +1015,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -1053,7 +1053,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Nostalgian hookup memories reside.
                                                             </Link>
                                                         </h6>
@@ -1068,7 +1068,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -1090,7 +1090,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -1128,7 +1128,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Coin crest cresting the peak of numismatic.
                                                             </Link>
                                                         </h6>
@@ -1162,7 +1162,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -1200,7 +1200,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Pixela prodigy inspiring pixels time creators
                                                                 one.
                                                             </Link>
@@ -1216,7 +1216,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -1247,7 +1247,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -1282,7 +1282,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Gizmo galaxy your cutting edge tech.
                                                             </Link>
                                                         </h6>
@@ -1297,7 +1297,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -1319,7 +1319,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -1354,7 +1354,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Titan motors built to conquer every milen.
                                                             </Link>
                                                         </h6>
@@ -1369,7 +1369,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
@@ -1391,7 +1391,7 @@ const CarAuctiionMyAuction = () => {
                                                 <div className="auction-card">
                                                     <div className="auction-card-img-wrap">
                                                         <Link
-                                                            href="/car-auction/auction-details"
+                                                            href="/auction-details"
                                                             className="card-img"
                                                         >
                                                             <img
@@ -1426,7 +1426,7 @@ const CarAuctiionMyAuction = () => {
                                                     </div>
                                                     <div className="auction-card-content">
                                                         <h6>
-                                                            <Link href="/car-auction/auction-details">
+                                                            <Link href="/auction-details">
                                                                 Electro edge redefining times possibilities
                                                                 gadget.
                                                             </Link>
@@ -1442,7 +1442,7 @@ const CarAuctiionMyAuction = () => {
                                                         </div>
                                                         <div className="author-and-btn-area">
                                                             <Link
-                                                                href="/car-auction/store-details"
+                                                                href="/store-details"
                                                                 className="author-area"
                                                             >
                                                                 <div className="author-img">
