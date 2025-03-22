@@ -2,8 +2,9 @@
 import { useCountdownTimer } from '@/customHooks/useCountdownTimer';
 
 function CountdownTimerComponent({ endTime }) {
+    console.log(endTime);
     const timer = useCountdownTimer(endTime);
-
+    console.log(timer);
    /* useEffect(() => {
         if (!endTime) return;
 
