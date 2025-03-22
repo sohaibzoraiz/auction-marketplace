@@ -23,7 +23,6 @@ const BidHistory = ({ carId }) => {
 
     return (
         <div className="addithonal-information">
-            <h4>Bid History</h4>
             <table className="table total-table2">
                 <thead>
                     <tr>
