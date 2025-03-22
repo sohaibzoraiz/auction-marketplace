@@ -45,7 +45,8 @@ function CarPage({ carMake, yearModel, id }) {
     const { userData = {} } = useContext(UserContext) ?? {};
     const endTime = useMemo(() => data?.end_time || null, [data?.end_time]);
     const timer = useCountdownTimer(endTime);
-    
+    const parsedCarPhotos = useMemo(() => data?.car_photos_jsonb || [], [data?.car_photos_jsonb]);
+
     //fetching car data from api
     useEffect(() => {
         if (!carMake || !yearModel || !id) return;
@@ -113,8 +114,7 @@ function CarPage({ carMake, yearModel, id }) {
     if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
     
-    const parsedCarPhotos = useMemo(() => data?.car_photos_jsonb || [], [data?.car_photos_jsonb]);
-
+    
     
 
     /*const increaseBid = () => {
