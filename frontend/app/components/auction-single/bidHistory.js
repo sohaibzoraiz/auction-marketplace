@@ -26,6 +26,7 @@ const BidHistory = ({ carId }) => {
             <table className="table total-table2">
                 <thead>
                     <tr>
+                        <th>Sr. Num.</th>
                         <th>Bidder</th>
                         <th>Bid Amount</th>
                         <th>Time</th>
@@ -35,6 +36,7 @@ const BidHistory = ({ carId }) => {
                     {bids.length > 0 ? (
                         bids.map((bid, index) => (
                             <tr key={index}>
+                                <td>{index + 1}</td>
                                 <td>{bid.name}</td>
                                 <td>PKR {(bid.amount ?? 0).toLocaleString()}</td>
                                 <td>{new Date(bid.created_at).toLocaleString()}</td>
