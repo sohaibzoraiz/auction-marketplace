@@ -26,7 +26,7 @@ function quantityReducer(state, action) {
 
 function HandleQuantity({ currentPrice, onQuantityChange }) {
   const minLimit = currentPrice || 10000; // Minimum value is the current bid price
-  const maxLimit = minLimit + minLimit * 0.1; // Maximum limit = currentPrice + 10%
+  const maxLimit = currentPrice + currentPrice * 0.1; // Maximum limit = currentPrice + 10%
 
   const [state, dispatch] = useReducer(quantityReducer, {
     quantity: minLimit,
