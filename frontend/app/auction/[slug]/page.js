@@ -70,27 +70,33 @@ function CarPage({ carMake, yearModel, id }) {
     }, [carMake, yearModel, id]);
     
    
-    //listening for new bids
     useEffect(() => {
         console.log("Data in useEffect:", data); // Debugging log
+    
         if (!data) return;
     
         const handleNewBid = (bidData) => {
             console.log("Received new bid data:", bidData);
-            if (bidData.auctionId === data.id) {
-                setCurrentBid(bidData.amount);
-                setData((prevData) => ({
-                    ...prevData,
-                    current_bid: bidData.amount, // ✅ Update data.current_bid dynamically
-                }));
-                console.log("Updating bid for auction:", data.id);
-            }
+    
+            setCurrentBid(bidData.amount);
+    
+            setData((prevData) => {
+                if (!prevData || bidData.auctionId !== prevData.id) return prevData;
+                if (prevData.current_bid === bidData.amount) return prevData; // ✅ Avoid unnecessary updates
+                return { ...prevData, current_bid: bidData.amount };
+            });
+    
+            console.log("Updating bid for auction:", data.id);
         };
     
         const cleanup = listenForNewBids(handleNewBid);
     
-        return cleanup;
-    }, [data]);
+        return () => {
+            console.log("Cleaning up bid listener...");
+            cleanup();
+        };
+    }, [data?.current_bid]);  // ✅ Re-run effect only when `current_bid` changes
+    
     
     const settingsForUpcomingAuction = useMemo(() => ({
         slidesPerView: "auto",
