@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 
 const BidHistory = ({ carId }) => {
     const [bids, setBids] = useState([]);
-
+    console.log(carId);
     useEffect(() => {
         const fetchBidHistory = async () => {
             try {
                 const response = await fetch(`https://api.carmandi.com.pk//api/auctions/bid-history?${carId}`);
                 if (!response.ok) throw new Error("Failed to fetch bid history");
-
+                console.log(response);
                 const data = await response.json();
                 setBids(data);
             } catch (error) {
