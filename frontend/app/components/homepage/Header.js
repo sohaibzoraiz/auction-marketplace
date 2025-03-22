@@ -2,7 +2,7 @@
 "use client"
 import Link from 'next/link';
 import { useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import { useRouter } from 'next/navigation';
 
 function Header() {

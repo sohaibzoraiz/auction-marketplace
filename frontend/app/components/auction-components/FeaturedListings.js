@@ -181,7 +181,7 @@ function FeaturedListings({ listings }) {
                   <SwiperSlide key={listing.id} className="swiper-slide">
                     <div className="auction-card style-2">
                       <div className="auction-card-img-wrap">
-                      <Link href={`/auction/${listing.car_make}-${listing.year_model}-${listing.id}`} className="card-img">
+                      <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="card-img">
                           <img src={listing.car_photos_jsonb?.[0]} alt={listing.car_make} />
                         </Link>
                         <div className="batch">

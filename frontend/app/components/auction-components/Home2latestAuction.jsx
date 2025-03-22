@@ -56,7 +56,7 @@ const Home2latestAuction = ({ listings = [] }) => {
                   <SwiperSlide key={listing.id} className="swiper-slide">
                     <div className="auction-card style-2">
                       <div className="auction-card-img-wrap">
-                        <Link href={`/auction/${listing.car_make}-${listing.year_model}-${listing.id}`} className="card-img">
+                        <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="card-img">
                           <img src={listing.car_photos_jsonb?.[0]} alt={listing.car_make} />
                         </Link>
                         <div className="batch"><span className="live">Live</span></div>
@@ -73,10 +73,10 @@ const Home2latestAuction = ({ listings = [] }) => {
                         </div>
                       </div>
                       <div className="auction-card-content">
-                        <h6><Link href={`/auction/${listing.car_make}-${listing.year_model}-${listing.id}`}>{listing.car_make}</Link></h6>
+                        <h6><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`}>{listing.car_make}</Link></h6>
                         <div className="price-and-code-area">
                           <div className="price"><span>Current Bid at:</span> <strong>${listing.current_bid || "N/A"}</strong></div>
-                          <Link href={`/auction/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
+                          <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
                         </div>
                       </div>
                     </div>

@@ -208,7 +208,7 @@ function CarPage({ carMake, yearModel, id }) {
                 </div>
                 <ul className="question-and-wishlist-area">
                   <li>
-                    <Link href="/car-auction/contact">
+                    <Link href="/contact">
                       <span>
                         <svg width={11} height={11} viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
                           <g>
@@ -506,7 +506,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <SwiperSlide className="swiper-slide">
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
-                          <Link href="/car-auction/auction-details" className="card-img">
+                          <Link href="/auction-details" className="card-img">
                             <img src="../assets/img/home2/auction-img1.jpg" alt="" />
                           </Link>
                           <div className="batch">
@@ -552,13 +552,13 @@ function CarPage({ carMake, yearModel, id }) {
                           </div>
                         </div>
                         <div className="auction-card-content">
-                          <h6><Link href="/car-auction/auction-details">Velocity visions performance meets precision.</Link></h6>
+                          <h6><Link href="/auction-details">Velocity visions performance meets precision.</Link></h6>
                           <div className="price-and-code-area">
                             <div className="price">
                               <span>Current Bid at:</span>
                               <strong>$4,648</strong>
                             </div>
-                            <Link href="/car-auction/auction-details" className="bid-btn">Bid Now</Link>
+                            <Link href="/auction-details" className="bid-btn">Bid Now</Link>
                           </div>
                         </div>
                       </div>
@@ -566,7 +566,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <SwiperSlide className="swiper-slide">
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
-                          <Link href="/car-auction/auction-details" className="card-img">
+                          <Link href="/auction-details" className="card-img">
                             <img src="../assets/img/home2/auction-img2.jpg" alt="" />
                           </Link>
                           <div className="batch">
@@ -612,13 +612,13 @@ function CarPage({ carMake, yearModel, id }) {
                           </div>
                         </div>
                         <div className="auction-card-content">
-                          <h6><Link href="/car-auction/auction-details">Nexus drives connecting your to the future.</Link></h6>
+                          <h6><Link href="/auction-details">Nexus drives connecting your to the future.</Link></h6>
                           <div className="price-and-code-area">
                             <div className="price">
                               <span>Current Bid at:</span>
                               <strong>$4,544</strong>
                             </div>
-                            <Link href="/car-auction/auction-details" className="bid-btn">Bid Now</Link>
+                            <Link href="/auction-details" className="bid-btn">Bid Now</Link>
                           </div>
                         </div>
                       </div>
@@ -626,7 +626,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <SwiperSlide className="swiper-slide">
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
-                          <Link href="/car-auction/auction-details" className="card-img">
+                          <Link href="/auction-details" className="card-img">
                             <img src="../assets/img/home2/auction-img3.jpg" alt="" />
                           </Link>
                           <div className="batch">
@@ -675,13 +675,13 @@ function CarPage({ carMake, yearModel, id }) {
                           </div>
                         </div>
                         <div className="auction-card-content">
-                          <h6><Link href="/car-auction/auction-details">Performance on empowering prime your drive.</Link></h6>
+                          <h6><Link href="/auction-details">Performance on empowering prime your drive.</Link></h6>
                           <div className="price-and-code-area">
                             <div className="price">
                               <span>Current Bid at:</span>
                               <strong>$4,648</strong>
                             </div>
-                            <Link href="/car-auction/auction-details2" className="bid-btn">Notify Me</Link>
+                            <Link href="/auction-details2" className="bid-btn">Notify Me</Link>
                           </div>
                         </div>
                       </div>
@@ -689,7 +689,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <SwiperSlide className="swiper-slide">
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
-                          <Link href="/car-auction/auction-details" className="card-img">
+                          <Link href="/auction-details" className="card-img">
                             <img src="../assets/img/home2/auction-img4.jpg" alt="" />
                           </Link>
                           <div className="batch">
@@ -735,13 +735,13 @@ function CarPage({ carMake, yearModel, id }) {
                           </div>
                         </div>
                         <div className="auction-card-content">
-                          <h6><Link href="/car-auction/auction-details">Eclipse cars redefining thus road ahead auction.</Link></h6>
+                          <h6><Link href="/auction-details">Eclipse cars redefining thus road ahead auction.</Link></h6>
                           <div className="price-and-code-area">
                             <div className="price">
                               <span>Current Bid at:</span>
                               <strong>$4,245</strong>
                             </div>
-                            <Link href="/car-auction/auction-details" className="bid-btn">Bid Now</Link>
+                            <Link href="/auction-details" className="bid-btn">Bid Now</Link>
                           </div>
                         </div>
                       </div>
@@ -749,7 +749,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <SwiperSlide className="swiper-slide">
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
-                          <Link href="/car-auction/auction-details" className="card-img">
+                          <Link href="/auction-details" className="card-img">
                             <img src="../assets/img/home1/auction-img1.jpg" alt="" />
                           </Link>
                           <div className="batch">
@@ -795,13 +795,13 @@ function CarPage({ carMake, yearModel, id }) {
                           </div>
                         </div>
                         <div className="auction-card-content">
-                          <h6><Link href="/car-auction/auction-details">Zenith auto elevating driving your experience.</Link></h6>
+                          <h6><Link href="/auction-details">Zenith auto elevating driving your experience.</Link></h6>
                           <div className="price-and-code-area">
                             <div className="price">
                               <span>Current Bid at:</span>
                               <strong>$4,245</strong>
                             </div>
-                            <Link href="/car-auction/auction-details" className="bid-btn">Bid Now</Link>
+                            <Link href="/auction-details" className="bid-btn">Bid Now</Link>
                           </div>
                         </div>
                       </div>
@@ -809,7 +809,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <SwiperSlide className="swiper-slide">
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
-                          <Link href="/car-auction/auction-details" className="card-img">
+                          <Link href="/auction-details" className="card-img">
                             <img src="../assets/img/home1/auction-img8.jpg" alt="" />
                           </Link>
                           <div className="batch">
@@ -858,13 +858,13 @@ function CarPage({ carMake, yearModel, id }) {
                           </div>
                         </div>
                         <div className="auction-card-content">
-                          <h6><Link href="/car-auction/auction-details">Titan motors built to conquer every milen.</Link></h6>
+                          <h6><Link href="/auction-details">Titan motors built to conquer every milen.</Link></h6>
                           <div className="price-and-code-area">
                             <div className="price">
                               <span>Current Bid at:</span>
                               <strong>$4,648</strong>
                             </div>
-                            <Link href="/car-auction/auction-details2" className="bid-btn">Notify Me</Link>
+                            <Link href="/auction-details2" className="bid-btn">Notify Me</Link>
                           </div>
                         </div>
                       </div>
@@ -872,7 +872,7 @@ function CarPage({ carMake, yearModel, id }) {
                     <SwiperSlide className="swiper-slide">
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
-                          <Link href="/car-auction/auction-details" className="card-img">
+                          <Link href="/auction-details" className="card-img">
                             <img src="../assets/img/home2/auction-img5.jpg" alt="" />
                           </Link>
                           <div className="batch">
@@ -918,13 +918,13 @@ function CarPage({ carMake, yearModel, id }) {
                           </div>
                         </div>
                         <div className="auction-card-content">
-                          <h6><Link href="/car-auction/auction-details">Performance Empowering Your Drive Prime.</Link></h6>
+                          <h6><Link href="/auction-details">Performance Empowering Your Drive Prime.</Link></h6>
                           <div className="price-and-code-area">
                             <div className="price">
                               <span>Current Bid at:</span>
                               <strong>$4,289</strong>
                             </div>
-                            <Link href="/car-auction/auction-details" className="bid-btn">Bid Now</Link>
+                            <Link href="/auction-details" className="bid-btn">Bid Now</Link>
                           </div>
                         </div>
                       </div>
@@ -940,66 +940,3 @@ function CarPage({ carMake, yearModel, id }) {
       </>
     );
 }
-/*
-<div className="flex flex-col md:flex-row">
-            // Left Section: Images 
-            <div className="md:w-1/2">
-                {parsedCarPhotos.length > 0 && (
-
-                  <img src={parsedCarPhotos[0]} alt="Featured Image" className="w-full h-96 object-cover" />
-                )}
-                <div className="flex gap-4 mt-4">
-                  {parsedCarPhotos.slice(1).map((photo, index) => (
-                       <img key={index} src={photo} alt="Thumbnail" className="w-24 h-24 object-cover rounded" />
-                 ))}
-                    </div>
-            </div>
-            // Right Section: Details 
-            <div className="md:w-1/2 p-4">
-                <h1 className="text-3xl font-bold">{data.car_make} {data.year_model}</h1>
-                <p className="flex items-center gap-2">
-                    <span>Mileage:</span>
-                    <span>{data.mileage}</span>
-                    <span className="text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-≈                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM14.5 7.5h-.79l-.28-.27a6.5 6.5 0 00-7.78 7.77l.27.28v.79a1 1 0 001 1h6a1 1 0 001-1v-.79z" clipRule="evenodd" />
-                        </svg>
-                    </span>
-                    <span>Registered in {data.registration_city}</span>
-                </p>
-                <p className="flex justify-between">
-                    <span>Demand Price: {data.demand_price}</span>
-                    <span>Reserve Price: {data.reserve_price}</span>
-                </p>
-
-                //Countdown Timer 
-                <div className="flex gap-2">
-                    <timer endTime={data.end_time} />
-                </div>
-
-                // Bid Input and Button 
-                <div className="flex gap-2">
-                    <input
-                        type="number"
-                        value={currentBid}
-                        onChange={(e) => setCurrentBid(parseFloat(e.target.value))}
-                        className="w-32 p-2 border border-gray-300 rounded"
-                    />
-                    <button
-    onClick={() => handleBid(data.id)}
-    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
->
-    Bid Now
-</button>
-                    <button
-                        onClick={increaseBid}
-                        className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-*/

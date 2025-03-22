@@ -2,13 +2,12 @@
 "use client";
 import { useState, useEffect } from 'react';
 
-//import HeroSlider from './components/HeroSlider';
 import Home2Banner from "./components/slider/Home2Banner";
 import Home2Category from "./components/category/Home2Category";
 import Home2Banner2 from "./components/slider/Home2Banner2";
 import Home2Banner3 from "./components/slider/Home2Banner3";
-import Home2latestAuction from "./components/latest-auction/Home2latestAuction";
-import FeaturedListings from './components/FeaturedListings';
+import Home2latestAuction from "./components/auction-components/Home2latestAuction";
+import FeaturedListings from './components/auction-components/FeaturedListings';
 import Home2ProcessSection from "./components/process-section/Home2ProcessSection";
 //import Home2Testimonial from "./components/testimonial/Home2Testimonial";
 import Home2Faq from "./components/faq/Home2Faq";
