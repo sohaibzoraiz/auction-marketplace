@@ -73,7 +73,7 @@ app.get('/api/listings/latest', require('./controllers/carController').getLatest
 // API routes for auctions
 app.get('/api/auctions', require('./controllers/carController').getAllAuctionListings);
 app.get('/api/auctions/single', require('./controllers/carController').getSingleAuctionListing);
-//app.post('/api/auctions/create', authMiddleware, require('./controllers/carController').createAuctionListing);
+app.get("/api/auction/bid-history", require('./controllers/carController').getBidHistory);
 app.put('/api/auctions/:id', require('./controllers/carController').updateAuctionListing);
 app.delete('/api/auctions/:id', require('./controllers/carController').deleteAuctionListing);
 
