@@ -1,9 +1,9 @@
 import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
 
 const CountdownTimer = ({ endTime }) => {
-  console.log("Received endTime:", endTime);
+  
   const timer = useCountdownTimer(endTime);
-  console.log("Updated Timer:", timer);
+  
 
   if (!timer) return null; // Prevents breaking if timer is undefined
 
