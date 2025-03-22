@@ -47,6 +47,7 @@ function CarPage({ carMake, yearModel, id }) {
     const [endTime, setEndTime] = useState(null);
     //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
+    const timer = useCountdownTimer(endTime);
     console.log(userData);
     
     //fetching car data from api
@@ -117,7 +118,7 @@ function CarPage({ carMake, yearModel, id }) {
     //if (!userData) return <div>Loading...</div>;
     
     const parsedCarPhotos = data.car_photos_jsonb || [];
-    const timer = useCountdownTimer(endTime);
+    
 
     /*const increaseBid = () => {
         setCurrentBid(currentBid + 10000);
