@@ -1,5 +1,5 @@
 "use client";
-import { useCountdowntimers } from "@/customHooks/useCountdowntimers";
+import { useCountdownTimer } from "../../../customHooks/useCountdownTimer";
 import { useState } from "react";
 import AuctionFilterSidebar from "../auction-components/AuctionFilterSidebar";
 import SelectComponent from "../common/SelectComponent";
@@ -9,8 +9,8 @@ function AllListings({ listings }) {
 
   listings = Array.isArray(listings) ? listings : [];
 
-  const timerss = useCountdowntimers(listings);
-  console.log(timerss);
+  const timers = useCountdownTimer(listings);
+  console.log(timers);
   const [activeColumn, setActiveColumn] = useState(4);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
