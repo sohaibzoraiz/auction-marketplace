@@ -165,7 +165,7 @@ function CarPage({ carMake, yearModel, id }) {
                 </div>
                 <div className="coundown-area">
                   <h6>Auction Will Be End:</h6>
-                    <CountdownTimer endtime={data.end_time}/>
+                    <CountdownTimer endTime={data.end_time}/>
                   <span><strong>Ending On:</strong> {data.end_time} </span>
                 </div>
                 <div className="quantity-area">
