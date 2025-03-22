@@ -46,7 +46,7 @@ function CarPage({ carMake, yearModel, id }) {
     const endTime = useMemo(() => data?.end_time || null, [data?.end_time]);
     const timer = useCountdownTimer(endTime);
     const parsedCarPhotos = useMemo(() => data?.car_photos_jsonb || [], [data?.car_photos_jsonb]);
-
+    console.log("Parsed Car Photos:", parsedCarPhotos); // Debugging log
     //fetching car data from api
     useEffect(() => {
         if (!carMake || !yearModel || !id) return;
