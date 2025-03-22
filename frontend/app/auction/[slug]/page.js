@@ -135,7 +135,7 @@ function CarPage({ carMake, yearModel, id }) {
     
         try {
             await connectSocket(); // Wait for socket connection
-            emitBid(carid); // Emit bid event
+            emitBid(carid, currentBid); // Emit bid event
         } catch (error) {
             console.error("Failed to connect socket:", error);
         }
