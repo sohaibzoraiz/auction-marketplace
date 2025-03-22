@@ -2,7 +2,7 @@
 import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
 import { useState, useEffect } from "react";
 import AuctionFilterSidebar from "../auction-components/AuctionFilterSidebar";
-import SelectComponent from "../common/SelectComponent";
+//import SelectComponent from "../common/SelectComponent";
 import Link from "next/link";
 
 const CarAuctionGrid = ({ listings }) => {
