@@ -182,8 +182,11 @@ function CarPage({ carMake, yearModel, id }) {
                 <div className="quantity-area">
                   <h6>Your Max Bid:</h6>
                   <div className="quantity-counter-and-btn-area">
-                  <HandleQuantity currentPrice={currentBid} onQuantityChange={setCurrentBid} />
-
+                  <HandleQuantity 
+  currentPrice={currentBid} 
+  onQuantityChange={setCurrentBid} 
+  lastBidFromDB={data.current_bid} 
+/>
                     <button className="primary-btn btn-hover" onClick={() => handleBid(data.id)}>
                       Place Bid
                       <span style={{ top: '40.5px', left: '84.2344px' }} />
