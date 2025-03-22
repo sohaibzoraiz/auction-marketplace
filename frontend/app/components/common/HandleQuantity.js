@@ -21,8 +21,8 @@ function quantityReducer(state, action) {
     }
 
     case "SET": {
-      let newValue = Math.floor(action.payload); // Ensure integer
-      if (isNaN(newValue)) return state; // Prevent invalid input
+      let newValue = Math.floor(action.payload) || ""; // ✅ Allow empty input but prevent NaN
+      if (newValue === "") return { ...state, quantity: "" }; // ✅ Allow empty input field
 
       if (newValue < state.minLimit) {
         return { ...state, quantity: state.minLimit, showMinLimitMessage: true };
@@ -38,7 +38,7 @@ function quantityReducer(state, action) {
       const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1); // 10% above current price
       return {
         ...state,
-        quantity: newMinLimit,
+        quantity: newMinLimit > state.maxLimit ? newMinLimit : state.quantity, // Adjust quantity if necessary
         minLimit: newMinLimit,
         maxLimit: newMaxLimit,
         showMaxLimitMessage: false,
@@ -53,16 +53,18 @@ function quantityReducer(state, action) {
 
 function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const [state, dispatch] = useReducer(quantityReducer, {
-    quantity: Math.floor(currentPrice), // Ensure integer initial value
+    quantity: Math.floor(currentPrice), // ✅ Ensure integer initial value
     minLimit: Math.floor(currentPrice),
-    maxLimit: Math.floor(currentPrice + currentPrice * 0.1), // 10% limit
+    maxLimit: Math.floor(currentPrice + currentPrice * 0.1), // ✅ 10% limit
     showMaxLimitMessage: false,
     showMinLimitMessage: false,
   });
 
-  // Notify parent of quantity change
+  // ✅ Update quantity in parent component
   useEffect(() => {
-    onQuantityChange(state.quantity);
+    if (state.quantity !== "") {
+      onQuantityChange(state.quantity);
+    }
   }, [state.quantity, onQuantityChange]);
 
   // ✅ Update limits ONLY IF `lastBidFromDB` changes
@@ -76,10 +78,8 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const decrement = () => dispatch({ type: "DECREMENT" });
 
   const handleInputChange = (e) => {
-    let newValue = parseInt(e.target.value, 10);
-    if (!isNaN(newValue)) {
-      dispatch({ type: "SET", payload: newValue });
-    }
+    let newValue = e.target.value.replace(/\D/g, ""); // ✅ Only allow numbers
+    dispatch({ type: "SET", payload: newValue });
   };
 
   return (
@@ -93,6 +93,7 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
         value={state.quantity}
         onChange={handleInputChange}
         className="quantity__input"
+        placeholder={`Min: ${state.minLimit}`}
       />
       <a className="quantity__plus" style={{ cursor: "pointer" }} onClick={increment}>
         <i className="bx bx-plus" />
