@@ -10,7 +10,7 @@ import { connectSocket, emitBid, listenForNewBids } from "../../components/socke
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
-import countdowntimer from "../../components/countdowntimer";
+import CountdownTimer from "../../components/CountdownTimer";
 import HandleQuantity from "../../components/common/HandleQuantity";
 
 
@@ -165,7 +165,7 @@ function CarPage({ carMake, yearModel, id }) {
                 </div>
                 <div className="coundown-area">
                   <h6>Auction Will Be End:</h6>
-                    <countdowntimer endtime={data.end_time}/>
+                    <CountdownTimer endtime={data.end_time}/>
                   <span><strong>Ending On:</strong> {data.end_time} </span>
                 </div>
                 <div className="quantity-area">
