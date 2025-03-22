@@ -38,7 +38,7 @@ function quantityReducer(state, action) {
       const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1);
       return {
         ...state,
-        quantity: newMinLimit > state.maxLimit ? newMinLimit : state.quantity,
+        quantity: newMinLimit,
         minLimit: newMinLimit,
         maxLimit: newMaxLimit,
         showMaxLimitMessage: false,
@@ -67,14 +67,12 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
     setInputValue(state.quantity.toString());
   }, [state.quantity]);
 
-  // ✅ Notify parent component when quantity changes
+  // ✅ Notify parent component IMMEDIATELY when quantity changes
   useEffect(() => {
-    if (state.quantity !== "") {
-      onQuantityChange(state.quantity);
-    }
+    onQuantityChange(state.quantity);
   }, [state.quantity, onQuantityChange]);
 
-  // ✅ Update limits ONLY IF `lastBidFromDB` changes
+  // ✅ Update limits when new bid is received
   useEffect(() => {
     if (lastBidFromDB && Math.floor(lastBidFromDB) !== state.minLimit) {
       dispatch({ type: "UPDATE_LIMITS", payload: lastBidFromDB });
@@ -84,17 +82,11 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const increment = () => dispatch({ type: "INCREMENT" });
   const decrement = () => dispatch({ type: "DECREMENT" });
 
-  // ✅ Allow typing normally, don't force update immediately
+  // ✅ Updates state IMMEDIATELY when typing (fixing place bid issue)
   const handleInputChange = (e) => {
     let newValue = e.target.value.replace(/\D/g, ""); // ✅ Only allow numbers
-    setInputValue(newValue); // ✅ Temporary update for user experience
-  };
-
-  // ✅ Only update state when user leaves input field
-  const handleBlur = () => {
-    let finalValue = inputValue === "" ? state.minLimit : parseInt(inputValue, 10);
-    dispatch({ type: "SET", payload: finalValue });
-    setInputValue(finalValue.toString()); // ✅ Ensure valid input after blur
+    setInputValue(newValue); // ✅ Show input immediately
+    dispatch({ type: "SET", payload: parseInt(newValue, 10) || state.minLimit });
   };
 
   return (
@@ -106,8 +98,7 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
         name="quantity"
         type="text"
         value={inputValue}
-        onChange={handleInputChange}
-        onBlur={handleBlur} // ✅ Validate & apply limits when user finishes typing
+        onChange={handleInputChange} // ✅ Updates immediately
         className="quantity__input"
         placeholder={`Min: ${state.minLimit}`}
       />
