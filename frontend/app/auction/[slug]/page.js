@@ -39,17 +39,13 @@ export default function Page({ params }) {
 
 function CarPage({ carMake, yearModel, id }) {
     const [isOpen, setOpen] = useState(false);
-    //console.log("CarPage component mounted or re-rendered");
+    console.log("CarPage component mounted or re-rendered");
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     const { userData = {} } = useContext(UserContext) ?? {};
-    const endTime = useMemo(() => data?.end_time || null, [data?.end_time]);
-    const timer = useCountdownTimer(endTime);
+    const timer = useMemo(() => useCountdownTimer(data?.end_time), [data?.end_time]);
     const parsedCarPhotos = useMemo(() => data?.car_photos_jsonb || [], [data?.car_photos_jsonb]);
-    console.log("Parsed Car Photos:", parsedCarPhotos); // Debugging log
-    console.log("Data:", data); // Debugging log
-    console.log("end time:", endTime); // Debugging log
-    console.log("Timer:", timer); // Debugging log
+    
     //fetching car data from api
     useEffect(() => {
         if (!carMake || !yearModel || !id) return;
