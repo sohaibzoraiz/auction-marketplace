@@ -169,7 +169,7 @@ function CarPage({ carMake, yearModel, id }) {
                   <span>Lot: # 25896742</span>
                 </div>*/}
                 <h1>{data.car_make} {data.year_model}</h1>
-                <p>Aptent tacit sociosq  litor torquen per conubia nostra, per incep placerat felis non aliquam.Mauris nec justo vitae ante auctor.</p>
+                <p>{data.description}</p>
                 <div className="price-area">
                   <span>Current Bid at: <strong>PKR {data.current_bid}</strong></span>
                
