@@ -6,13 +6,13 @@ import Home2Banner from "./components/slider/Home2Banner";
 import Home2Category from "./components/category/Home2Category";
 import Home2Banner2 from "./components/slider/Home2Banner2";
 import Home2Banner3 from "./components/slider/Home2Banner3";
-import Home2latestAuction from "./components/auction-components/Home2latestAuction";
+import Home2latestAuction from "./components/auction-components/latestAuction";
 import FeaturedListings from './components/auction-components/FeaturedListings';
 import Home2ProcessSection from "./components/process-section/Home2ProcessSection";
 //import Home2Testimonial from "./components/testimonial/Home2Testimonial";
 import Home2Faq from "./components/faq/Home2Faq";
 //import Footer2 from "./components/footer/Footer2";
-//import AllListings from './components/AllListings';
+
 
 
 function HomePage() {
