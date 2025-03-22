@@ -48,7 +48,7 @@ function CarPage({ carMake, yearModel, id }) {
     //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
     const timer = useCountdownTimer(endTime);
-    console.log(userData);
+    console.log(console.log(timer)); // Debugging log
     
     //fetching car data from api
     useEffect(() => {
