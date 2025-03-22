@@ -113,7 +113,7 @@ function CarPage({ carMake, yearModel, id }) {
     
     if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
-    const timer = useCountdownTimer(data.end_time);
+    const timer = useCountdownTimer(data?.end_time || null);
     const parsedCarPhotos = data.car_photos_jsonb || [];
 
     /*const increaseBid = () => {
