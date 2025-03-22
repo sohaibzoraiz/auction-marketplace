@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, EffectFade, Pagination } from "swiper/modules";
 
 const AuctionDetailsSlider = ({images}) => {
-    //console.log(images);
+    console.log(images);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const settings = useMemo(() => ({

@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-// Function to calculate the time remaining
+// Function to calculate time remaining
 const calculateTimeRemaining = (endTime) => {
   if (!endTime) return { days: "00", hours: "00", minutes: "00", seconds: "00" };
 
@@ -19,31 +19,41 @@ const calculateTimeRemaining = (endTime) => {
   };
 };
 
-// Custom hook for both single and multiple listings
+// Custom hook for countdown
 export function useCountdownTimer(input) {
-  const [timeLeft, setTimeLeft] = useState(() => 
-    Array.isArray(input) ? {} : calculateTimeRemaining(input)
+  // Memoize input to prevent unnecessary updates
+  const stableInput = useMemo(() => input, [JSON.stringify(input)]);
+
+  // Single listing state
+  const [timeLeft, setTimeLeft] = useState(
+    Array.isArray(stableInput) ? {} : calculateTimeRemaining(stableInput)
   );
 
   useEffect(() => {
-    if (!input) return;
+    if (!stableInput) return;
 
     const updateTimer = () => {
-      setTimeLeft(
-        Array.isArray(input)
-          ? input.reduce((acc, listing) => {
-              acc[listing.id] = calculateTimeRemaining(listing.end_time);
-              return acc;
-            }, {})
-          : calculateTimeRemaining(input)
-      );
+      const newTimeLeft = Array.isArray(stableInput)
+        ? stableInput.reduce((acc, listing) => {
+            acc[listing.id] = calculateTimeRemaining(listing.end_time);
+            return acc;
+          }, {})
+        : calculateTimeRemaining(stableInput);
+
+      // ✅ Only update state if the countdown values have actually changed
+      setTimeLeft((prev) => {
+        if (JSON.stringify(prev) !== JSON.stringify(newTimeLeft)) {
+          return newTimeLeft;
+        }
+        return prev;
+      });
     };
 
     updateTimer(); // Initial calculation
     const interval = setInterval(updateTimer, 1000); // Update every second
 
-    return () => clearInterval(interval);
-  }, [input]);
+    return () => clearInterval(interval); // ✅ Cleanup to prevent memory leaks
+  }, [stableInput]);
 
   return timeLeft;
 }
