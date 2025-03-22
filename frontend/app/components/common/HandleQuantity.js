@@ -1,45 +1,50 @@
 "use client";
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 
 // Reducer function to manage quantity state
 function quantityReducer(state, action) {
   switch (action.type) {
     case "INCREMENT":
-      return { quantity: state.quantity + 1 };
+      return {
+        quantity: Math.min(state.quantity + 10000, state.maxLimit), // Ensure max limit
+      };
     case "DECREMENT":
       return {
-        quantity: state.quantity > 1 ? state.quantity - 1 : state.quantity,
+        quantity: Math.max(state.quantity - 10000, state.minLimit), // Ensure min limit (currentPrice)
       };
     case "SET":
-      return { quantity: action.payload >= 1 ? action.payload : 1 };
+      return {
+        quantity:
+          action.payload >= state.minLimit
+            ? Math.min(action.payload, state.maxLimit)
+            : state.minLimit, // Restrict between `currentPrice` and `maxLimit`
+      };
     default:
       return state;
   }
 }
 
 function HandleQuantity({ currentPrice, onQuantityChange }) {
-  // Initialize state with a specific quantity
-  const initialQuantity = currentPrice || 1; // ✅ Ensure a default value
+  const minLimit = currentPrice || 10000; // Minimum value is the current bid price
+  const maxLimit = minLimit + minLimit * 0.1; // Maximum limit = currentPrice + 10%
 
-  const [state1, dispatch1] = useReducer(quantityReducer, {
-    quantity: initialQuantity,
+  const [state, dispatch] = useReducer(quantityReducer, {
+    quantity: minLimit,
+    minLimit,
+    maxLimit,
   });
+
   useEffect(() => {
-    onQuantityChange(state1.quantity);  // ✅ Notify parent of changes
-  }, [state1.quantity, onQuantityChange]);
-  
-  const increment1 = () => {
-    dispatch1({ type: "INCREMENT" });
-  };
+    onQuantityChange(state.quantity);
+  }, [state.quantity, onQuantityChange]);
 
-  const decrement1 = () => {
-    dispatch1({ type: "DECREMENT" });
-  };
+  const increment = () => dispatch({ type: "INCREMENT" });
+  const decrement = () => dispatch({ type: "DECREMENT" });
 
-  const handleInputChange1 = (e) => {
+  const handleInputChange = (e) => {
     const newValue = parseInt(e.target.value, 10);
     if (!isNaN(newValue)) {
-      dispatch1({ type: "SET", payload: newValue });
+      dispatch({ type: "SET", payload: newValue });
     }
   };
 
@@ -48,22 +53,22 @@ function HandleQuantity({ currentPrice, onQuantityChange }) {
       <a
         className="quantity__minus"
         style={{ cursor: "pointer" }}
-        onClick={decrement1}
+        onClick={decrement}
       >
         <i className="bx bx-minus" />
       </a>
       <input
         name="quantity"
         type="text"
-        value={state1.quantity}
-        onChange={handleInputChange1}
+        value={state.quantity}
+        onChange={handleInputChange}
         className="quantity__input"
-        placeholder={initialQuantity}
+        placeholder={minLimit}
       />
       <a
         className="quantity__plus"
         style={{ cursor: "pointer" }}
-        onClick={increment1}
+        onClick={increment}
       >
         <i className="bx bx-plus" />
       </a>
