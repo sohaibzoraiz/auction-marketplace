@@ -323,7 +323,7 @@ function CarPage({ carMake, yearModel, id }) {
                 </div>
               </div>
               <div className="tab-pane fade" id="nav-add-info" role="tabpanel" aria-labelledby="nav-add-info-tab">
-                <bidHistory carId = {data.id} />
+                <bidHistory carId={data.id}/>
               </div>
               <div className="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
                 <div className="reviews-area">
