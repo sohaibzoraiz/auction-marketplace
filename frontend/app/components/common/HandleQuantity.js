@@ -21,7 +21,7 @@ function quantityReducer(state, action) {
     }
 
     case "SET": {
-      let newValue = Math.floor(action.payload / 10000) * 10000; // Snap to nearest 10,000
+      let newValue = Math.floor(action.payload); // Ensure integer
       if (isNaN(newValue)) return state; // Prevent invalid input
 
       if (newValue < state.minLimit) {
