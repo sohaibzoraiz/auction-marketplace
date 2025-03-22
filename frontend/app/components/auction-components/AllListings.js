@@ -8,7 +8,8 @@ import Link from "next/link";
 function AllListings({ listings }) {
 
   listings = Array.isArray(listings) ? listings : [];
-
+  const timers = useCountdownTimer(listings);
+  console.log(timers);
   const { days, hours, minutes, seconds } = useCountdownTimer(
     "2024-08-23 11:42:00"
 );
@@ -1200,7 +1201,7 @@ function AllListings({ listings }) {
                                             <div className="auction-card-content">
                                                 <h6>
                                                     <Link href="/car-auction/auction-details">
-                                                        Genesis motors pioneering on tomorrow's drive.
+                                                        Genesis motors pioneering on tomorrow&apos;s drive.
                                                     </Link>
                                                 </h6>
                                                 <div className="price-and-code-area">
