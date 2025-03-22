@@ -6,25 +6,26 @@ function quantityReducer(state, action) {
   switch (action.type) {
     case "INCREMENT":
       return {
-        quantity: Math.min(state.quantity + 10000, state.maxLimit), // Ensure max limit
+        quantity: Math.min(state.quantity + 10000, state.maxLimit),
+        maxLimit: state.maxLimit,
       };
     case "DECREMENT":
       return {
-        quantity: Math.max(state.quantity - 10000, state.minLimit), // Ensure min limit (currentPrice)
+        quantity: Math.max(state.quantity - 10000, state.minLimit),
+        maxLimit: state.maxLimit,
       };
     case "SET":
       return {
-        quantity:
-          action.payload >= state.minLimit
-            ? Math.min(action.payload, state.maxLimit)
-            : state.minLimit, // Restrict between `currentPrice` and `maxLimit`
+        quantity: Math.max(
+          state.minLimit,
+          Math.min(Math.floor(action.payload / 10000) * 10000, state.maxLimit)
+        ),
+        maxLimit: state.maxLimit,
       };
-    case "UPDATE_LIMITS":
+    case "UPDATE_MAX":
       return {
-        ...state,
-        minLimit: action.payload.minLimit,
-        maxLimit: action.payload.maxLimit,
-        quantity: Math.max(state.quantity, action.payload.minLimit), // Adjust quantity if needed
+        quantity: state.quantity, // Don't change quantity unless needed
+        maxLimit: Math.max(action.payload, state.minLimit), // Ensure it's at least the min limit
       };
     default:
       return state;
@@ -32,24 +33,22 @@ function quantityReducer(state, action) {
 }
 
 function HandleQuantity({ currentPrice, onQuantityChange }) {
-  const minLimit = currentPrice || 10000;
-  const maxLimit = currentPrice + currentPrice * 0.1;
+  const initialPrice = currentPrice || 10000; // Default to 10,000 if not set
 
   const [state, dispatch] = useReducer(quantityReducer, {
-    quantity: minLimit,
-    minLimit,
-    maxLimit,
+    quantity: initialPrice,
+    minLimit: initialPrice, // ✅ Ensure minimum bid is the current bid
+    maxLimit: initialPrice + Math.floor(initialPrice * 0.1), // ✅ Max limit is 10% above current bid
   });
 
   useEffect(() => {
-    onQuantityChange(state.quantity);
+    onQuantityChange(state.quantity); // ✅ Notify parent of changes
   }, [state.quantity, onQuantityChange]);
 
   useEffect(() => {
-    dispatch({
-      type: "UPDATE_LIMITS",
-      payload: { minLimit, maxLimit },
-    });
+    if (currentPrice !== state.minLimit) {
+      dispatch({ type: "UPDATE_MAX", payload: currentPrice + Math.floor(currentPrice * 0.1) });
+    }
   }, [currentPrice]);
 
   const increment = () => dispatch({ type: "INCREMENT" });
@@ -64,11 +63,7 @@ function HandleQuantity({ currentPrice, onQuantityChange }) {
 
   return (
     <div className="quantity-counter">
-      <a
-        className="quantity__minus"
-        style={{ cursor: "pointer" }}
-        onClick={decrement}
-      >
+      <a className="quantity__minus" style={{ cursor: "pointer" }} onClick={decrement}>
         <i className="bx bx-minus" />
       </a>
       <input
@@ -77,13 +72,8 @@ function HandleQuantity({ currentPrice, onQuantityChange }) {
         value={state.quantity}
         onChange={handleInputChange}
         className="quantity__input"
-        placeholder={minLimit}
       />
-      <a
-        className="quantity__plus"
-        style={{ cursor: "pointer" }}
-        onClick={increment}
-      >
+      <a className="quantity__plus" style={{ cursor: "pointer" }} onClick={increment}>
         <i className="bx bx-plus" />
       </a>
     </div>
