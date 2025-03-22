@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useRef } from "react";
-import useCustomSelect from "../../customHooks/useCustomSelect";
+import useCustomSelect from "@/customHooks/useCustomSelect";
 
 const SelectComponent = ({ options, placeholder, open, customClass, onSelect }) => {
   const {
