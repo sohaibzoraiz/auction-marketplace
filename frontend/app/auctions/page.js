@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from 'react';
 import AllListings from '../components/auction-components/AllListings';
 import Breadcrumb2 from "@/components/common/Breadcrumb2";
