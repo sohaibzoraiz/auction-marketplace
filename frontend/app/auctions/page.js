@@ -9,7 +9,7 @@ export default function Auctions() {
     useEffect(() => {
         const fetchListings = async () => {
             try {
-                const allResponse = await fetch('https://api.carmandi.com.pk/api/auctions');
+                const allResponse = await fetch('/api/auctions');
                 if (!allResponse.ok) {
                     console.error('Error fetching all listings:', allResponse.statusText);
                     return;

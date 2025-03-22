@@ -1,5 +1,5 @@
 "use client";
-import { useCountdownTimer } from "../../../customHooks/useCountdownTimer";
+import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
 import { useState } from "react";
 import AuctionFilterSidebar from "../auction-components/AuctionFilterSidebar";
 import SelectComponent from "../common/SelectComponent";
@@ -9,8 +9,9 @@ function AllListings({ listings }) {
 
   listings = Array.isArray(listings) ? listings : [];
 
-  const timers = useCountdownTimer(listings);
-  console.log(timers);
+  const { days, hours, minutes, seconds } = useCountdownTimer(
+    "2024-08-23 11:42:00"
+);
   const [activeColumn, setActiveColumn] = useState(4);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -334,25 +335,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-10 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -438,25 +439,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-10 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -542,25 +543,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-12 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -649,25 +650,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-23 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -753,25 +754,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-09-15 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -857,25 +858,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-20 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -961,25 +962,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-14 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -1065,25 +1066,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-14 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -1172,25 +1173,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-23 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -1199,7 +1200,7 @@ function AllListings({ listings }) {
                                             <div className="auction-card-content">
                                                 <h6>
                                                     <Link href="/car-auction/auction-details">
-                                                        Genesis motors pioneering on tomorrow&aposs drive.
+                                                        Genesis motors pioneering on tomorrow's drive.
                                                     </Link>
                                                 </h6>
                                                 <div className="price-and-code-area">
@@ -1276,25 +1277,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-23 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -1383,25 +1384,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-23 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
@@ -1487,25 +1488,25 @@ function AllListings({ listings }) {
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <div className="countdown-timers">
+                                                <div className="countdown-timer">
                                                     <ul data-countdown="2024-10-23 12:00:00">
                                                         <li className="times" data-days={0}>
-                                                            {timers.days}
+                                                            {days}
                                                             <span>Days</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-hours={0}>
-                                                            {timers.hours}
+                                                            {hours}
                                                             <span>Hours</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-minutes={0}>
-                                                            {timers.minutes}
+                                                            {minutes}
                                                             <span>Min</span>
                                                         </li>
                                                         <li className="colon">:</li>
                                                         <li className="times" data-seconds={0}>
-                                                            {timers.seconds}
+                                                            {seconds}
                                                             <span>Sec</span>
                                                         </li>
                                                     </ul>
