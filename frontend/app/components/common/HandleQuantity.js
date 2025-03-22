@@ -5,37 +5,44 @@ import React, { useReducer, useEffect } from "react";
 function quantityReducer(state, action) {
   switch (action.type) {
     case "INCREMENT": {
-      const newIncrement = state.quantity + 10000;
-      if (newIncrement > state.maxLimit) {
-        return { ...state, showMaxLimitMessage: true }; // Show max limit message
-      }
-      return { ...state, quantity: newIncrement, showMaxLimitMessage: false };
-    }
-
-    case "DECREMENT": {
-      const newDecrement = state.quantity - 10000;
-      if (newDecrement < state.minLimit) return state; // Prevent going below min
-      return { ...state, quantity: newDecrement, showMaxLimitMessage: false };
-    }
-
-    case "SET": {
-      let newValue = Math.floor(action.payload / 10000) * 10000;
-      if (isNaN(newValue) || newValue < state.minLimit) return state;
+      const newValue = state.quantity + 10000;
       if (newValue > state.maxLimit) {
-        return { ...state, showMaxLimitMessage: true }; // Show message if exceeded
+        return { ...state, showMaxLimitMessage: true }; // Show max limit message
       }
       return { ...state, quantity: newValue, showMaxLimitMessage: false };
     }
 
+    case "DECREMENT": {
+      const newValue = state.quantity - 10000;
+      if (newValue < state.minLimit) {
+        return { ...state, showMinLimitMessage: true }; // Show min limit message
+      }
+      return { ...state, quantity: newValue, showMinLimitMessage: false };
+    }
+
+    case "SET": {
+      let newValue = Math.floor(action.payload / 10000) * 10000; // Snap to nearest 10,000
+      if (isNaN(newValue)) return state; // Prevent invalid input
+
+      if (newValue < state.minLimit) {
+        return { ...state, quantity: state.minLimit, showMinLimitMessage: true };
+      }
+      if (newValue > state.maxLimit) {
+        return { ...state, quantity: state.maxLimit, showMaxLimitMessage: true };
+      }
+      return { ...state, quantity: newValue, showMaxLimitMessage: false, showMinLimitMessage: false };
+    }
+
     case "UPDATE_LIMITS": {
-      const newMinLimit = action.payload;
-      const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1); // 10% increase
+      const newMinLimit = Math.floor(action.payload); // Ensure integer
+      const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1); // 10% above current price
       return {
         ...state,
-        quantity: Math.max(state.quantity, newMinLimit),
+        quantity: newMinLimit,
         minLimit: newMinLimit,
         maxLimit: newMaxLimit,
         showMaxLimitMessage: false,
+        showMinLimitMessage: false,
       };
     }
 
@@ -46,10 +53,11 @@ function quantityReducer(state, action) {
 
 function HandleQuantity({ currentPrice, onQuantityChange }) {
   const [state, dispatch] = useReducer(quantityReducer, {
-    quantity: currentPrice || 10000, // Default to 10,000
-    minLimit: currentPrice || 10000, // Minimum bid = current price
-    maxLimit: (currentPrice || 10000) + Math.floor((currentPrice || 10000) * 0.1), // Max bid = +10%
+    quantity: Math.floor(currentPrice), // Ensure integer initial value
+    minLimit: Math.floor(currentPrice),
+    maxLimit: Math.floor(currentPrice + currentPrice * 0.1), // 10% limit
     showMaxLimitMessage: false,
+    showMinLimitMessage: false,
   });
 
   // Notify parent of quantity change
@@ -59,7 +67,7 @@ function HandleQuantity({ currentPrice, onQuantityChange }) {
 
   // Update limits if `currentPrice` changes
   useEffect(() => {
-    if (currentPrice !== state.minLimit) {
+    if (Math.floor(currentPrice) !== state.minLimit) {
       dispatch({ type: "UPDATE_LIMITS", payload: currentPrice });
     }
   }, [currentPrice]);
@@ -94,6 +102,13 @@ function HandleQuantity({ currentPrice, onQuantityChange }) {
       {state.showMaxLimitMessage && (
         <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
           Maximum bid limit reached!
+        </p>
+      )}
+
+      {/* Show min limit message */}
+      {state.showMinLimitMessage && (
+        <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
+          Minimum bid is PKR {state.minLimit}
         </p>
       )}
     </div>
