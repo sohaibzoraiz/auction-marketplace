@@ -19,15 +19,10 @@ const calculateTimeRemaining = (endTime) => {
   };
 };
 
-// Custom hook to handle both single and multiple listings
+// Custom hook for both single and multiple listings
 export function useCountdownTimer(input) {
-  const [timeLeft, setTimeLeft] = useState(
-    Array.isArray(input)
-      ? input.reduce((acc, listing) => {
-          acc[listing.id] = calculateTimeRemaining(listing.end_time);
-          return acc;
-        }, {})
-      : calculateTimeRemaining(input)
+  const [timeLeft, setTimeLeft] = useState(() => 
+    Array.isArray(input) ? {} : calculateTimeRemaining(input)
   );
 
   useEffect(() => {
