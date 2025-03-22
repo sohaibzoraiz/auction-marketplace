@@ -10,6 +10,7 @@ function AllListings({ listings }) {
   listings = Array.isArray(listings) ? listings : [];
 
   const timers = useCountdownTimer(listings);
+  console.log(timers);
   const [activeColumn, setActiveColumn] = useState(4);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 

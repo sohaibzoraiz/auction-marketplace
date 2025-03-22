@@ -38,5 +38,3 @@ function auctions() {
         </>
     );
 }
-
-export default auctions;
