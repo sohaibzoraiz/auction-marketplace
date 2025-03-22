@@ -79,6 +79,10 @@ function CarPage({ carMake, yearModel, id }) {
             console.log("Received new bid data:", bidData);
             if (bidData.auctionId === data.id) {
                 setCurrentBid(bidData.amount);
+                setData((prevData) => ({
+                    ...prevData,
+                    current_bid: bidData.amount, // ✅ Update data.current_bid dynamically
+                }));
                 console.log("Updating bid for auction:", data.id);
             }
         };
