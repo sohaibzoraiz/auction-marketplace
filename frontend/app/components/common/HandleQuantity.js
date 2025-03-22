@@ -51,7 +51,7 @@ function quantityReducer(state, action) {
   }
 }
 
-function HandleQuantity({ currentPrice, onQuantityChange }) {
+function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const [state, dispatch] = useReducer(quantityReducer, {
     quantity: Math.floor(currentPrice), // Ensure integer initial value
     minLimit: Math.floor(currentPrice),
@@ -65,12 +65,12 @@ function HandleQuantity({ currentPrice, onQuantityChange }) {
     onQuantityChange(state.quantity);
   }, [state.quantity, onQuantityChange]);
 
-  // Update limits if `currentPrice` changes
+  // ✅ Update limits ONLY IF `lastBidFromDB` changes
   useEffect(() => {
-    if (Math.floor(currentPrice) !== state.minLimit) {
-      dispatch({ type: "UPDATE_LIMITS", payload: currentPrice });
+    if (lastBidFromDB && Math.floor(lastBidFromDB) !== state.minLimit) {
+      dispatch({ type: "UPDATE_LIMITS", payload: lastBidFromDB });
     }
-  }, [currentPrice]);
+  }, [lastBidFromDB]);
 
   const increment = () => dispatch({ type: "INCREMENT" });
   const decrement = () => dispatch({ type: "DECREMENT" });
