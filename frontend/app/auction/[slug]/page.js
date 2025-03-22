@@ -171,7 +171,7 @@ function CarPage({ carMake, yearModel, id }) {
                 <div className="quantity-area">
                   <h6>Your Max Bid:</h6>
                   <div className="quantity-counter-and-btn-area">
-                    <HandleQuantity />
+                    <HandleQuantity currentPrice ={data.current_bid}/>
 
                     <button className="primary-btn btn-hover" onClick={() => handleBid(data.id)}>
                       Place Bid
