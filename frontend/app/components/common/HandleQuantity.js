@@ -19,14 +19,21 @@ function quantityReducer(state, action) {
             ? Math.min(action.payload, state.maxLimit)
             : state.minLimit, // Restrict between `currentPrice` and `maxLimit`
       };
+    case "UPDATE_LIMITS":
+      return {
+        ...state,
+        minLimit: action.payload.minLimit,
+        maxLimit: action.payload.maxLimit,
+        quantity: Math.max(state.quantity, action.payload.minLimit), // Adjust quantity if needed
+      };
     default:
       return state;
   }
 }
 
 function HandleQuantity({ currentPrice, onQuantityChange }) {
-  const minLimit = currentPrice || 10000; // Minimum value is the current bid price
-  const maxLimit = currentPrice + currentPrice * 0.1; // Maximum limit = currentPrice + 10%
+  const minLimit = currentPrice || 10000;
+  const maxLimit = currentPrice + currentPrice * 0.1;
 
   const [state, dispatch] = useReducer(quantityReducer, {
     quantity: minLimit,
@@ -37,6 +44,13 @@ function HandleQuantity({ currentPrice, onQuantityChange }) {
   useEffect(() => {
     onQuantityChange(state.quantity);
   }, [state.quantity, onQuantityChange]);
+
+  useEffect(() => {
+    dispatch({
+      type: "UPDATE_LIMITS",
+      payload: { minLimit, maxLimit },
+    });
+  }, [currentPrice]);
 
   const increment = () => dispatch({ type: "INCREMENT" });
   const decrement = () => dispatch({ type: "DECREMENT" });
