@@ -172,13 +172,13 @@ function CarPage({ carMake, yearModel, id }) {
                 <h1>{data.car_make} {data.year_model}</h1>
                 <p>{data.description}</p>
                 <div className="price-area">
-                  <span>Current Bid at: <strong>PKR {data.current_bid}</strong></span>
+                  <span>Current Bid at: <strong>PKR {(data.current_bid ?? 0).toLocaleString()}</strong></span>
                
                 </div>
                 <div className="coundown-area">
                   <h6>Auction Will End In:</h6>
                     <CountdownTimer endTime={data.end_time}/>
-                  <span><strong>Ending On:</strong> {data.end_time} </span>
+                  <span><strong>Ending On:</strong> {new Date(data.end_time).toLocaleString()} </span>
                 </div>
                 <div className="quantity-area">
                   <h6>Your Max Bid:</h6>
