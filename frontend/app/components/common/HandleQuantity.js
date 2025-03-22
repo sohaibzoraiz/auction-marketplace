@@ -5,10 +5,10 @@ import React, { useReducer } from "react";
 function quantityReducer(state, action) {
   switch (action.type) {
     case "INCREMENT":
-      return { quantity: state.quantity + 10000 };
+      return { quantity: state.quantity + 1 };
     case "DECREMENT":
       return {
-        quantity: state.quantity > 1 ? state.quantity - 10000 : state.quantity,
+        quantity: state.quantity > 1 ? state.quantity - 1 : state.quantity,
       };
     case "SET":
       return { quantity: action.payload >= 1 ? action.payload : 1 };
