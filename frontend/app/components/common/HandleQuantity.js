@@ -1,5 +1,5 @@
 "use client";
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 
 // Reducer function to manage quantity state
 function quantityReducer(state, action) {
@@ -21,8 +21,8 @@ function quantityReducer(state, action) {
     }
 
     case "SET": {
-      let newValue = Math.floor(action.payload) || ""; // ✅ Allow empty input but prevent NaN
-      if (newValue === "") return { ...state, quantity: "" }; // ✅ Allow empty input field
+      let newValue = action.payload === "" ? "" : Math.floor(action.payload);
+      if (newValue === "") return { ...state, quantity: "" }; // ✅ Allow temporary empty input
 
       if (newValue < state.minLimit) {
         return { ...state, quantity: state.minLimit, showMinLimitMessage: true };
@@ -34,11 +34,11 @@ function quantityReducer(state, action) {
     }
 
     case "UPDATE_LIMITS": {
-      const newMinLimit = Math.floor(action.payload); // Ensure integer
-      const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1); // 10% above current price
+      const newMinLimit = Math.floor(action.payload);
+      const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1);
       return {
         ...state,
-        quantity: newMinLimit > state.maxLimit ? newMinLimit : state.quantity, // Adjust quantity if necessary
+        quantity: newMinLimit > state.maxLimit ? newMinLimit : state.quantity,
         minLimit: newMinLimit,
         maxLimit: newMaxLimit,
         showMaxLimitMessage: false,
@@ -53,14 +53,14 @@ function quantityReducer(state, action) {
 
 function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const [state, dispatch] = useReducer(quantityReducer, {
-    quantity: Math.floor(currentPrice), // ✅ Ensure integer initial value
+    quantity: Math.floor(currentPrice),
     minLimit: Math.floor(currentPrice),
-    maxLimit: Math.floor(currentPrice + currentPrice * 0.1), // ✅ 10% limit
+    maxLimit: Math.floor(currentPrice + currentPrice * 0.1),
     showMaxLimitMessage: false,
     showMinLimitMessage: false,
   });
 
-  // ✅ Update quantity in parent component
+  // ✅ Update parent component when quantity changes
   useEffect(() => {
     if (state.quantity !== "") {
       onQuantityChange(state.quantity);
@@ -77,9 +77,19 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const increment = () => dispatch({ type: "INCREMENT" });
   const decrement = () => dispatch({ type: "DECREMENT" });
 
+  const [inputValue, setInputValue] = useState(state.quantity.toString());
+
+  // ✅ Allow typing normally, don't force update immediately
   const handleInputChange = (e) => {
     let newValue = e.target.value.replace(/\D/g, ""); // ✅ Only allow numbers
-    dispatch({ type: "SET", payload: newValue });
+    setInputValue(newValue); // ✅ Temporary update for user experience
+  };
+
+  // ✅ Only update state when user leaves input field
+  const handleBlur = () => {
+    let finalValue = inputValue === "" ? state.minLimit : parseInt(inputValue, 10);
+    dispatch({ type: "SET", payload: finalValue });
+    setInputValue(finalValue.toString()); // ✅ Ensure valid input after blur
   };
 
   return (
@@ -90,8 +100,9 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
       <input
         name="quantity"
         type="text"
-        value={state.quantity}
+        value={inputValue}
         onChange={handleInputChange}
+        onBlur={handleBlur} // ✅ Validate & apply limits when user finishes typing
         className="quantity__input"
         placeholder={`Min: ${state.minLimit}`}
       />
