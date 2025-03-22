@@ -6,7 +6,7 @@ const BidHistory = ({ carId }) => {
     useEffect(() => {
         const fetchBidHistory = async () => {
             try {
-                const response = await fetch(`/api/auctions/bid-history?${carId}`);
+                const response = await fetch(`https://api.carmandi.com.pk//api/auctions/bid-history?${carId}`);
                 if (!response.ok) throw new Error("Failed to fetch bid history");
 
                 const data = await response.json();
