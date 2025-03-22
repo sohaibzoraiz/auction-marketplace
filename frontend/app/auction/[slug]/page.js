@@ -2,7 +2,7 @@
 
 //import Image from 'next/image';
 import Breadcrumb2 from "../../components/common/Breadcrumb2";
-import AuctionGallery from "../../components/auction-gallary/AuctionGallery";
+import AuctionGallery from "../../components/auction-single/AuctionGallery";
 import React, { useEffect, useState, useContext, useMemo } from "react";
 import ModalVideo from "react-modal-video";
 import { UserContext } from '../../contexts/UserContext'; 
@@ -10,8 +10,9 @@ import { connectSocket, emitBid, listenForNewBids } from "../../components/socke
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
-import CountdownTimer from "../../components/CountdownTimer";
+import CountdownTimer from "../../components/auction-single/CountdownTimer";
 import HandleQuantity from "../../components/common/HandleQuantity";
+import bidHistory from "../../components/auction-single/bidHistory";
 
 
 export default function Page({ params }) {
@@ -175,7 +176,7 @@ function CarPage({ carMake, yearModel, id }) {
                
                 </div>
                 <div className="coundown-area">
-                  <h6>Auction Will Be End:</h6>
+                  <h6>Auction Will End In:</h6>
                     <CountdownTimer endTime={data.end_time}/>
                   <span><strong>Ending On:</strong> {data.end_time} </span>
                 </div>
@@ -322,36 +323,7 @@ function CarPage({ carMake, yearModel, id }) {
                 </div>
               </div>
               <div className="tab-pane fade" id="nav-add-info" role="tabpanel" aria-labelledby="nav-add-info-tab">
-                <div className="addithonal-information">
-                  <table className="table total-table2">
-                    <tbody>
-                      <tr>
-                        <td><span>SKU</span></td>
-                        <td>123ABC</td>
-                      </tr>
-                      <tr>
-                        <td><span>Category</span></td>
-                        <td>Car</td>
-                      </tr>
-                      <tr>
-                        <td><span>Tags</span></td>
-                        <td>Car, Digital Art, Book</td>
-                      </tr>
-                      <tr>
-                        <td><span>Weight</span></td>
-                        <td>20 gm</td>
-                      </tr>
-                      <tr>
-                        <td><span>Dimensions</span></td>
-                        <td>2 × 4 × 5 cm</td>
-                      </tr>
-                      <tr>
-                        <td><span>Brand</span></td>
-                        <td>BMW </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <bidHistory carId = {data.id} />
               </div>
               <div className="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
                 <div className="reviews-area">
