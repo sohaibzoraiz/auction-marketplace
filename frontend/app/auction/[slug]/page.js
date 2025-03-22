@@ -43,8 +43,10 @@ function CarPage({ carMake, yearModel, id }) {
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     const { userData = {} } = useContext(UserContext) ?? {};
-    const timer = useMemo(() => useCountdownTimer(data?.end_time), [data?.end_time]);
-    const parsedCarPhotos = useMemo(() => data?.car_photos_jsonb || [], [data?.car_photos_jsonb]);
+    const timer = useCountdownTimer(data?.end_time);
+    const parsedCarPhotos = useMemo(() => {
+        return data?.car_photos_jsonb ? [...data.car_photos_jsonb] : [];
+    }, [JSON.stringify(data?.car_photos_jsonb)]);
     
     //fetching car data from api
     useEffect(() => {
