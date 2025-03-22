@@ -12,7 +12,7 @@ import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
 import CountdownTimer from "../../components/auction-single/CountdownTimer";
 import HandleQuantity from "../../components/common/HandleQuantity";
-import bidHistory from "../../components/auction-single/bidHistory";
+import BidHistory from "../../components/auction-single/bidHistory";
 
 
 export default function Page({ params }) {
@@ -323,7 +323,7 @@ function CarPage({ carMake, yearModel, id }) {
                 </div>
               </div>
               <div className="tab-pane fade" id="nav-add-info" role="tabpanel" aria-labelledby="nav-add-info-tab">
-                <bidHistory carId={data.id}/>
+                <BidHistory carId={data.id}/>
               </div>
               <div className="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
                 <div className="reviews-area">
