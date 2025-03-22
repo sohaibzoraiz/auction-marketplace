@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const BidHistory = ({ carId }) => {
     const [bids, setBids] = useState([]);
-    console.log(carId);
+   // console.log(carId);
     useEffect(() => {
         if (!carId) return; // ✅ Prevents API call if carId is not available
     

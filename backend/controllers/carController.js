@@ -375,7 +375,7 @@ async function deleteAuctionListing(req, res) {
 const getBidHistory = async (req, res) => {
     try {
         const { carId } = req.query;
-        console.log("Car ID:", carId);
+       // console.log("Car ID:", carId);
         const result = await pool.query(
             `SELECT b.amount, b.created_at, u.name 
              FROM bids b
@@ -384,7 +384,7 @@ const getBidHistory = async (req, res) => {
              ORDER BY b.created_at DESC`,
             [carId]
         );
-        console.log("Bid history:", result.rows);
+        // console.log("Bid history:", result.rows);
         res.json(result.rows);
     } catch (error) {
         console.error("Error fetching bid history:", error);
