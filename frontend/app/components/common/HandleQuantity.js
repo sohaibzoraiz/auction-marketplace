@@ -60,7 +60,14 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
     showMinLimitMessage: false,
   });
 
-  // ✅ Update parent component when quantity changes
+  const [inputValue, setInputValue] = useState(state.quantity.toString());
+
+  // ✅ Sync input value with state when it changes
+  useEffect(() => {
+    setInputValue(state.quantity.toString());
+  }, [state.quantity]);
+
+  // ✅ Notify parent component when quantity changes
   useEffect(() => {
     if (state.quantity !== "") {
       onQuantityChange(state.quantity);
@@ -76,8 +83,6 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
 
   const increment = () => dispatch({ type: "INCREMENT" });
   const decrement = () => dispatch({ type: "DECREMENT" });
-
-  const [inputValue, setInputValue] = useState(state.quantity.toString());
 
   // ✅ Allow typing normally, don't force update immediately
   const handleInputChange = (e) => {
