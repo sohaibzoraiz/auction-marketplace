@@ -121,7 +121,7 @@ function CarPage({ carMake, yearModel, id }) {
         setCurrentBid(currentBid + 10000);
     };
    */
-    const handleBid = async (carid, bidAmmount) => {
+    const handleBid = async (carid) => {
         console.log("checking bid for car:", currentBid);
         if (!userData) {
             window.location.href = `/login?redirect=${window.location.pathname}`;
@@ -135,7 +135,7 @@ function CarPage({ carMake, yearModel, id }) {
     
         try {
             await connectSocket(); // Wait for socket connection
-            emitBid(carid, bidAmmount); // Emit bid event
+            emitBid(carid); // Emit bid event
         } catch (error) {
             console.error("Failed to connect socket:", error);
         }
@@ -174,7 +174,7 @@ function CarPage({ carMake, yearModel, id }) {
                   <div className="quantity-counter-and-btn-area">
                   <HandleQuantity currentPrice={currentBid} onQuantityChange={setCurrentBid} />
 
-                    <button className="primary-btn btn-hover" onClick={() => handleBid(data.id, currentBid)}>
+                    <button className="primary-btn btn-hover" onClick={() => handleBid(data.id)}>
                       Place Bid
                       <span style={{ top: '40.5px', left: '84.2344px' }} />
                     </button>

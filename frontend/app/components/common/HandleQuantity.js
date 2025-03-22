@@ -17,14 +17,17 @@ function quantityReducer(state, action) {
   }
 }
 
-function HandleQuantity({ currentPrice }) {
+function HandleQuantity({ currentPrice, onQuantityChange }) {
   // Initialize state with a specific quantity
   const initialQuantity = currentPrice || 1; // ✅ Ensure a default value
 
   const [state1, dispatch1] = useReducer(quantityReducer, {
     quantity: initialQuantity,
   });
-
+  useEffect(() => {
+    onQuantityChange(state1.quantity);  // ✅ Notify parent of changes
+  }, [state1.quantity, onQuantityChange]);
+  
   const increment1 = () => {
     dispatch1({ type: "INCREMENT" });
   };
