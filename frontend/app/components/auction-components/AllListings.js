@@ -1199,7 +1199,7 @@ function AllListings({ listings }) {
                                             <div className="auction-card-content">
                                                 <h6>
                                                     <Link href="/car-auction/auction-details">
-                                                        Genesis motors pioneering on tomorrow's drive.
+                                                        Genesis motors pioneering on tomorrow&aposs drive.
                                                     </Link>
                                                 </h6>
                                                 <div className="price-and-code-area">
