@@ -1,5 +1,5 @@
 "use client";
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect } from "react";
 
 // Reducer function to manage quantity state
 function quantityReducer(state, action) {
