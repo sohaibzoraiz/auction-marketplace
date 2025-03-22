@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (endTime) => {
+  if (!endTime) return { days: "00", hours: "00", minutes: "00", seconds: "00" };
+
   const currentTime = new Date();
   const timeDifference = new Date(endTime) - currentTime;
 
@@ -17,27 +19,36 @@ const calculateTimeRemaining = (endTime) => {
   };
 };
 
-// Custom hook to track countdown timers for multiple items
-export function useCountdownTimer(listings) {
-  const [timers, setTimers] = useState({});
-
-  useEffect(() => {
-    if (!Array.isArray(listings) || listings.length === 0) return;
-
-    const updateTimers = () => {
-      setTimers(
-        listings.reduce((acc, listing) => {
+// Custom hook to handle both single and multiple listings
+export function useCountdownTimer(input) {
+  const [timeLeft, setTimeLeft] = useState(
+    Array.isArray(input)
+      ? input.reduce((acc, listing) => {
           acc[listing.id] = calculateTimeRemaining(listing.end_time);
           return acc;
         }, {})
+      : calculateTimeRemaining(input)
+  );
+
+  useEffect(() => {
+    if (!input) return;
+
+    const updateTimer = () => {
+      setTimeLeft(
+        Array.isArray(input)
+          ? input.reduce((acc, listing) => {
+              acc[listing.id] = calculateTimeRemaining(listing.end_time);
+              return acc;
+            }, {})
+          : calculateTimeRemaining(input)
       );
     };
 
-    updateTimers(); // Initial calculation
-    const interval = setInterval(updateTimers, 1000); // Update every second
+    updateTimer(); // Initial calculation
+    const interval = setInterval(updateTimer, 1000); // Update every second
 
     return () => clearInterval(interval);
-  }, [listings]);
+  }, [input]);
 
-  return timers;
+  return timeLeft;
 }

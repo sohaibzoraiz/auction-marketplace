@@ -7,11 +7,10 @@ import React, { useEffect, useState, useContext, useMemo } from "react";
 import ModalVideo from "react-modal-video";
 import { UserContext } from '../../contexts/UserContext'; 
 import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
-import CountdownTimer from '../../components/CountdownTimer';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
-//import { useMemo } from "react";
+import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
 import HandleQuantity from "../../components/common/HandleQuantity";
 
 
@@ -114,7 +113,7 @@ function CarPage({ carMake, yearModel, id }) {
     
     if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
-
+    const timer = useCountdownTimer(data.end_time);
     const parsedCarPhotos = data.car_photos_jsonb || [];
 
     /*const increaseBid = () => {
@@ -154,38 +153,38 @@ function CarPage({ carMake, yearModel, id }) {
             </div>
             <div className="col-xl-5">
               <div className="auction-details-content">
-                <div className="batch">
+                {/*<div className="batch">
                   <span>Lot: # 25896742</span>
-                </div>
+                </div>*/}
                 <h1>{data.car_make} {data.year_model}</h1>
                 <p>Aptent tacit sociosq  litor torquen per conubia nostra, per incep placerat felis non aliquam.Mauris nec justo vitae ante auctor.</p>
                 <div className="price-area">
-                  <span>Current Bid at: <strong>{data.current_bid}</strong></span>
+                  <span>Current Bid at: <strong>PKR {data.current_bid}</strong></span>
                
                 </div>
                 <div className="coundown-area">
                   <h6>Auction Will Be End:</h6>
                   <div className="countdown-timer">
                     <ul data-countdown="2024-08-24 12:00:00">
-                      <li data-days={0}>{CountdownTimer.days} <span>Days</span> <span>Days</span></li>
+                      <li data-days={0}>{timer.days} <span>Days</span> <span>Days</span></li>
                       <li className="clone">
                         <svg xmlns="http://www.w3.org/2000/svg" width={4} height={13} viewBox="0 0 4 13">
                           <path d="M0 11.0633C0 11.5798 0.186992 12.0317 0.560976 12.419C0.95122 12.8063 1.43089 13 2 13C2.58537 13 3.06504 12.8063 3.43903 12.419C3.81301 12.0317 4 11.5798 4 11.0633C4 10.5146 3.81301 10.0546 3.43903 9.68343C3.06504 9.29609 2.58537 9.10242 2 9.10242C1.43089 9.10242 0.95122 9.29609 0.560976 9.68343C0.186992 10.0546 0 10.5146 0 11.0633ZM0 1.96089C0 2.49348 0.186992 2.95345 0.560976 3.34078C0.95122 3.72812 1.43089 3.92179 2 3.92179C2.58537 3.92179 3.06504 3.72812 3.43903 3.34078C3.81301 2.95345 4 2.49348 4 1.96089C4 1.42831 3.81301 0.968343 3.43903 0.581006C3.06504 0.193669 2.58537 0 2 0C1.43089 0 0.95122 0.193669 0.560976 0.581006C0.186992 0.968343 0 1.42831 0 1.96089Z" />
                         </svg>
                       </li>
-                      <li data-hours={0}>{CountdownTimer.hours} <span>Hours</span> <span>Hours</span></li>
+                      <li data-hours={0}>{timer.hours} <span>Hours</span> <span>Hours</span></li>
                       <li className="clone">
                         <svg xmlns="http://www.w3.org/2000/svg" width={4} height={13} viewBox="0 0 4 13">
                           <path d="M0 11.0633C0 11.5798 0.186992 12.0317 0.560976 12.419C0.95122 12.8063 1.43089 13 2 13C2.58537 13 3.06504 12.8063 3.43903 12.419C3.81301 12.0317 4 11.5798 4 11.0633C4 10.5146 3.81301 10.0546 3.43903 9.68343C3.06504 9.29609 2.58537 9.10242 2 9.10242C1.43089 9.10242 0.95122 9.29609 0.560976 9.68343C0.186992 10.0546 0 10.5146 0 11.0633ZM0 1.96089C0 2.49348 0.186992 2.95345 0.560976 3.34078C0.95122 3.72812 1.43089 3.92179 2 3.92179C2.58537 3.92179 3.06504 3.72812 3.43903 3.34078C3.81301 2.95345 4 2.49348 4 1.96089C4 1.42831 3.81301 0.968343 3.43903 0.581006C3.06504 0.193669 2.58537 0 2 0C1.43089 0 0.95122 0.193669 0.560976 0.581006C0.186992 0.968343 0 1.42831 0 1.96089Z" />
                         </svg>
                       </li>
-                      <li data-minutes={0}>{CountdownTimer.minutes} <span>Mint</span> <span>Minutes</span></li>
+                      <li data-minutes={0}>{timer.minutes} <span>Mint</span> <span>Minutes</span></li>
                       <li className="clone">
                         <svg xmlns="http://www.w3.org/2000/svg" width={4} height={13} viewBox="0 0 4 13">
                           <path d="M0 11.0633C0 11.5798 0.186992 12.0317 0.560976 12.419C0.95122 12.8063 1.43089 13 2 13C2.58537 13 3.06504 12.8063 3.43903 12.419C3.81301 12.0317 4 11.5798 4 11.0633C4 10.5146 3.81301 10.0546 3.43903 9.68343C3.06504 9.29609 2.58537 9.10242 2 9.10242C1.43089 9.10242 0.95122 9.29609 0.560976 9.68343C0.186992 10.0546 0 10.5146 0 11.0633ZM0 1.96089C0 2.49348 0.186992 2.95345 0.560976 3.34078C0.95122 3.72812 1.43089 3.92179 2 3.92179C2.58537 3.92179 3.06504 3.72812 3.43903 3.34078C3.81301 2.95345 4 2.49348 4 1.96089C4 1.42831 3.81301 0.968343 3.43903 0.581006C3.06504 0.193669 2.58537 0 2 0C1.43089 0 0.95122 0.193669 0.560976 0.581006C0.186992 0.968343 0 1.42831 0 1.96089Z" />
                         </svg>
                       </li>
-                      <li data-seconds={0}>{CountdownTimer.seconds} <span>Sec</span> <span>Seconds</span></li>
+                      <li data-seconds={0}>{timer.seconds} <span>Sec</span> <span>Seconds</span></li>
                     </ul>
                   </div>
                   <span><strong>Ending On:</strong> August 22, 2024 11:42 am</span>
@@ -571,19 +570,19 @@ function CarPage({ carMake, yearModel, id }) {
                           </ul>
                           <div className="countdown-timer">
                             <ul data-countdown="2024-10-10 12:00:00">
-                              <li className="times" data-days={0}>{CountdownTimer.days}<span>Days</span></li>
+                              <li className="times" data-days={0}>{timer.days}<span>Days</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-hours={0}>{CountdownTimer.hours}<span>Hours</span></li>
+                              <li className="times" data-hours={0}>{timer.hours}<span>Hours</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-minutes={0}>{CountdownTimer.minutes}<span>Min</span></li>
+                              <li className="times" data-minutes={0}>{timer.minutes}<span>Min</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-seconds={0}>{CountdownTimer.seconds}<span>Sec</span></li>
+                              <li className="times" data-seconds={0}>{timer.seconds}<span>Sec</span></li>
                             </ul>
                           </div>
                         </div>
@@ -631,19 +630,19 @@ function CarPage({ carMake, yearModel, id }) {
                           </ul>
                           <div className="countdown-timer">
                           <ul data-countdown="2024-10-10 12:00:00">
-                              <li className="times" data-days={0}>{CountdownTimer.days}<span>Days</span></li>
+                              <li className="times" data-days={0}>{timer.days}<span>Days</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-hours={0}>{CountdownTimer.hours}<span>Hours</span></li>
+                              <li className="times" data-hours={0}>{timer.hours}<span>Hours</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-minutes={0}>{CountdownTimer.minutes}<span>Min</span></li>
+                              <li className="times" data-minutes={0}>{timer.minutes}<span>Min</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-seconds={0}>{CountdownTimer.seconds}<span>Sec</span></li>
+                              <li className="times" data-seconds={0}>{timer.seconds}<span>Sec</span></li>
                             </ul>
                           </div>
                         </div>
@@ -694,19 +693,19 @@ function CarPage({ carMake, yearModel, id }) {
                           </ul>
                           <div className="countdown-timer">
                           <ul data-countdown="2024-10-10 12:00:00">
-                              <li className="times" data-days={0}>{CountdownTimer.days}<span>Days</span></li>
+                              <li className="times" data-days={0}>{timer.days}<span>Days</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-hours={0}>{CountdownTimer.hours}<span>Hours</span></li>
+                              <li className="times" data-hours={0}>{timer.hours}<span>Hours</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-minutes={0}>{CountdownTimer.minutes}<span>Min</span></li>
+                              <li className="times" data-minutes={0}>{timer.minutes}<span>Min</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-seconds={0}>{CountdownTimer.seconds}<span>Sec</span></li>
+                              <li className="times" data-seconds={0}>{timer.seconds}<span>Sec</span></li>
                             </ul>
                           </div>
                         </div>
@@ -754,19 +753,19 @@ function CarPage({ carMake, yearModel, id }) {
                           </ul>
                           <div className="countdown-timer">
                           <ul data-countdown="2024-10-10 12:00:00">
-                              <li className="times" data-days={0}>{CountdownTimer.days}<span>Days</span></li>
+                              <li className="times" data-days={0}>{timer.days}<span>Days</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-hours={0}>{CountdownTimer.hours}<span>Hours</span></li>
+                              <li className="times" data-hours={0}>{timer.hours}<span>Hours</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-minutes={0}>{CountdownTimer.minutes}<span>Min</span></li>
+                              <li className="times" data-minutes={0}>{timer.minutes}<span>Min</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-seconds={0}>{CountdownTimer.seconds}<span>Sec</span></li>
+                              <li className="times" data-seconds={0}>{timer.seconds}<span>Sec</span></li>
                             </ul>
                           </div>
                         </div>
@@ -814,19 +813,19 @@ function CarPage({ carMake, yearModel, id }) {
                           </ul>
                           <div className="countdown-timer">
                           <ul data-countdown="2024-10-10 12:00:00">
-                              <li className="times" data-days={0}>{CountdownTimer.days}<span>Days</span></li>
+                              <li className="times" data-days={0}>{timer.days}<span>Days</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-hours={0}>{CountdownTimer.hours}<span>Hours</span></li>
+                              <li className="times" data-hours={0}>{timer.hours}<span>Hours</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-minutes={0}>{CountdownTimer.minutes}<span>Min</span></li>
+                              <li className="times" data-minutes={0}>{timer.minutes}<span>Min</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-seconds={0}>{CountdownTimer.seconds}<span>Sec</span></li>
+                              <li className="times" data-seconds={0}>{timer.seconds}<span>Sec</span></li>
                             </ul>
                           </div>
                         </div>
@@ -877,19 +876,19 @@ function CarPage({ carMake, yearModel, id }) {
                           </ul>
                           <div className="countdown-timer">
                           <ul data-countdown="2024-10-10 12:00:00">
-                              <li className="times" data-days={0}>{CountdownTimer.days}<span>Days</span></li>
+                              <li className="times" data-days={0}>{timer.days}<span>Days</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-hours={0}>{CountdownTimer.hours}<span>Hours</span></li>
+                              <li className="times" data-hours={0}>{timer.hours}<span>Hours</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-minutes={0}>{CountdownTimer.minutes}<span>Min</span></li>
+                              <li className="times" data-minutes={0}>{timer.minutes}<span>Min</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-seconds={0}>{CountdownTimer.seconds}<span>Sec</span></li>
+                              <li className="times" data-seconds={0}>{timer.seconds}<span>Sec</span></li>
                             </ul>
                           </div>
                         </div>
@@ -937,19 +936,19 @@ function CarPage({ carMake, yearModel, id }) {
                           </ul>
                           <div className="countdown-timer">
                           <ul data-countdown="2024-10-10 12:00:00">
-                              <li className="times" data-days={0}>{CountdownTimer.days}<span>Days</span></li>
+                              <li className="times" data-days={0}>{timer.days}<span>Days</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-hours={0}>{CountdownTimer.hours}<span>Hours</span></li>
+                              <li className="times" data-hours={0}>{timer.hours}<span>Hours</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-minutes={0}>{CountdownTimer.minutes}<span>Min</span></li>
+                              <li className="times" data-minutes={0}>{timer.minutes}<span>Min</span></li>
                               <li className="colon">
                                 :
                               </li>
-                              <li className="times" data-seconds={0}>{CountdownTimer.seconds}<span>Sec</span></li>
+                              <li className="times" data-seconds={0}>{timer.seconds}<span>Sec</span></li>
                             </ul>
                           </div>
                         </div>
@@ -1010,7 +1009,7 @@ function CarPage({ carMake, yearModel, id }) {
 
                 //Countdown Timer 
                 <div className="flex gap-2">
-                    <CountdownTimer endTime={data.end_time} />
+                    <timer endTime={data.end_time} />
                 </div>
 
                 // Bid Input and Button 
