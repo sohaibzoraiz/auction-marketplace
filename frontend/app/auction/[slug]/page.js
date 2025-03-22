@@ -15,7 +15,7 @@ import HandleQuantity from "../../components/common/HandleQuantity";
 
 
 export default function Page({ params }) {
-    console.log("Page component mounted or re-rendered");
+    //console.log("Page component mounted or re-rendered");
     const [resolvedParams, setResolvedParams] = useState(null);
     
     
@@ -42,13 +42,9 @@ function CarPage({ carMake, yearModel, id }) {
     //console.log("CarPage component mounted or re-rendered");
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
-    //const [countdown, setCountdown] = useState(null); // Initialize 
     const { userData = {} } = useContext(UserContext) ?? {};
-    //const [endTime, setEndTime] = useState(null);
-    //const intervalIdRef = useRef(null);
-    //const { placeBid } = useBidding();
-    const timer = useCountdownTimer(data?.end_time || null);
-    //console.log(timer);
+    const endTime = useMemo(() => data?.end_time || null, [data?.end_time]);
+    const timer = useCountdownTimer(endTime);
     
     //fetching car data from api
     useEffect(() => {
@@ -117,7 +113,8 @@ function CarPage({ carMake, yearModel, id }) {
     if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
     
-    const parsedCarPhotos = data.car_photos_jsonb || [];
+    const parsedCarPhotos = useMemo(() => data?.car_photos_jsonb || [], [data?.car_photos_jsonb]);
+
     
 
     /*const increaseBid = () => {
