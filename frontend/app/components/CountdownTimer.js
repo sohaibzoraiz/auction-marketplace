@@ -1,37 +1,12 @@
-//import React, { useState, useEffect } from 'react';
-import { useCountdownTimer } from '@/customHooks/useCountdownTimer';
+import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
 
-function CountdownTimerComponent({ endTime }) {
-    console.log(endTime);
-    const timer = useCountdownTimer(endTime);
-    console.log(timer);
-   /* useEffect(() => {
-        if (!endTime) return;
+const CountdownTimer = ({ endTime }) => {
+  console.log("Received endTime:", endTime);
+  const timer = useCountdownTimer(endTime);
+  console.log("Updated Timer:", timer);
 
-        const intervalId = setInterval(() => {
-            setCountdown(calculateTimeLeft(endTime));
-        }, 1000);
+  if (!timer) return null; // Prevents breaking if timer is undefined
 
-        return () => clearInterval(intervalId);
-    }, [endTime]);
-
-    function calculateTimeLeft(endTime) {
-        if (!endTime) return 'Loading...';
-
-        const now = new Date();
-        const diff = new Date(endTime).getTime() - now.getTime();
-
-        if (diff <= 0) {
-            return 'Auction Ended';
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        return `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;*/
-    
 
     return (
           <div className="countdown-timer">
@@ -59,7 +34,5 @@ function CountdownTimerComponent({ endTime }) {
                   </div>
     );
 }
-
-const CountdownTimer = React.memo(CountdownTimerComponent);
 
 export default CountdownTimer;
