@@ -44,10 +44,10 @@ function CarPage({ carMake, yearModel, id }) {
     const [currentBid, setCurrentBid] = useState(0);
     //const [countdown, setCountdown] = useState(null); // Initialize 
     const { userData = {} } = useContext(UserContext) ?? {};
-    const [endTime, setEndTime] = useState(null);
+    //const [endTime, setEndTime] = useState(null);
     //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
-    const timer = useCountdownTimer(endTime);
+    const timer = useCountdownTimer(data?.end_time || null);
     console.log(console.log(timer));
     
     //fetching car data from api
