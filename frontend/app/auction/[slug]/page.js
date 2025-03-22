@@ -44,6 +44,7 @@ function CarPage({ carMake, yearModel, id }) {
     const [currentBid, setCurrentBid] = useState(0);
     //const [countdown, setCountdown] = useState(null); // Initialize 
     const { userData = {} } = useContext(UserContext) ?? {};
+    const [endTime, setEndTime] = useState(null);
     //const intervalIdRef = useRef(null);
     //const { placeBid } = useBidding();
     console.log(userData);
@@ -61,6 +62,7 @@ function CarPage({ carMake, yearModel, id }) {
                 setData(result);
                 console.log("Data in useEffect:", result); // Debugging log
                 setCurrentBid(parseFloat(result.current_bid || 0));
+                setEndTime(data.end_time);
             } catch (error) {
                 console.error("Failed to fetch car data:", error);
             }
@@ -113,8 +115,9 @@ function CarPage({ carMake, yearModel, id }) {
     
     if (!data) return <div>Loading...</div>;
     //if (!userData) return <div>Loading...</div>;
-    const timer = useCountdownTimer(data?.end_time || null);
+    
     const parsedCarPhotos = data.car_photos_jsonb || [];
+    const timer = useCountdownTimer(endTime);
 
     /*const increaseBid = () => {
         setCurrentBid(currentBid + 10000);
