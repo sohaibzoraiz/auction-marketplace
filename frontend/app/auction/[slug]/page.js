@@ -191,7 +191,7 @@ function CarPage({ carMake, yearModel, id }) {
                       <li data-seconds={0}>{timer.seconds} <span>Sec</span> <span>Seconds</span></li>
                     </ul>
                   </div>
-                  <span><strong>Ending On:</strong> August 22, 2024 11:42 am</span>
+                  <span><strong>Ending On:</strong> {data.end_time} </span>
                 </div>
                 <div className="quantity-area">
                   <h6>Your Max Bid:</h6>
