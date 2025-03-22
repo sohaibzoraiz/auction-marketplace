@@ -17,9 +17,10 @@ function quantityReducer(state, action) {
   }
 }
 
-function HandleQuantity(currentPrice) {
+function HandleQuantity({ currentPrice }) {
   // Initialize state with a specific quantity
-  const initialQuantity = currentPrice;
+  const initialQuantity = currentPrice || 1; // ✅ Ensure a default value
+
   const [state1, dispatch1] = useReducer(quantityReducer, {
     quantity: initialQuantity,
   });
