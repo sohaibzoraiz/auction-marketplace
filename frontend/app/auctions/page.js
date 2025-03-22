@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import AllListings from '../components/auction-components/AllListings';
 import Breadcrumb2 from "../components/common/Breadcrumb2";
 
-function auctions() {
+function Auctions() {
     const [allListings, setAllListings] = useState([]);
 
     useEffect(() => {
