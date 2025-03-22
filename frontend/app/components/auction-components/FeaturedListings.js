@@ -222,13 +222,10 @@ function FeaturedListings({ listings }) {
                         </div>
                       </div>
                       <div className="auction-card-content">
-                        <h6><Link href="/car-auction/auction-details">Genesis motors pioneering on tomorrow&apos;s drive.</Link></h6>
+                        <h6><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`}>{listing.car_make}</Link></h6>
                         <div className="price-and-code-area">
-                          <div className="price">
-                            <span>Current Bid at:</span>
-                            <strong>$4,648</strong>
-                          </div>
-                          <Link href="/car-auction/auction-details2" className="bid-btn">Notify Me</Link>
+                          <div className="price"><span>Current Bid at:</span> <strong>${listing.current_bid || "N/A"}</strong></div>
+                          <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
                         </div>
                       </div>
                     </div>
