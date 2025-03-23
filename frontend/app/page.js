@@ -11,14 +11,13 @@ import FeaturedListings from './components/auction-components/FeaturedListings';
 import Home2ProcessSection from "./components/process-section/Home2ProcessSection";
 //import Home2Testimonial from "./components/testimonial/Home2Testimonial";
 import Home2Faq from "./components/faq/Home2Faq";
-//import Footer2 from "./components/footer/Footer2";
+
 
 
 
 function HomePage() {
     const [featuredListings, setFeaturedListings] = useState([]);
     const [latestListings, setlatestListings] = useState([]);
-   // const [allListings, setAllListings] = useState([]);
 
     useEffect(() => {
         const fetchListings = async () => {
@@ -53,21 +52,7 @@ function HomePage() {
                     const text = await latestResponse.text();
                     console.log('Non-JSON response:', text);
                 }
-                /* Fetch all listings
-                const allResponse = await fetch('/api/auctions');
-                if (!allResponse.ok) {
-                    console.error('Error fetching all listings:', allResponse.statusText);
-                    return;
-                }
-
-                try {
-                    const allData = await allResponse.json();
-                    setAllListings(allData);
-                } catch (error) {
-                    console.error('Error parsing JSON:', error);
-                    const text = await allResponse.text();
-                    console.log('Non-JSON response:', text);
-                }*/
+                
             } catch (error) {
                 console.error('Error fetching listings:', error);
             }

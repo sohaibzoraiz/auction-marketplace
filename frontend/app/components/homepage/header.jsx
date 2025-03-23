@@ -96,7 +96,7 @@ const Header = () => {
                   <Link href="/how-to-buy">HOW TO BID</Link>
                 </li>
                 <li>
-                  <Link href="/how-to-sell">SELL YOUR ITEM</Link>
+                  <Link href="/how-to-sell">HOW TO SELL</Link>
                 </li>
               </ul>
               <div className="language-area">
@@ -158,124 +158,31 @@ const Header = () => {
                 </Link>
            
               </li>
-              <li
-               className={`menu-item-has-children ${pathName === "/auction-grid"&& "/auction-sidebar"&&"/auction-details"&&"/auction-details2" ? "active" : ""
-               }`}
-              >
-                <Link href="/auction-grid" className="drop-down">
+
+              <li className={pathName==="/auctions"?"active":""}> 
+              
+                <Link href="/auctions" className="drop-down">
                   Auctions
                 </Link>
-                <i
-                  className={`dropdown-icon ${state.activeMenu === "auction" ? "bi bi-dash" : "bi bi-plus"
-                    }`}
-                  onClick={() => collapseMenu("auction")}
-                />
-                <ul
-                  className={`sub-menu ${state.activeMenu === "auction" ? "d-block" : ""
-                    }`}
-                >
-                  <li className={pathName==="/auction-grid"?"active":""}>
-                    <Link href="/auction-grid">Auctions Grid</Link>
-                  </li>
-                  <li className={pathName==="/auction-sidebar"?"active":""}>
-                    <Link href="/auction-sidebar">Auctions Sidebar</Link>
-                  </li>
-                  <li className={pathName==="/auction-details"?"active":""}>
-                    <Link href="/auction-details">
-                      Auctions Details Style 01
-                    </Link>
-                  </li>
-                  <li className={pathName==="/auction-details2"?"active":""}>
-                    <Link href="/auction-details2">
-                      Auctions Details Style 02
-                    </Link>
-                  </li>
-                </ul>
+           
               </li>
-              <li className={`menu-item-has-children ${pathName === "/blog-grid"&& "/blog-standard"&&"/blog-details"? "active" : ""
-                    }`}>
-                <Link href="/blog-grid" className="drop-down">
-                  Blog
+
+              <li className={pathName==="/sell-your-car"?"active":""}> 
+              
+                <Link href="/sell-your-car" className="drop-down">
+                  Sell Your Car
                 </Link>
-                <i
-                  className={`dropdown-icon ${state.activeMenu === "blog" ? "bi bi-dash" : "bi bi-plus"
-                    }`}
-                  onClick={() => collapseMenu("blog")}
-                />
-                <ul
-                  className={`sub-menu ${state.activeMenu === "blog" ? "d-block" : ""
-                    }`}
-                >
-                  <li className={pathName==="/blog-grid"?"active":""}>
-                    <Link href="/blog-grid">Blog Grid</Link>
-                  </li>
-                  <li className={pathName==="/blog-standard"?"active":""}>
-                    <Link href="/blog-standard">Blog Standard</Link>
-                  </li>
-                  <li className={pathName==="/blog-details"?"active":""}>
-                    <Link href="/blog-details">Blog Details</Link>
-                  </li>
-                </ul>
+           
               </li>
-              <li className="menu-item-has-children">
-                <a href="#" className="drop-down">
-                  Pages
-                </a>
-                <i
-                  className={`dropdown-icon ${state.activeMenu === "page" ? "bi bi-dash" : "bi bi-plus"
-                    }`}
-                  onClick={() => collapseMenu("page")}
-                />
-                <ul
-                  className={`sub-menu ${state.activeMenu === "page" ? "d-block" : ""
-                    }`}
-                >
-                  <li className={pathName==="/about"?"active":""}>
-                    <Link href="/about">About</Link>
-                  </li>
-                  <li className={pathName==="/category"?"active":""}>
-                    <Link href="/category">Category</Link>
-                  </li>
-                  <li className={pathName==="/seller"?"active":""}>
-                    <Link href="store-list">Seller</Link>
-                    <i
-                      className="d-lg-flex d-none bi bi-chevron-right dropdown-icon"
-                      onClick={() => toggleSubMenu("seller")}
-                    />
-                    <i
-                      className={`d-lg-none d-flex bi bi-${state.activeSubMenu === "seller" ? "dash" : "plus"
-                        } dropdown-icon`}
-                      onClick={() => toggleSubMenu("seller")}
-                    />
-                    <ul
-                      className={`sub-menu ${state.activeSubMenu === "seller" ? "d-block" : ""
-                        }`}
-                    >
-                      <li className={pathName==="/store-list"?"active":""}>
-                        <Link href="store-list">Seller List</Link>
-                      </li>
-                      <li className={pathName==="/store-details"?"active":""}>
-                        <Link href="store-details">Seller Details</Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className={pathName==="/how-to-sell"?"active":""}>
-                    <Link href="/how-to-sell">How To Sell</Link>
-                  </li>
-                  <li className={pathName==="/how-to-buy"?"active":""}>
-                    <Link href="/how-to-buy">How to Bid</Link>
-                  </li>
-                  <li className={pathName==="/dashboard"?"active":""}>
-                    <Link href="/dashboard">Dashbaord</Link>
-                  </li>
-                  <li className={pathName==="/faq"?"active":""}>
-                    <Link href="/faq">Faqs</Link>
-                  </li>
-                  <li>
-                    <Link href="/error">Error</Link>
-                  </li>
-                </ul>
-              </li>
+
+              <li className={pathName==="/about"?"active":""}> 
+              
+                <Link href="/about" className="drop-down">
+                  About
+                </Link>
+           
+              </li>       
+                  
               <li className={pathName==="/contact"?"active":""}> 
                 <Link href="/contact" className="drop-down">
                   Contact
