@@ -100,7 +100,7 @@ const socketHandler = (httpServer) => {
             try {
                 
                 // Update auctions table
-                const currentBid = await pool.query('SELECT current_bid FROM auctions WHERE id = $1', [auctionId]);
+                const currentBid = await pool.query('SELECT current_bid FROM auctions WHERE car_id = $1', [auctionId]);
                 if (amount <= currentBid.rows[0].current_bid) {
                     socket.emit('error', 'Bid must be higher than the current bid.');
                     return;
