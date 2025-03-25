@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 15, "column": 0}, "map": {"version":3,"sources":["file:///Users/sohaibmurtaz/auction-marketplace/admin/src/app/providers.tsx"],"sourcesContent":["\"use client\";\n\nimport { SessionProvider } from \"next-auth/react\";\nimport { ThemeProvider } from \"next-themes\";\n\nexport function Providers({ children }: { children: React.ReactNode }) {\n  return (\n    <ThemeProvider defaultTheme=\"light\" attribute=\"class\">\n      <SessionProvider>{children}</SessionProvider>\n    </ThemeProvider>\n  );\n}\n"],"names":[],"mappings":";;;;AAEA;AACA;AAHA;;;;AAKO,SAAS,UAAU,EAAE,QAAQ,EAAiC;IACnE,qBACE,8OAAC,gJAAA,CAAA,gBAAa;QAAC,cAAa;QAAQ,WAAU;kBAC5C,cAAA,8OAAC,8IAAA,CAAA,kBAAe;sBAAE;;;;;;;;;;;AAGxB"}},
+    {"offset": {"line": 42, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

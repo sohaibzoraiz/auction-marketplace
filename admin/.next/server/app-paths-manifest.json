@@ -1,0 +1,6 @@
+{
+  "/(site)/(home)/page": "app/(site)/(home)/page.js",
+  "/icon.svg/route": "app/icon.svg/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/(site)/ui-elements/videos/page": "app/(site)/ui-elements/videos/page.js"
+}

@@ -1,0 +1,9 @@
+{
+  "app": {
+    "[project]/src/app/(site)/(home)/page": [],
+    "[project]/src/app/(site)/ui-elements/videos/page": []
+  },
+  "appUsingSizeAdjust": false,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}
