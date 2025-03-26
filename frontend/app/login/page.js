@@ -1,8 +1,9 @@
 "use client"
-import React, { useState } from "react";
+//import React, { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+//import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
 function LoginPage() {
@@ -10,7 +11,16 @@ function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const { setUserData } = useContext(UserContext) ?? {};
+    const { userData, setUserData, isLoading } = useContext(UserContext) ?? {};
+    useEffect(() => {
+      if (!isLoading && userData) {
+          const originalUrl = new URLSearchParams(window.location.search).get("redirect") || "/";
+          router.push(originalUrl); // Redirect to previous page or home
+      }
+  }, [isLoading, userData, router]);
+  
+
+
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -43,6 +53,9 @@ function LoginPage() {
             setError(error.message);
         }
     }
+    if (isLoading) return <p>Loading...</p>;
+    if (userData) return null;
+
 
     return (
         <div className="container pt-110 mb-110">

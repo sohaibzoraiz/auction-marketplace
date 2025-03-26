@@ -77,10 +77,10 @@ function FeaturedListings({ listings }) {
           </div>
           <div className="row wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
             <div className="col-lg-12">
-              <Swiper {...settings} className="swiper home2-upcoming-auction-slider ">
+                <Swiper {...settings} className="swiper home2-upcoming-auction-slider ">
                 <div className="swiper-wrapper">
                 {listings.length > 0 ? (
-              listings.map((listing) => {
+                listings.map((listing) => {
                 const timer = timers[listing.id] || { days: "00", hours: "00", minutes: "00", seconds: "00" };
                 return (
                   <SwiperSlide key={listing.id} className="swiper-slide">
@@ -136,11 +136,11 @@ function FeaturedListings({ listings }) {
                     </div>
                   </SwiperSlide>
                   
-                );
-              })
-            ) : (
-              <p>No latest auctions available.</p>
-            )}
+                    );
+                  })
+                  ) : (
+                     <p>No latest auctions available.</p>
+                    )}
                   </div>
                   </Swiper>
                 </div>
