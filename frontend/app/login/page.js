@@ -96,7 +96,7 @@ function LoginPage() {
               </form>
               <div className="text-center mt-3">
                 <Link href="/register" className="text-decoration-none">
-                  Don't have an account? Register Here!
+                  Don&apos;t have an account? Register Here!
                 </Link>
               </div>
             </div>
