@@ -169,109 +169,158 @@ function CreateAuctionPage() {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-md">
-            <h1>Create New Auction</h1>
-            <form onSubmit={handleSubmit}>
-                {/* Form inputs remain same */}
-                <div className="mb-4">
-                    <label htmlFor="city" className="block text-sm font-medium text-gray-700">City:</label>
-                    <input type="text" id="city" name="city" value={formData.city} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="carMake" className="block text-sm font-medium text-gray-700">Car Make:</label>
-                    <input type="text" id="carMake" name="carMake" value={formData.carMake} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="yearModel" className="block text-sm font-medium text-gray-700">Year Model:</label>
-                    <input type="text" id="yearModel" name="yearModel" value={formData.yearModel} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="registrationCity" className="block text-sm font-medium text-gray-700">Registration City:</label>
-                    <input type="text" id="registrationCity" name="registrationCity" value={formData.registrationCity} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="mileage" className="block text-sm font-medium text-gray-700">Mileage:</label>
-                    <input type="number" id="mileage" name="mileage" value={formData.mileage} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="demandPrice" className="block text-sm font-medium text-gray-700">Demand Price:</label>
-                    <input type="number" id="demandPrice" name="demandPrice" value={formData.demandPrice} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description:</label>
-                    <textarea id="description" name="description" value={formData.description} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md"></textarea>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="inspectionCompanyName" className="block text-sm font-medium text-gray-700">Inspection Company Name:</label>
-                    <input type="text" id="inspectionCompanyName" name="inspectionCompanyName" value={formData.inspectionCompanyName} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="inspectionReport" className="block text-sm font-medium text-gray-700">Inspection Report:</label>
-                    <input type="text" id="inspectionReport" name="inspectionReport" value={formData.inspectionReport} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="listingType" className="block text-sm font-medium text-gray-700">Listing Type:</label>
-                    <select id="listingType" name="listingType" value={formData.listingType} onChange={handleChange} required
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md">
+        <div className="container pt-110 mb-110">
+        <div className="row justify-content-center">
+          <div className="col-lg-8">
+            <div className="contact-form-area">
+              <h2 className="text-center mb-4">Create New Auction</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="row">
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>City*</label>
+                      <input type="text" name="city" value={formData.city} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Car Make*</label>
+                      <input type="text" name="carMake" value={formData.carMake} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Year Model*</label>
+                      <input type="text" name="yearModel" value={formData.yearModel} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Registration City*</label>
+                      <input type="text" name="registrationCity" value={formData.registrationCity} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Mileage*</label>
+                      <input type="number" name="mileage" value={formData.mileage} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Demand Price*</label>
+                      <input type="number" name="demandPrice" value={formData.demandPrice} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-12 mb-20">
+                    <div className="form-inner">
+                      <label>Description*</label>
+                      <textarea name="description" value={formData.description} onChange={handleChange} required></textarea>
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Inspection Company Name*</label>
+                      <input type="text" name="inspectionCompanyName" value={formData.inspectionCompanyName} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Inspection Report*</label>
+                      <input type="text" name="inspectionReport" value={formData.inspectionReport} onChange={handleChange} required />
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Listing Type*</label>
+                      <select name="listingType" value={formData.listingType} onChange={handleChange} required>
                         <option value="">Select Listing Type</option>
                         <option value="auction">Auction</option>
                         <option value="fixed-price">Fixed Price</option>
-                    </select>
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Featured Image:</label>
-                    <input type="file" id="featuredImage" onChange={handleFeaturedImageChange} accept="image/*" className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                    {featuredImage && (
+                      </select>
+                    </div>
+                  </div>
+  
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Reserve Price*</label>
+                      <input type="number" name="reservePrice" value={formData.reservePrice} onChange={handleChange} 
+                        disabled={userData && userData.plan !== 'premium'} />
+                    </div>
+                  </div>
+  
+                  {userData && userData.plan === 'premium' ? (
+                    <div className="col-md-6 mb-20">
+                      <div className="form-inner">
+                        <label>End Time*</label>
+                        <input type="datetime-local" name="endTime" value={formData.endTime} onChange={handleChange} />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-12">
+                      <p>End Time will be automatically set to 15 days from now.</p>
+                    </div>
+                  )}
+  
+                  {/* Featured Image Upload */}
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Featured Image*</label>
+                      <input type="file" onChange={handleFeaturedImageChange} accept="image/*" />
+                      {featuredImage && (
                         <img src={URL.createObjectURL(featuredImage)} alt="Featured" className="mt-2 max-h-40" />
-                    )}
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Car Images:</label>
-                    <input type="file" id="carImages" multiple onChange={handleCarImagesChange} accept="image/*" className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                    <div className="flex mt-2">
+                      )}
+                    </div>
+                  </div>
+  
+                  {/* Car Images Upload */}
+                  <div className="col-md-6 mb-20">
+                    <div className="form-inner">
+                      <label>Car Images*</label>
+                      <input type="file" multiple onChange={handleCarImagesChange} accept="image/*" />
+                      <div className="flex mt-2">
                         {carImages.map((image, index) => (
-                            <img key={index} src={URL.createObjectURL(image)} alt={`Car ${index}`} className="max-h-40 mr-2" />
+                          <img key={index} src={URL.createObjectURL(image)} alt={`Car ${index}`} className="max-h-40 mr-2" />
                         ))}
+                      </div>
                     </div>
+                  </div>
+  
+                  <div className="col-md-12">
+                    <div className="form-inner">
+                      <button className="primary-btn btn-hover w-100" type="submit">
+                        Create Auction
+                        <span style={{ top: "40.5px", left: "84.2344px" }} />
+                      </button>
+                    </div>
+                  </div>
+  
+                  {error && (
+                    <div className="col-md-12 mt-2">
+                      <p className="text-danger">{error}</p>
+                    </div>
+                  )}
                 </div>
-
-                <div className="mb-4">
-                    <label htmlFor="reservePrice" className="block text-sm font-medium text-gray-700">Reserve Price:</label>
-                    <input type="number" id="reservePrice" name="reservePrice" value={formData.reservePrice} onChange={handleChange}
-                        className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" disabled={userData && userData.plan !== 'premium'} />
-                </div>
-
-                {userData && userData.plan === 'premium' ? (
-                    <div className="mb-4">
-                        <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
-                        <input type="datetime-local" id="endTime" name="endTime" value={formData.endTime} onChange={handleChange}
-                            className="block w-full p-2 text-sm text-gray-700 border border-gray rounded-md" />
-                    </div>
-                ) : (
-                    <div>
-                        <p>End Time will be automatically set to 15 days from now.</p>
-                    </div>
-                )}
-                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">Create Auction</button>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-            </form>
-            <div className="mt-4">
-                <p>Options:</p>
-                <Link href="/pricing" className="text-blue-600 hover:text-blue-800">Get Yearly Subscription</Link>
-                <Link href="/featured-listing" className="text-blue-600 hover:text-blue-800">Opt for Featured Listing</Link>
+              </form>
+  
+              {/* Options Links */}
+              <div className="text-center mt-3">
+                <Link href="/pricing" className="text-decoration-none me-3">Get Yearly Subscription</Link>
+                <Link href="/featured-listing" className="text-decoration-none">Opt for Featured Listing</Link>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     );
 }
 
