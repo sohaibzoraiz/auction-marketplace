@@ -71,7 +71,7 @@ const UserDropdown = () => {
                     <ul className="list-unstyled m-0 p-2">
                         {userData ? (
                             <>
-                                <li className="p-2 border-bottom">Free Bids Remaining: {userData.freeBids}</li>
+                                <li className="p-2 border-bottom">Free Bids Remaining: {userData.free_bids_remaining}</li>
                                 <li className="p-2 border-bottom"><Link href="/dashboard" onClick={() => setIsOpen(false)}>Dashboard</Link></li>
                                 <li className="p-2 hover-bg-secondary"><button onClick={handleLogout}>Logout</button></li>
                             </>
