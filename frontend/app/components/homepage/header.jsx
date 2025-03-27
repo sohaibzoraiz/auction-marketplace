@@ -228,8 +228,8 @@ const Header = () => {
                 </button>
               </div>
             </form>
-            <div className="d-lg-none d-flex">
-            <UserDropdown position="mobile" />
+            <div className="d-lg-none d-flex position-relative w-100">
+            <UserDropdown variant="sidebar" />
             </div>
           </div>
         </div>
@@ -271,8 +271,10 @@ const Header = () => {
               </form>
             </div>
           </div>
-          <div className="d-lg-flex d-none">
-          <UserDropdown position="desktop" />
+          <div className="d-lg-flex d-none ">
+            <div className="position-relative w-100">
+          <UserDropdown variant="desktop" />
+            </div>
           </div>
           <div
             className={`sidebar-button mobile-menu-btn ${isMenuOpen ? "active" : ""

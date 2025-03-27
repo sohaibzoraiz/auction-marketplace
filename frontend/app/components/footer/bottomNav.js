@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaWhatsapp, FaHeart, FaUser } from "react-icons/fa";
 import { RiAuctionLine } from "react-icons/ri";
+import UserDropdown from "../homepage/Dropdown";
 
 const BottomNav = () => {
     const [active, setActive] = useState("");
@@ -13,7 +14,7 @@ const BottomNav = () => {
                 <FaWhatsapp size={24} />
                 <span>Whatsapp</span>
             </Link>
-            <Link href="/shop" className={`nav-item ${active === "shop" ? "active" : ""}`} onClick={() => setActive("shop")}>
+            <Link href="/auctions" className={`nav-item ${active === "shop" ? "active" : ""}`} onClick={() => setActive("shop")}>
                 <RiAuctionLine size={24} />
                 <span>Auctions</span>
             </Link>
@@ -21,10 +22,8 @@ const BottomNav = () => {
                 <FaHeart size={24} />
                 <span>Wishlist</span>
             </Link>
-            <Link href="/account" className={`nav-item ${active === "account" ? "active" : ""}`} onClick={() => setActive("account")}>
-                <FaUser size={24} />
-                <span>Account</span>
-            </Link>
+            <UserDropdown variant="bottom-nav" />
+
         </div>
     );
 };
