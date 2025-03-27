@@ -356,7 +356,7 @@ const CarAuctionGrid = ({ listings }) => {
                                                 <div className="price">
                                                     <span>Current Bid at:</span> <strong>PKR {listing.current_bid.toLocaleString()}</strong>
                                                 </div>
-                                                <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
+                                                <br/><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
                                             </div>
                                             
                                         </div>

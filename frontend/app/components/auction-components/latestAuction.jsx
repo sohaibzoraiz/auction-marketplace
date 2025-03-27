@@ -75,8 +75,8 @@ const Home2latestAuction = ({ listings = [] }) => {
                       <div className="auction-card-content">
                         <h6><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`}>{listing.car_make}</Link></h6>
                         <div className="price-and-code-area">
-                          <div className="price"><span>Current Bid at:</span> <strong>${listing.current_bid || "N/A"}</strong></div>
-                          <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
+                          <div className="price"><span>Current Bid at:</span> <strong>PKR {(listing.current_bid ?? 0).toLocaleString()  || "N/A"}</strong></div>
+                          <br/><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
                         </div>
                       </div>
                     </div>
