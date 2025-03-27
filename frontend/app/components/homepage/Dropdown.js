@@ -20,6 +20,7 @@ const UserDropdown = () => {
           if (response.ok) {
             // Clear user data in context
             setUserData(null);
+            setIsOpen(false);
             // Redirect to login page
             router.push('/login');
           } else {
@@ -43,7 +44,7 @@ const UserDropdown = () => {
     }, []);
 
     return (
-        <div className="position-relative" ref={dropdownRef}>
+        <div className="position-relative w-100" ref={dropdownRef}>
             {/* Desktop Button */}
             <button 
                 onClick={toggleDropdown} 

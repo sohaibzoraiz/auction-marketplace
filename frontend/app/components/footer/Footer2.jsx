@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import BottomNav from './bottomNav'
 export const metadata = {
   icons: {
     icon: "/assets/img/fav-icon.svg",
@@ -8,6 +9,7 @@ export const metadata = {
 const Footer2 = () => {
   return (
     <>
+    
       <footer className="style-2">
         <div className="home2-footer-top-area">
           <div className="container">
@@ -154,6 +156,7 @@ const Footer2 = () => {
           </div>
         </div>
       </footer>
+      <BottomNav />
 
     </>
   )
