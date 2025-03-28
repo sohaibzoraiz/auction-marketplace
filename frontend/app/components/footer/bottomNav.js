@@ -15,18 +15,25 @@ const BottomNav = () => {
                 <RiWhatsappLine size={24} />
                 <span>Whatsapp</span>
             </Link>
+            <div className="separator"></div> {/* Separator */}
             <Link href="/sell-your-car" className={`nav-item ${active === "sell" ? "active" : ""}`} onClick={() => setActive("sell")}>
                 <RiAuctionLine size={24} />
                 <span>Sell</span>
             </Link>
-            <Link href="/auctions" className={`nav-item ${active === "auctions" ? "active" : ""}`} onClick={() => setActive("auctions")}>
-                <IoCarSportSharp size={50}/>
-                
+            <div className="separator"></div> {/* Separator */}
+            <Link href="/auctions" className={` nav-item auctions ${active === "auctions" ? "active" : ""}`} onClick={() => setActive("auctions")}>
+            
+            <span className="auctions-circle">
+                <IoCarSportSharp size={50} color="#0d6efd"/>
+                <span>Auctions</span>
+            </span>
             </Link>
+            <div className="separator"></div> {/* Separator */}
             <Link href="/wishlist" className={`nav-item ${active === "wishlist" ? "active" : ""}`} onClick={() => setActive("wishlist")}>
                 <RiHeart3Line size={24} />
                 <span>Wishlist</span>
             </Link>
+            <div className="separator"></div> {/* Separator */}
             <UserDropdown variant="bottom-nav" />
 
         </div>
