@@ -13,6 +13,7 @@ import Link from "next/link";
 import CountdownTimer from "../../components/auction-single/CountdownTimer";
 import HandleQuantity from "../../components/common/HandleQuantity";
 import BidHistory from "../../components/auction-single/bidHistory";
+import Modal from "../../components/auction-single/modal";
 
 
 export default function Page({ params }) {
@@ -41,6 +42,8 @@ export default function Page({ params }) {
 function CarPage({ carMake, yearModel, id }) {
     const [isOpen, setOpen] = useState(false);
     console.log("CarPage component mounted or re-rendered");
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     const { userData = {} } = useContext(UserContext) ?? {};
@@ -146,11 +149,14 @@ function CarPage({ carMake, yearModel, id }) {
     
         try {
             await connectSocket(); // Wait for socket connection
-            emitBid(carid, currentBid); // Emit bid event
+            await emitBid(carid, currentBid); // Emit bid event
+            setShowSuccessModal(true); 
         } catch (error) {
             console.error("Failed to connect socket:", error);
+            setShowErrorModal(true); 
         }
     };
+    
     
     
       
@@ -936,7 +942,12 @@ function CarPage({ carMake, yearModel, id }) {
           </div>
         </div>
       </div>
-        
+      {showSuccessModal && (
+                <Modal title="Congratulations!" content="Your bid was successfully placed." onClose={() => setShowSuccessModal(false)} type="Success"/>
+            )}
+            {showErrorModal && (
+                <Modal title="Bid Failed" content="There was an error placing your bid. Please try again." onClose={() => setShowErrorModal(false)} type="Error"/>
+            )}
       </>
     );
 }
