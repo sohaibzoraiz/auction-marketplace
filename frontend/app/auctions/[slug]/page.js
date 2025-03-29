@@ -42,8 +42,7 @@ export default function Page({ params }) {
 function CarPage({ carMake, yearModel, id }) {
     const [isOpen, setOpen] = useState(false);
     console.log("CarPage component mounted or re-rendered");
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     const { userData = {} } = useContext(UserContext) ?? {};
@@ -977,7 +976,18 @@ function CarPage({ carMake, yearModel, id }) {
           </div>
         </div>
       </div>
-      
+      {showModal && (
+    <Modal 
+        title={modalData.title}
+        content={modalData.content}
+        type={modalData.type}
+        buttonText={modalData.buttonText}
+        buttonAction={modalData.buttonAction}
+        autoRedirect={modalData.autoRedirect}
+        onClose={() => setShowModal(false)}
+    />
+)}
+
       </>
     );
 }
