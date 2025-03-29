@@ -34,7 +34,7 @@ function quantityReducer(state, action) {
     }
 
     case "UPDATE_LIMITS": {
-      const newMinLimit = Math.floor(action.payload+1);
+      const newMinLimit = Math.floor(action.payload+10000);
       const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1);
       return {
         ...state,
@@ -54,7 +54,7 @@ function quantityReducer(state, action) {
 function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const [state, dispatch] = useReducer(quantityReducer, {
     quantity: Math.floor(currentPrice),
-    minLimit: Math.floor(currentPrice+1),
+    minLimit: Math.floor(currentPrice+10000),
     maxLimit: Math.floor(currentPrice + currentPrice * 0.1),
     showMaxLimitMessage: false,
     showMinLimitMessage: false,
