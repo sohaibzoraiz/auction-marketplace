@@ -136,27 +136,62 @@ function CarPage({ carMake, yearModel, id }) {
     };
    */
     const handleBid = async (carid) => {
-        console.log("checking bid for car:", currentBid);
-        if (!userData) {
-            window.location.href = `/login?redirect=${window.location.pathname}`;
-            return;
-        }
-    
-        if (userData && userData.plan === 'basic' && userData.freeBids <= 0) {
-            alert('You have no free bids left.');
-            return;
-        }
-    
-        try {
-            await connectSocket(); // Wait for socket connection
-            await emitBid(carid, currentBid); // Emit bid event
-            setShowSuccessModal(true); 
-        } catch (error) {
-            console.error("Failed to connect socket:", error);
-            setShowErrorModal(true); 
-        }
-    };
-    
+      console.log("checking bid for car:", currentBid);
+      if (!userData) {
+        setModalData({
+            title: "Login Error",
+            content: "Please login to continue bidding.",
+            type: "LoginError",
+            buttonText: "Redirecting in 3 Sec",
+            buttonAction: () => window.location.href = `/login?redirect=${window.location.pathname}`,
+            autoRedirect: true
+        });
+        setShowModal(true);
+        return;
+    }
+  
+    if (userData.plan === 'basic' && userData.freeBids <= 0) {
+      setModalData({
+          title: "Low Credits",
+          content: "Please buy more credits to bid.",
+          type: "LowCredits",
+          buttonText: "Buy Credits",
+          buttonAction: () => window.location.href = "/buy-credits",
+          autoRedirect: false
+      });
+      setShowModal(true);
+      return;
+  }
+  
+  try {
+    await connectSocket(); // Wait for socket connection
+    await emitBid(carid, currentBid); // Emit bid event
+
+    setModalData({
+        title: "Congratulations!",
+        content: "Your bid was successfully placed.",
+        type: "Success",
+        buttonText: "Go to Auctions",
+        buttonAction: () => window.location.href = "/auctions",
+        autoRedirect: false
+    });
+    setShowModal(true);
+
+} catch (error) {
+  console.error("Failed to connect socket:", error);
+
+  setModalData({
+      title: "Bid Failed",
+      content: "There was an error placing your bid. Please try again.",
+      type: "Error",
+      buttonText: "Retry",
+      buttonAction: () => setShowModal(false),
+      autoRedirect: false
+  });
+  setShowModal(true);
+}
+
+};   
     
     
       
@@ -942,12 +977,7 @@ function CarPage({ carMake, yearModel, id }) {
           </div>
         </div>
       </div>
-      {showSuccessModal && (
-                <Modal title="Congratulations!" content="Your bid was successfully placed." onClose={() => setShowSuccessModal(false)} type="Success"/>
-            )}
-            {showErrorModal && (
-                <Modal title="Bid Failed" content="There was an error placing your bid. Please try again." onClose={() => setShowErrorModal(false)} type="Error"/>
-            )}
+      
       </>
     );
 }
