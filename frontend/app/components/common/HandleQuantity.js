@@ -53,7 +53,7 @@ function quantityReducer(state, action) {
 
 function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const [state, dispatch] = useReducer(quantityReducer, {
-    quantity: Math.floor(currentPrice),
+    quantity: Math.floor(currentPrice+10000),
     minLimit: Math.floor(currentPrice+10000),
     maxLimit: Math.floor(currentPrice + currentPrice * 0.1),
     showMaxLimitMessage: false,
