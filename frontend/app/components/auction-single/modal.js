@@ -22,7 +22,7 @@ const Modal = ({ title, content, onClose, type, buttonText, buttonAction, autoRe
                 </div>
                 <h2 className="modal-title">{title}</h2>
                 <p className="modal-content">{content}</p>
-                <button className="modal-button" onClick={buttonAction}>
+                <button className="primary-btn btn-hove" onClick={buttonAction}>
                     {buttonText}
                 </button>
             </div>

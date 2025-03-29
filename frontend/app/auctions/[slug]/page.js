@@ -149,7 +149,7 @@ function CarPage({ carMake, yearModel, id }) {
             title: "Login Error",
             content: "Please login to continue bidding.",
             type: "LoginError",
-            buttonText: "Redirecting in 3 Sec",
+            buttonText: "Redirecting...",
             buttonAction: () => window.location.href = `/login?redirect=${window.location.pathname}`,
             autoRedirect: true
         });
@@ -168,9 +168,9 @@ function CarPage({ carMake, yearModel, id }) {
       });
       setShowModal(true);
       return;
-  }
+    }
   
-  try {
+    try {
     await connectSocket(); // Wait for socket connection
     await emitBid(carid, currentBid); // Emit bid event
 
@@ -184,21 +184,21 @@ function CarPage({ carMake, yearModel, id }) {
     });
     setShowModal(true);
 
-} catch (error) {
-  console.error("Failed to connect socket:", error);
+    } catch (error) {
+      console.error("Failed to connect socket:", error);
 
-  setModalData({
+    setModalData({
       title: "Bid Failed",
       content: "There was an error placing your bid. Please try again.",
       type: "Error",
       buttonText: "Retry",
       buttonAction: () => setShowModal(false),
       autoRedirect: false
-  });
-  setShowModal(true);
-}
+    });
+      setShowModal(true);
+    }
 
-};   
+    };   
     
     
       
