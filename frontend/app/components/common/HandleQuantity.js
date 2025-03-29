@@ -77,10 +77,10 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
 
   // ✅ Update limits when new bid is received
   useEffect(() => {
-    if (lastBidFromDB && Math.floor(lastBidFromDB) !== state.minLimit) {
+    if (lastBidFromDB && Math.floor(lastBidFromDB)+10000 !== state.minLimit) {
       dispatch({ type: "UPDATE_LIMITS", payload: lastBidFromDB });
     }
-  }, [lastBidFromDB, state.minLimit]); // ✅ Ensures proper updates without resetting manual input
+  }, [lastBidFromDB]); // ✅ Ensures proper updates without resetting manual input
   
 
   const increment = () => dispatch({ type: "INCREMENT" });
