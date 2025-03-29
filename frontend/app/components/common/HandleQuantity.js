@@ -34,7 +34,7 @@ function quantityReducer(state, action) {
     }
 
     case "UPDATE_LIMITS": {
-      const newMinLimit = Math.floor(action.payload);
+      const newMinLimit = Math.floor(action.payload+1);
       const newMaxLimit = newMinLimit + Math.floor(newMinLimit * 0.1);
       return {
         ...state,
