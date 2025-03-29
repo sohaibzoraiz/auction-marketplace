@@ -86,7 +86,7 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
   const handleInputChange = (e) => {
     let newValue = e.target.value.replace(/\D/g, ""); // ✅ Only allow numbers
     setInputValue(newValue); // ✅ Show input immediately
-    dispatch({ type: "SET", payload: parseInt(newValue, 10) || state.minLimit });
+    dispatch({ type: "SET", payload: parseInt(newValue, 10) || 0 });
   };
 
   return (
