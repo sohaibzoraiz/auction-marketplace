@@ -144,6 +144,18 @@ function CarPage({ carMake, yearModel, id }) {
    */
     const handleBid = async (carid) => {
       console.log("checking bid for car:", currentBid);
+      if (currentBid <= data.current_bid) {
+        setModalData({  
+            title: "Bid Error",
+            content: "Your bid must be higher than the current bid.",
+            type: "Error",
+            buttonText: "Close",
+            buttonAction: () => setShowModal(false),
+            autoRedirect: false
+        });
+        setShowModal(true);
+        return;
+      }
       if (!userData) {
         setModalData({
             title: "Login Error",
