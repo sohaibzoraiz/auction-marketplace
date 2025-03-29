@@ -77,15 +77,16 @@ const UserDropdown = ({ variant }) => {
                     <ul className="list-unstyled m-0 p-2">
                         {userData ? (
                             <>
-                                <li className="p-2 border-bottom">Bid Credits: {userData.free_bids_remaining}</li>
-                                <li className="p-2 border-bottom"><Link href="/dashboard" onClick={() => setIsOpen(false)}>Dashboard</Link></li>
+                                <li className="p-2 border-bottom"> Credits: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}
+                                </li>
+                                <li className="p-2 border-bottom"><Link href="/dashboard" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Dashboard</Link></li>
                                 <li className="p-2 hover-bg-secondary"><button onClick={handleLogout}>Logout</button></li>
                             </>
                         ) : (
                             <>
-                                <li className="p-2 border-bottom"><Link href="/login" onClick={() => setIsOpen(false)}>Login</Link></li>
-                                <li className="p-2 border-bottom"><Link href="/register" onClick={() => setIsOpen(false)}>Register</Link></li>
-                                <li className="p-2 hover-bg-secondary"><Link href="/pricing" onClick={() => setIsOpen(false)}>Pricing</Link></li>
+                                <li className="p-2 border-bottom"><Link href="/login" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Login</Link></li>
+                                <li className="p-2 border-bottom"><Link href="/register" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Register</Link></li>
+                                <li className="p-2 hover-bg-secondary"><Link href="/pricing" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Pricing</Link></li>
                             </>
                         )}
                     </ul>
