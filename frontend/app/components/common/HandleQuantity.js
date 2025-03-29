@@ -77,7 +77,7 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
     if (lastBidFromDB && Math.floor(lastBidFromDB) !== state.minLimit+10000) {
       dispatch({ type: "UPDATE_LIMITS", payload: lastBidFromDB });
     }
-  }, [lastBidFromDB]);
+  }, [lastBidFromDB,state.minLimit]);
 
   const increment = () => dispatch({ type: "INCREMENT" });
   const decrement = () => dispatch({ type: "DECREMENT" });
