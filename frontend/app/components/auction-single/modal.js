@@ -6,7 +6,7 @@ const Modal = ({ title, content, onClose, type }) => {
             <div className={`modal-box ${type}`}>
                 <button className="close-btn" onClick={onClose}>&times;</button>
                 <div className="modal-icon">
-                    {type === "success" ? (
+                    {type === "Success" ? (
                         <span className="icon-success">🎉</span>
                     ) : (
                         <span className="icon-error">⚠️</span>
@@ -15,7 +15,7 @@ const Modal = ({ title, content, onClose, type }) => {
                 <h2 className="modal-title">{title}</h2>
                 <p className="modal-content">{content}</p>
                 <button className="modal-button" onClick={onClose}>
-                    {type === "success" ? "Know More" : "Retry"}
+                    {type === "Success" ? "Continue Bidding" : "Retry"}
                 </button>
             </div>
         </div>
