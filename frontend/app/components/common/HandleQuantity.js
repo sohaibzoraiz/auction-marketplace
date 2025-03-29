@@ -22,16 +22,19 @@ function quantityReducer(state, action) {
 
     case "SET": {
       let newValue = action.payload === "" ? "" : Math.floor(action.payload);
+    
       if (newValue === "") return { ...state, quantity: "" }; // ✅ Allow temporary empty input
-
+    
       if (newValue < state.minLimit) {
-        return { ...state, quantity: state.minLimit, showMinLimitMessage: true };
+        return { ...state, quantity: newValue, showMinLimitMessage: true }; // ✅ Keep user input, just show warning
       }
       if (newValue > state.maxLimit) {
         return { ...state, quantity: state.maxLimit, showMaxLimitMessage: true };
       }
+    
       return { ...state, quantity: newValue, showMaxLimitMessage: false, showMinLimitMessage: false };
     }
+    
 
     case "UPDATE_LIMITS": {
       const newMinLimit = Math.floor(action.payload)+10000;
