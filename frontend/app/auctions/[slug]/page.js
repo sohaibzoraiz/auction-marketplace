@@ -43,6 +43,14 @@ function CarPage({ carMake, yearModel, id }) {
     const [isOpen, setOpen] = useState(false);
     console.log("CarPage component mounted or re-rendered");
     const [showModal, setShowModal] = useState(false);
+    const [modalData, setModalData] = useState({
+      title: "",
+      content: "",
+      type: "",
+      buttonText: "",
+      buttonAction: () => {},
+      autoRedirect: false
+    });
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     const { userData = {} } = useContext(UserContext) ?? {};
