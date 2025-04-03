@@ -73,6 +73,19 @@ app.post('/auth/register', upload.fields([{ name: 'profile_picture', maxCount: 1
 });
 
 
+app.post('/upload-test', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "File upload failed!" });
+  }
+
+  console.log("Uploaded File:", req.file);
+
+  res.json({
+    message: "File uploaded successfully!",
+    fileUrl: req.file.location, // URL of the uploaded file
+  });
+});
+
 app.get('/api/auth/user', authMiddleware, getUser);
 app.post('/auth/logout', require('./controllers/auth').logout);
   
