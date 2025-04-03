@@ -30,8 +30,9 @@ async function register(req, res) {
         console.log("Received files:", req.files); // Debugging log
 
         // ✅ Handle file uploads and get URLs
-        const profilePictureUrl = req.files?.profile_picture?.[0]?.location || null;
-        const idImageUrl = req.files?.id_image?.[0]?.location || null;
+        const profilePictureUrl = req.files['profile_picture'] ? req.files['profile_picture'][0].location : null;
+        const idImageUrl = req.files['id_image'] ? req.files['id_image'][0].location : null;
+        
 
         // ✅ Validate required fields
         if (!name || !contact_number || !email_address || !complete_address || !identification_number || !password || !customer_type) {
