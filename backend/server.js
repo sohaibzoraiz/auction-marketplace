@@ -61,11 +61,17 @@ app.get('/', (req, res) => {
 
 // Authentication routes
 app.post('/auth/login', require('./controllers/auth').login);
-app.post('/auth/register', upload.fields([{ name: 'profile_picture', maxCount: 1 }, { name: 'id_image', maxCount: 1 }]), (req, res) => {
-  console.log(req.files); // Log files received
-  // Proceed with the registration process
-  require('./controllers/auth').register(req, res);
+app.post('/auth/register', upload.fields([{ name: 'profile_picture', maxCount: 1 }, { name: 'id_image', maxCount: 1 }]), async (req, res) => {
+  try {
+    console.log("Route reached!");
+    console.log("Received files:", req.files);
+    await require('./controllers/auth').register(req, res);
+  } catch (error) {
+    console.error('Error in register route:', error);
+    res.status(500).json({ message: "Error processing registration" });
+  }
 });
+
 
 app.get('/api/auth/user', authMiddleware, getUser);
 app.post('/auth/logout', require('./controllers/auth').logout);
