@@ -1,179 +1,122 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
-function RegisterPage() {
+const MultiStepForm = () => {
+  const [step, setStep] = useState(1);
+  const [customerType, setCustomerType] = useState("individual");
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [completeAddress, setCompleteAddress] = useState("");
-  const [identificationNumber, setIdentificationNumber] = useState("");
-  const [error, setError] = useState(null);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
+  const onSubmit = async (data) => {
+    if (step < 3) {
+      setStep(step + 1);
+    } else {
+      try {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error("Registration failed");
+        router.push("/login");
+      } catch (error) {
+        console.error(error);
+      }
     }
-
-    try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          contactNumber,
-          completeAddress,
-          identificationNumber,
-        }),
-        credentials: "include",
-      });
-
-      if (!response.ok) throw new Error("Registration failed");
-
-      router.push("/login");
-    } catch (error) {
-      setError(error.message);
-    }
-  }
+  };
 
   return (
-    <div className="container pt-110 mb-110">
-      <div className="row justify-content-center">
-        <div className="col-lg-6">
-          <div className="contact-form-area">
-            <h2 className="text-center mb-4">Register</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="row">
-                <div className="col-md-12 mb-20">
-                  <div className="form-inner">
-                    <label>Name*</label>
-                    <input
-                      type="text"
-                      placeholder="John Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-12 mb-20">
-                  <div className="form-inner">
-                    <label>Email*</label>
-                    <input
-                      type="email"
-                      placeholder="info@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-12 mb-20">
-                  <div className="form-inner">
-                    <label>Password*</label>
-                    <input
-                      type="password"
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                {/* Confirm Password Field */}
-                <div className="col-md-12 mb-20">
-                  <div className="form-inner">
-                    <label>Confirm Password*</label>
-                    <input
-                      type="password"
-                      placeholder="Re-enter your password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-12 mb-20">
-                  <div className="form-inner">
-                    <label>Contact Number*</label>
-                    <input
-                      type="tel"
-                      placeholder="+92 300 1234567"
-                      value={contactNumber}
-                      onChange={(e) => setContactNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-12 mb-20">
-                  <div className="form-inner">
-                    <label>Complete Address*</label>
-                    <textarea
-                      rows={3}
-                      placeholder="123 Street, City, Country"
-                      value={completeAddress}
-                      onChange={(e) => setCompleteAddress(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-12 mb-20">
-                  <div className="form-inner">
-                    <label>Identification Number*</label>
-                    <input
-                      type="number"
-                      placeholder="1234567890"
-                      value={identificationNumber}
-                      onChange={(e) => setIdentificationNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-12">
-                  <div className="form-inner">
-                    <button className="primary-btn btn-hover w-100" type="submit">
-                      Register
-                      <span style={{ top: "40.5px", left: "84.2344px" }} />
-                    </button>
-                  </div>
-                </div>
-
-                {error && (
-                  <div className="col-md-12 mt-2">
-                    <p className="text-danger">{error}</p>
-                  </div>
-                )}
-              </div>
-            </form>
-
-            <div className="text-center mt-3">
-              <Link href="/login" className="text-decoration-none">
-                Already have an account? Login Here!
-              </Link>
+    <div className="container mt-5">
+      <div className="card p-4">
+        <h2 className="text-center">Register</h2>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {step === 1 && (
+            <div>
+              <label>Choose Customer Type:</label>
+              <select
+                {...register("customer_type", { required: true })}
+                onChange={(e) => setCustomerType(e.target.value)}
+                className="form-control"
+              >
+                <option value="individual">Individual</option>
+                <option value="dealer">Business / Car Dealer</option>
+              </select>
+              {errors.customer_type && <p className="text-danger">This field is required</p>}
             </div>
+          )}
+
+          {step === 2 && (
+            <div>
+              <label>{customerType === "individual" ? "Name" : "Business Name"}:</label>
+              <input
+                {...register("name", { required: true, minLength: 3 })}
+                className="form-control"
+              />
+              {errors.name && <p className="text-danger">Minimum 3 characters required</p>}
+
+              <label>Contact Number:</label>
+              <input
+                {...register("contact_number", { required: true, pattern: /^[0-9+]{10,15}$/ })}
+                className="form-control"
+              />
+              {errors.contact_number && <p className="text-danger">Valid phone number required</p>}
+
+              <label>Email:</label>
+              <input
+                type="email"
+                {...register("email_address", { required: true, pattern: /^[^@\s]+@[^@\s]+\.[^@\s]+$/ })}
+                className="form-control"
+              />
+              {errors.email_address && <p className="text-danger">Valid email required</p>}
+
+              <label>Password:</label>
+              <input type="password" {...register("password", { required: true })} className="form-control" />
+              {errors.password && <p className="text-danger">Password is required</p>}
+
+              <label>Confirm Password:</label>
+              <input type="password" {...register("confirm_password", { required: true })} className="form-control" />
+              {errors.confirm_password && <p className="text-danger">Confirmation is required</p>}
+
+              <label>Complete Address:</label>
+              <textarea {...register("complete_address")} className="form-control"></textarea>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div>
+              <label>{customerType === "individual" ? "CNIC Number" : "Company Registration Number / NTN"}:</label>
+              <input
+                {...register("identification_number", { required: true})}
+                className="form-control"
+              />
+              {errors.identification_number && <p className="text-danger">Must be a 13-digit number</p>}
+
+              <label>{customerType === "individual" ? "CNIC Image" : "Business Registration Document"}:</label>
+              <input type="file" {...register("id_image", { required: true })} className="form-control" />
+              {errors.id_image && <p className="text-danger">Document is required</p>}
+
+              <label>Profile Picture (Optional):</label>
+              <input type="file" {...register("profile_picture")} className="form-control" />
+            </div>
+          )}
+
+          <div className="d-flex justify-content-between mt-3">
+            {step > 1 && (
+              <button type="button" className="btn btn-secondary" onClick={() => setStep(step - 1)}>
+                Back
+              </button>
+            )}
+            <button type="submit" className="btn btn-primary">
+              {step < 3 ? "Next" : "Submit"}
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
-}
+};
 
-export default RegisterPage;
+export default MultiStepForm;
