@@ -16,8 +16,7 @@ const pool = new Pool({
 */
 async function register(req, res) {
     try {
-        
-        // ✅ Match frontend field names
+        // ✅ Extract text fields from the request body
         const { 
             name, 
             contact_number, 
@@ -25,15 +24,14 @@ async function register(req, res) {
             complete_address, 
             identification_number, 
             password, 
-            customer_type,  // Added
-            id_image,        // Added
-            profile_picture  // Added
+            customer_type
         } = req.body;
 
-         // Handle file uploads and get URLs
-         const profilePictureUrl = req.files['profile_picture'] ? req.files['profile_picture'][0].location : null;
-         const idImageUrl = req.files['id_image'] ? req.files['id_image'][0].location : null;
- 
+        console.log("Received files:", req.files); // Debugging log
+
+        // ✅ Handle file uploads and get URLs
+        const profilePictureUrl = req.files?.profile_picture?.[0]?.location || null;
+        const idImageUrl = req.files?.id_image?.[0]?.location || null;
 
         // ✅ Validate required fields
         if (!name || !contact_number || !email_address || !complete_address || !identification_number || !password || !customer_type) {
@@ -60,20 +58,16 @@ async function register(req, res) {
         const userId = result.rows[0].id;
 
         // ✅ Insert default subscription entry
-        const defaultPlan = "Basic";
-        const startDate = new Date();
-        const endDate = null; // Ensure database allows NULL for timestamp
-
         await pool.query(
             "INSERT INTO subscriptions(user_id, subscription_plan_name, subscription_start_date, subscription_end_date) VALUES($1, $2, $3, $4)",
-            [userId, defaultPlan, startDate, endDate]
+            [userId, "Basic", new Date(), null]
         );
 
         res.status(201).json(result.rows[0]);
 
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Error");
+        console.error("Error in registration:", error);
+        res.status(500).json({ message: "Server Error" });
     }
 }
 
