@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
   const [customerType, setCustomerType] = useState("individual");
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const router = useRouter();
 
   const onSubmit = async (data) => {
