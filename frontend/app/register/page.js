@@ -17,33 +17,29 @@ const MultiStepForm = () => {
       try {
         // Create a FormData object to handle file uploads
         const formData = new FormData();
-  
-        // Append non-file fields
-        formData.append('name', data.name);
-        formData.append('contact_number', data.contact_number);
-        formData.append('email_address', data.email_address);
-        formData.append('password', data.password);
-        formData.append('confirm_password', data.confirm_password);
-        formData.append('complete_address', data.complete_address);
-        formData.append('customer_type', data.customer_type);
-        formData.append('identification_number', data.identification_number);
-  
-        // Append files if available
-        if (data.id_image && data.id_image[0]) {
-          formData.append('id_image', data.id_image[0]);
-        }
-        if (data.profile_picture && data.profile_picture[0]) {
-          formData.append('profile_picture', data.profile_picture[0]);
-        }
-  
-        // Send the data with fetch
-        const response = await fetch("/api/auth/register", {
-          method: "POST",
-          body: formData, // Send the form data (including files)
-        });
-  
-        if (!response.ok) throw new Error("Registration failed");
-        router.push("/login");
+formData.append('name', 'Amad');
+formData.append('contact_number', '032231241243');
+formData.append('email_address', 'admin@carmandi.com.pk');
+formData.append('complete_address', 'asdadssds');
+formData.append('identification_number', '123123123123');
+formData.append('password', 'password');
+formData.append('customer_type', 'individual');
+formData.append('profile_picture', fileInput.files[0]);  // Use actual file input element
+formData.append('id_image', fileInput2.files[0]);        // Use actual file input element
+
+// Ensure to log the form data before sending
+console.log('Form data:', formData);
+
+fetch('/api/auth/register', {
+    method: 'POST',
+    body: formData,
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Response data:', data);
+})
+.catch(error => console.error('Error:', error));
+
       } catch (error) {
         console.error(error);
       }
