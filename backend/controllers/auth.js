@@ -16,6 +16,7 @@ const pool = new Pool({
 */
 async function register(req, res) {
     try {
+        
         // ✅ Match frontend field names
         const { 
             name, 
@@ -28,6 +29,11 @@ async function register(req, res) {
             id_image,        // Added
             profile_picture  // Added
         } = req.body;
+
+         // Handle file uploads and get URLs
+         const profilePictureUrl = req.files['profile_picture'] ? req.files['profile_picture'][0].location : null;
+         const idImageUrl = req.files['id_image'] ? req.files['id_image'][0].location : null;
+ 
 
         // ✅ Validate required fields
         if (!name || !contact_number || !email_address || !complete_address || !identification_number || !password || !customer_type) {
@@ -48,7 +54,7 @@ async function register(req, res) {
             `INSERT INTO users (name, contact_number, email_address, complete_address, identification_number, password, customer_type, id_image, profile_picture) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
             RETURNING *`,
-            [name.trim(), contact_number.trim(), email_address.trim(), complete_address.trim(), identification_number.trim(), hashedPassword, customer_type, id_image, profile_picture]
+            [name.trim(), contact_number.trim(), email_address.trim(), complete_address.trim(), identification_number.trim(), hashedPassword, customer_type, idImageUrl, profilePictureUrl]
         );
 
         const userId = result.rows[0].id;
