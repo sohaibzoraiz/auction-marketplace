@@ -27,3 +27,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Server Error" }, { status: 500 });
     }
 }
+// Note: Ensure that the URL in the fetch call matches your backend endpoint for registration.
+// This code handles the registration process by forwarding the request to the backend API and returning the response.
+// It also includes error handling for both network and server errors.
+// Make sure to test this endpoint thoroughly to ensure it works as expected in your application.
+// You can also add additional validation or processing of the request body before sending it to the backend if needed.
+// This code is designed to be used in a Next.js API route, which allows you to create serverless functions.
