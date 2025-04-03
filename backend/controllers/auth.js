@@ -27,7 +27,8 @@ async function register(req, res) {
             customer_type
         } = req.body;
 
-        console.log("Received files:", req.files); // Debugging log
+        console.log("Request body:", req.body);
+        console.log("Received files:", req.files);
 
         // ✅ Handle file uploads and get URLs
         const profilePictureUrl = req.files['profile_picture'] ? req.files['profile_picture'][0].location : null;
