@@ -35,7 +35,12 @@ const MultiStepForm = () => {
         if (data.profile_picture && data.profile_picture[0]) {
           formData.append('profile_picture', data.profile_picture[0]);
         }
-  
+        // Check if the password and confirm password match
+        if (data.password !== data.confirm_password) {
+          alert("Passwords do not match");
+          return;
+        }
+        
         // Send the data with fetch
         const response = await fetch("/api/auth/register", {
           method: "POST",
