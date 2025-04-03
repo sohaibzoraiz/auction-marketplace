@@ -61,7 +61,12 @@ app.get('/', (req, res) => {
 
 // Authentication routes
 app.post('/auth/login', require('./controllers/auth').login);
-app.post('/auth/register', require('./controllers/auth').register);
+app.post('/auth/register', upload.fields([{ name: 'profile_picture', maxCount: 1 }, { name: 'id_image', maxCount: 1 }]), (req, res) => {
+  console.log(req.files); // Log files received
+  // Proceed with the registration process
+  require('./controllers/auth').register(req, res);
+});
+
 app.get('/api/auth/user', authMiddleware, getUser);
 app.post('/auth/logout', require('./controllers/auth').logout);
   
