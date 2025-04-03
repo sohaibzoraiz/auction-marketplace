@@ -15,11 +15,33 @@ const MultiStepForm = () => {
       setStep(step + 1);
     } else {
       try {
+        // Create a FormData object to handle file uploads
+        const formData = new FormData();
+  
+        // Append non-file fields
+        formData.append('name', data.name);
+        formData.append('contact_number', data.contact_number);
+        formData.append('email_address', data.email_address);
+        formData.append('password', data.password);
+        formData.append('confirm_password', data.confirm_password);
+        formData.append('complete_address', data.complete_address);
+        formData.append('customer_type', data.customer_type);
+        formData.append('identification_number', data.identification_number);
+  
+        // Append files if available
+        if (data.id_image && data.id_image[0]) {
+          formData.append('id_image', data.id_image[0]);
+        }
+        if (data.profile_picture && data.profile_picture[0]) {
+          formData.append('profile_picture', data.profile_picture[0]);
+        }
+  
+        // Send the data with fetch
         const response = await fetch("/api/auth/register", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: formData, // Send the form data (including files)
         });
+  
         if (!response.ok) throw new Error("Registration failed");
         router.push("/login");
       } catch (error) {
