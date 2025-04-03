@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 import Modal from "../components/auction-single/modal";
 import Breadcrumb2 from "../components/common/Breadcrumb2";
 
@@ -19,7 +19,7 @@ const RegisterPage = () => {
     autoRedirect: false
   });
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const router = useRouter();
+  //const router = useRouter();
 
   const onSubmit = async (data) => {
     if (step < 3) {
