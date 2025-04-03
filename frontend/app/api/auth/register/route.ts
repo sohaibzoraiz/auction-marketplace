@@ -2,15 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
-        // Parse JSON body
-        const body = await request.json();
-        console.log(body); 
+        // Parse form data if files are being uploaded
+        const formData = await request.formData();
+        
+        // Convert form data into an object (you can modify this according to your data structure)
+        const body: { [key: string]: string | Blob } = {};
+        formData.forEach((value, key) => {
+            body[key] = value;
+        });
+
+        console.log(body); // Log to see if the data is structured correctly
 
         // Proxy registration request to your backend API
         const response = await fetch("https://api.carmandi.com.pk/auth/register", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
+            headers: { "Content-Type": "multipart/form-data" },
+            body: formData, // Send the form data as it is, no need to stringify
         });
 
         // Get response data
