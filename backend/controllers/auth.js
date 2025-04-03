@@ -62,7 +62,7 @@ async function register(req, res) {
         // ✅ Insert default subscription entry
         await pool.query(
             "INSERT INTO subscriptions(user_id, subscription_plan_name, subscription_start_date, subscription_end_date) VALUES($1, $2, $3, $4)",
-            [userId, "Basic", new Date(), null]
+            [userId, "basic", new Date(), null]
         );
 
         res.status(201).json(result.rows[0]);
