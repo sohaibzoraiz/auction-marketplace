@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
-        console.log("Request received at /api/auth/register");
+        //console.log("Request received at /api/auth/register");
 
         const formData = await request.formData();
-        console.log("FormData keys:", Array.from(formData.keys()));
+       /* console.log("FormData keys:", Array.from(formData.keys()));
 
         const body: { [key: string]: string | Blob } = {};
         formData.forEach((value, key) => {
@@ -20,18 +20,18 @@ export async function POST(request: NextRequest) {
             } else {
                 console.log(`${key}: ${value}`);
             }
-        });
+        });*/
 
         const response = await fetch("https://api.carmandi.com.pk/auth/register", {
             method: "POST",
             body: formData, // Send the form data as is
         });
         
-        console.log("Response status:", response.status);  // Log the status code
+       // console.log("Response status:", response.status);  // Log the status code
         
         // Log the raw response body for inspection
         const textResponse = await response.text(); // Use .text() to get the raw response body
-        console.log("Raw response:", textResponse);
+       // console.log("Raw response:", textResponse);
         
         let data;
         try {

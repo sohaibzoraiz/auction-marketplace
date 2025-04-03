@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 //import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import Breadcrumb2 from "../components/common/Breadcrumb2";
 
 function LoginPage() {
     const router = useRouter();
@@ -58,6 +59,8 @@ function LoginPage() {
 
 
     return (
+      <>
+      <Breadcrumb2 pagetitle="Login" currentPage="login" />
         <div className="container pt-110 mb-110">
         <div className="row justify-content-center">
           <div className="col-lg-6">
@@ -116,6 +119,7 @@ function LoginPage() {
           </div>
         </div>
       </div>
+      </>
     );
 }
 
