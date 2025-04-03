@@ -16,36 +16,47 @@ const pool = new Pool({
 */
 async function register(req, res) {
     try {
-        const { name, contactNumber, email, completeAddress, identificationNumber, password } = req.body;
+        // ✅ Match frontend field names
+        const { 
+            name, 
+            contact_number, 
+            email_address, 
+            complete_address, 
+            identification_number, 
+            password, 
+            customer_type,  // Added
+            id_image,        // Added
+            profile_picture  // Added
+        } = req.body;
 
-        // Additional validation checks here...
-
-        if (!name || !contactNumber || !email || !completeAddress || !identificationNumber || !password) {
+        // ✅ Validate required fields
+        if (!name || !contact_number || !email_address || !complete_address || !identification_number || !password || !customer_type) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Check if email already exists
-        const existingUserQuery = await pool.query("SELECT * FROM users WHERE email_address=$1", [email]);
-
+        // ✅ Check if email already exists
+        const existingUserQuery = await pool.query("SELECT * FROM users WHERE email_address=$1", [email_address]);
         if (existingUserQuery.rows.length > 0) {
             return res.status(400).json({ message: "Email already exists" });
         }
 
-        // Hash the password
+        // ✅ Hash the password
         let hashedPassword = await bcrypt.hash(password.trim(), 10);
 
-        // Insert new user into database with hashed password
+        // ✅ Insert new user into database
         let result = await pool.query(
-            "INSERT INTO users(name , contact_number , email_address , complete_address , identification_number,password )VALUES($1,$2,$3,$4,$5,$6 )RETURNING*",
-            [name.trim(), contactNumber.trim(), email.trim(), completeAddress.trim(), identificationNumber.trim(), hashedPassword]
+            `INSERT INTO users (name, contact_number, email_address, complete_address, identification_number, password, customer_type, id_image, profile_picture) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+            RETURNING *`,
+            [name.trim(), contact_number.trim(), email_address.trim(), complete_address.trim(), identification_number.trim(), hashedPassword, customer_type, id_image, profile_picture]
         );
 
         const userId = result.rows[0].id;
 
-        // Insert default subscription entry
-        const defaultPlan = 'Basic';
+        // ✅ Insert default subscription entry
+        const defaultPlan = "Basic";
         const startDate = new Date();
-        const endDate = null; // Basic plan never expires
+        const endDate = null; // Ensure database allows NULL for timestamp
 
         await pool.query(
             "INSERT INTO subscriptions(user_id, subscription_plan_name, subscription_start_date, subscription_end_date) VALUES($1, $2, $3, $4)",
@@ -53,6 +64,7 @@ async function register(req, res) {
         );
 
         res.status(201).json(result.rows[0]);
+
     } catch (error) {
         console.error(error);
         res.status(500).send("Error");
