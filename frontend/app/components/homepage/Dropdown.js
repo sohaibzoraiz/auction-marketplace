@@ -51,6 +51,7 @@ const UserDropdown = ({ variant }) => {
                     className="login-btn btn-hover d-lg-flex d-none align-items-center"
                 >
                     My Account
+                    <span style={{ top: "40.5px", left: "84.2344px" }} />
                 </button>
             )}
 
@@ -58,6 +59,7 @@ const UserDropdown = ({ variant }) => {
             {variant === "sidebar" && (
                 <button onClick={toggleDropdown} className="login-btn p-2 w-100 text-start">
                     My Account
+                    <span style={{ top: "40.5px", left: "84.2344px" }} />
                 </button>
             )}
 

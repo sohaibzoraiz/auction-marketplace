@@ -187,6 +187,7 @@ const RegisterPage = () => {
             )}
             <button type="submit" className="primary-btn btn-hover">
               {step < 3 ? "Next" : "Submit"}
+              <span style={{ top: "40.5px", left: "84.2344px" }} />
             </button>
           </div>
         </form>
