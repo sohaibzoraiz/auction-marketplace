@@ -137,7 +137,7 @@ const RegisterPage = () => {
         <div className="row justify-content-center">
           <div className="col-lg-6">
             <div className="contact-form-area">
-            <div className="section-title">
+            <div className="section-title mb-30 text-center">
                   <h2>Sign <span>Up</span></h2>
                 </div>
         {/* Bootstrap Progress Bar */}
