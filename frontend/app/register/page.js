@@ -30,8 +30,10 @@ const RegisterPage = () => {
         contact_number: phone
       });
   
-      // No error, clear validation
-      clearErrors(['email_address', 'contact_number']);
+      if (response.status === 200) {
+        // Reset error messages if validation passes
+        clearErrors(['email_address', 'contact_number']);
+      }
     } catch (error) {
       if (error.response) {
         if (error.response.data.message.includes('Email')) {
