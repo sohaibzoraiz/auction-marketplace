@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-//import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Modal from "../components/auction-single/modal";
 import Breadcrumb2 from "../components/common/Breadcrumb2";
 import axios from 'axios';
@@ -10,6 +10,7 @@ import { UserContext } from "../contexts/UserContext";
 
 
 const RegisterPage = () => {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [customerType, setCustomerType] = useState("individual");
   const [showModal, setShowModal] = useState(false);
