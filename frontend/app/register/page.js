@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 //import { useRouter } from "next/navigation";
 import Modal from "../components/auction-single/modal";
