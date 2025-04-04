@@ -6,14 +6,12 @@ import { useForm } from "react-hook-form";
 import Modal from "../components/auction-single/modal";
 import Breadcrumb2 from "../components/common/Breadcrumb2";
 import axios from 'axios';
-import debounce from 'lodash.debounce';
 
 
 const RegisterPage = () => {
   const [step, setStep] = useState(1);
   const [customerType, setCustomerType] = useState("individual");
   const [showModal, setShowModal] = useState(false);
-  const latestRequestRef = useRef(null);
   const [modalData, setModalData] = useState({
     title: "",
     content: "",
@@ -24,45 +22,39 @@ const RegisterPage = () => {
   });
   const { register, handleSubmit, formState: { errors }, watch, setError, clearErrors } = useForm();
   
-  const debouncedValidate = debounce(async (email, phone) => {
-    // Cancel the previous request if a new one is triggered
-    if (latestRequestRef.current) {
-      latestRequestRef.current.cancel();
-    }
-
-    const requestSource = axios.CancelToken.source();
-    latestRequestRef.current = requestSource;
-    try {
-      const response = await axios.post('https://api.carmandi.com.pk/api/auth/validate-email-phone', {
-        email_address: email,
-        contact_number: phone
-      });
-  
-      if (response.status === 200) {
-        // Reset error messages if validation passes
-        clearErrors(['email_address', 'contact_number']);
-      }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.data.message.includes('Email')) {
-          setError("email_address", {
-            type: "manual",
-            message: error.response.data.message
-          });
-        }
-        if (error.response.data.message.includes('Phone')) {
-          setError("contact_number", {
-            type: "manual",
-            message: error.response.data.message
-          });
-        }
-      }
-    }
-  }, 1000); // delay by 500ms
-  
-  
   
   const onSubmit = async (data) => {
+    if (step === 2) {
+      try {
+        const res = await axios.post('https://api.carmandi.com.pk/api/auth/validate-email-phone', {
+          email_address: data.email_address,
+          contact_number: data.contact_number,
+        });
+    
+        if (res.status === 200) {
+          clearErrors(['email_address', 'contact_number']);
+          setStep(3); // ✅ Go to next step
+        }
+      } catch (error) {
+        if (error.response?.data?.message.includes("Email")) {
+          setError("email_address", {
+            type: "manual",
+            message: error.response.data.message,
+          });
+        }
+        if (error.response?.data?.message.includes("Phone")) {
+          setError("contact_number", {
+            type: "manual",
+            message: error.response.data.message,
+          });
+        }
+    
+        return; // ❌ Prevent going to next step
+      }
+    
+      return;
+    }
+    
     if (step < 3) {
       setStep(step + 1);
     } else {
