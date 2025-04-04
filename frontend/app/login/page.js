@@ -65,7 +65,10 @@ function LoginPage() {
         <div className="row justify-content-center">
           <div className="col-lg-6">
             <div className="contact-form-area">
-              <h2 className="text-center mb-4">Login</h2>
+            <div className="section-title">
+                  <h2>Sign <span>In</span></h2>
+                </div>
+              
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-12 mb-20">
