@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 //import { useRouter } from "next/navigation";
 import Modal from "../components/auction-single/modal";
@@ -13,6 +13,7 @@ const RegisterPage = () => {
   const [step, setStep] = useState(1);
   const [customerType, setCustomerType] = useState("individual");
   const [showModal, setShowModal] = useState(false);
+  const latestRequestRef = useRef(null);
   const [modalData, setModalData] = useState({
     title: "",
     content: "",
@@ -24,6 +25,13 @@ const RegisterPage = () => {
   const { register, handleSubmit, formState: { errors }, watch, setError, clearErrors } = useForm();
   
   const debouncedValidate = debounce(async (email, phone) => {
+    // Cancel the previous request if a new one is triggered
+    if (latestRequestRef.current) {
+      latestRequestRef.current.cancel();
+    }
+
+    const requestSource = axios.CancelToken.source();
+    latestRequestRef.current = requestSource;
     try {
       const response = await axios.post('https://api.carmandi.com.pk/api/auth/validate-email-phone', {
         email_address: email,
@@ -50,7 +58,7 @@ const RegisterPage = () => {
         }
       }
     }
-  }, 500); // delay by 500ms
+  }, 1000); // delay by 500ms
   
   
   
