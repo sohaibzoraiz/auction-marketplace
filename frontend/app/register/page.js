@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 //import { useRouter } from "next/navigation";
 import Modal from "../components/auction-single/modal";
 import Breadcrumb2 from "../components/common/Breadcrumb2";
 import axios from 'axios';
+import { UserContext } from "../contexts/UserContext";
 
 
 const RegisterPage = () => {
@@ -21,6 +22,13 @@ const RegisterPage = () => {
     autoRedirect: false
   });
   const { register, handleSubmit, formState: { errors }, watch, setError, clearErrors } = useForm();
+  const { userData, setUserData, isLoading } = useContext(UserContext) ?? {};
+  useEffect(() => {
+        if (!isLoading && userData) {
+            const originalUrl = new URLSearchParams(window.location.search).get("redirect") || "/";
+            router.push(originalUrl); // Redirect to previous page or home
+        }
+    }, [isLoading, userData, router]);
   
   
   const onSubmit = async (data) => {
@@ -116,7 +124,8 @@ const RegisterPage = () => {
       }
     }
   };
-
+  if (isLoading) return <p>Loading...</p>;
+    if (userData) return null;
   // Progress bar calculation
   const progress = (step / 3) * 100;
 
