@@ -170,15 +170,13 @@ const RegisterPage = () => {
               <label>Contact Number:</label>
               <input {...register("contact_number", {   required: "Valid phone number required",
                pattern: { value: /^[0-9+]{10,15}$/,  message: "Phone number format invalid" }})}
-               className="form-control" onChange={(e) => {   const email = watch("email_address"); debouncedValidate(email, e.target.value);
-              }} />
+               className="form-control" />
               {errors.contact_number && <p className="text-danger">{errors.contact_number.message}</p>}
 
               <label>Email:</label>
               <input type="email" {...register("email_address", { required: "Valid email required",
                  pattern: { value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/, message: "Invalid email format" }})}
-                className="form-control" onChange={(e) => { const phone = watch("contact_number"); debouncedValidate(e.target.value, phone);
-               }}/>
+                className="form-control"/>
               {errors.email_address && <p className="text-danger">{errors.email_address.message}</p>}
 
 
