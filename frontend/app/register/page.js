@@ -22,7 +22,7 @@ const RegisterPage = () => {
     autoRedirect: false
   });
   const { register, handleSubmit, formState: { errors }, watch, setError, clearErrors } = useForm();
-  const { userData, setUserData, isLoading } = useContext(UserContext) ?? {};
+  const { userData, isLoading } = useContext(UserContext) ?? {};
   useEffect(() => {
         if (!isLoading && userData) {
             const originalUrl = new URLSearchParams(window.location.search).get("redirect") || "/";
