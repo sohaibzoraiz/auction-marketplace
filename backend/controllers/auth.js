@@ -27,8 +27,8 @@ async function register(req, res) {
             customer_type
         } = req.body;
 
-        console.log("Request body:", req.body);
-        console.log("Received files:", req.files);
+       // console.log("Request body:", req.body);
+        //console.log("Received files:", req.files);
 
         // ✅ Handle file uploads and get URLs
         const profilePictureUrl = req.files['profile_picture'] ? req.files['profile_picture'][0].location : null;
@@ -73,7 +73,39 @@ async function register(req, res) {
     }
 }
 
+async function validateEmailPhone(req, res) {
+    const { email_address, contact_number } = req.body;
 
+    if (!email_address && !contact_number) {
+      return res.status(400).json({ message: 'Email or phone number is required' });
+    }
+  
+    try {
+      // Check if email exists in the database
+      const emailQuery = 'SELECT * FROM users WHERE email_address = $1';
+      const emailResult = await pool.query(emailQuery, [email_address]);
+  
+      // If email exists, return error
+      if (emailResult.rows.length > 0) {
+        return res.status(400).json({ message: 'Email already exists' });
+      }
+  
+      // Check if contact number exists in the database
+      const phoneQuery = 'SELECT * FROM users WHERE contact_number = $1';
+      const phoneResult = await pool.query(phoneQuery, [contact_number]);
+  
+      // If phone number exists, return error
+      if (phoneResult.rows.length > 0) {
+        return res.status(400).json({ message: 'Phone number already exists' });
+      }
+  
+      // If both email and phone are available
+      return res.status(200).json({ message: 'Email and phone are available' });
+    } catch (error) {
+      console.error('Error validating email and phone:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+}
 
 const jwt = require('jsonwebtoken');
 
@@ -247,4 +279,4 @@ async function upgradeSubscription(req, res) {
     }
 }
 
-module.exports={register ,login, logout, getUser, upgradeSubscription};
+module.exports={register ,validateEmailPhone, login, logout, getUser, upgradeSubscription};

@@ -5,9 +5,12 @@ import { useForm } from "react-hook-form";
 //import { useRouter } from "next/navigation";
 import Modal from "../components/auction-single/modal";
 import Breadcrumb2 from "../components/common/Breadcrumb2";
+import axios from 'axios';
 
 const RegisterPage = () => {
   const [step, setStep] = useState(1);
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [customerType, setCustomerType] = useState("individual");
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({
@@ -18,9 +21,54 @@ const RegisterPage = () => {
     buttonAction: () => {},
     autoRedirect: false
   });
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  //const router = useRouter();
+  const { register, handleSubmit, formState: { errors }, watch, setError, clearErrors } = useForm();
+  
 
+  //const router = useRouter();
+  const validateEmailPhone = async (email, phone) => {
+    try {
+      const response = await axios.post('https://api.carmandi.com.pk/api/auth/validate-email-phone', {
+        email_address: email,
+        contact_number: phone
+      });
+  
+      if (response.status === 200) {
+        // No errors, reset error messages
+        setEmailError('');
+        setPhoneError('');
+        clearErrors(['email_address', 'contact_number']);
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.data.message.includes('Email')) {
+          setEmailError(error.response.data.message);
+          setError("email_address", {
+            type: "manual",
+            message: error.response.data.message
+          });
+        } else if (error.response.data.message.includes('Phone')) {
+          setPhoneError(error.response.data.message);
+          setError("contact_number", {
+            type: "manual",
+            message: error.response.data.message
+          });
+        }
+      }
+    }
+  };
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    const phone = watch('contact_number'); // Get current phone value
+    validateEmailPhone(email, phone);
+  };
+  
+  const handlePhoneChange = (e) => {
+    const phone = e.target.value;
+    const email = watch('email_address'); // Get current email value
+    validateEmailPhone(email, phone);
+  };
+  
+  
   const onSubmit = async (data) => {
     if (step < 3) {
       setStep(step + 1);
@@ -95,14 +143,14 @@ const RegisterPage = () => {
         {/* Bootstrap Progress Bar */}
         <div className="progress mb-4" style={{height: "30px", backgroundColor: "#e9ecef"}}>
           <div
-            className="progress-bar"
+            className="progress-bar progress-bar-striped progress-bar-animated"
             role="progressbar"
-            style={{ width: `${progress}%` , height: "30px", backgroundColor: "#007bff"}}
+            style={{ width: `${progress}%` , height: "30px", backgroundColor: "#01aa85"}}
             aria-valuenow={progress}
             aria-valuemin="0"
             aria-valuemax="100"
           >
-            <span className="progress-text" style={{ position: "relative", width: "100%", textAlign: "center", color: "#fff" }}>
+            <span className="progress-text" style={{ position: "relative", width: "100%", textAlign: "center", color: "#fff", fontWeight: "bold" }}>  
       Step {step} of 3
     </span>
           </div>
@@ -134,27 +182,29 @@ const RegisterPage = () => {
               {errors.name && <p className="text-danger">Minimum 3 characters required</p>}
 
               <label>Contact Number:</label>
-              <input
-                {...register("contact_number", { required: true, pattern: /^[0-9+]{10,15}$/ })}
-                className="form-control"
+              <input {...register("contact_number", { required: true, pattern: /^[0-9+]{10,15}$/ })}
+              className="form-control"  onChange={handlePhoneChange} // Call validateEmailPhone when phone changes
               />
+              {phoneError && <p className="text-danger">{phoneError}</p>}
               {errors.contact_number && <p className="text-danger">Valid phone number required</p>}
 
               <label>Email:</label>
-              <input
-                type="email"
-                {...register("email_address", { required: true, pattern: /^[^@\s]+@[^@\s]+\.[^@\s]+$/ })}
-                className="form-control"
+              <input type="email" {...register("email_address", { required: true, pattern: /^[^@\s]+@[^@\s]+\.[^@\s]+$/ })}
+              className="form-control" onChange={handleEmailChange} // Call validateEmailPhone when email changes
               />
+              {emailError && <p className="text-danger">{emailError}</p>}
               {errors.email_address && <p className="text-danger">Valid email required</p>}
+
 
               <label>Password:</label>
               <input type="password" {...register("password", { required: true })} className="form-control" />
               {errors.password && <p className="text-danger">Password is required</p>}
 
               <label>Confirm Password:</label>
-              <input type="password" {...register("confirm_password", { required: true })} className="form-control" />
-              {errors.confirm_password && <p className="text-danger">Confirmation is required</p>}
+              <input type="password" {...register("confirm_password", { required: true, validate: (value) => value === watch("password") || "Passwords do not match" })} 
+              className="form-control"/>
+              {errors.confirm_password && <p className="text-danger">{errors.confirm_password.message}</p>}
+
 
               <label>Complete Address:</label>
               <textarea {...register("complete_address")} className="form-control"></textarea>

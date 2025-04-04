@@ -24,8 +24,8 @@ const upload = multer({
   }),
   limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB limit
   fileFilter(req, file, cb) {
-    console.log("Received file:", file);
-    console.log("MIME type:", file.mimetype);
+    //console.log("Received file:", file);
+    //console.log("MIME type:", file.mimetype);
 
     if (!file.mimetype.match(/^image\/(jpeg|jpg|png)$/)) {
       return cb(new Error("Only image files (JPG, PNG) are allowed!"));
