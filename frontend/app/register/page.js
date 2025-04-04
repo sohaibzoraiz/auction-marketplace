@@ -133,8 +133,10 @@ const RegisterPage = () => {
   return (
     <>
     <Breadcrumb2 pagetitle="Register" currentPage="register" />
-    <div className="container mt-5">
-      <div className="card p-4">
+    <div className="container pt-110 mb-110">
+        <div className="row justify-content-center">
+          <div className="col-lg-6">
+            <div className="contact-form-area">
 
         {/* Bootstrap Progress Bar */}
         <div className="progress mb-4" style={{height: "30px", backgroundColor: "#e9ecef"}}>
@@ -147,8 +149,8 @@ const RegisterPage = () => {
             aria-valuemax="100"
           >
             <span className="progress-text" style={{ position: "relative", width: "100%", textAlign: "center", color: "#fff", fontWeight: "bold" }}>  
-      Step {step} of 3
-    </span>
+             Step {step} of 3
+            </span>
           </div>
         </div>
 
@@ -250,6 +252,9 @@ const RegisterPage = () => {
     />
 )}
     </div>
+    </div>
+        </div>
+      
     </>
   );
 };
