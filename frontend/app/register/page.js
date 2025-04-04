@@ -70,21 +70,22 @@ const RegisterPage = () => {
   
   
   const onSubmit = async (data) => {
+    if (emailError || phoneError || errors.email_address || errors.contact_number) {
+      setModalData({
+        title: "Validation Error",
+        content: "Please fix the errors before proceeding.",
+        type: "Error",
+        buttonText: "Retry",
+        buttonAction: () => setShowModal(false),
+        autoRedirect: false
+      });
+      setShowModal(true);
+      return; // Prevent submission if there's an error
+    }
     if (step < 3) {
       setStep(step + 1);
     } else {
-      if (emailError || phoneError || errors.email_address || errors.contact_number) {
-        setModalData({
-          title: "Validation Error",
-          content: "Please fix the errors before proceeding.",
-          type: "Error",
-          buttonText: "Retry",
-          buttonAction: () => setShowModal(false),
-          autoRedirect: false
-        });
-        setShowModal(true);
-        return; // Prevent submission if there's an error
-      }
+      
       try {
         // Create a FormData object to handle file uploads
         const formData = new FormData();
