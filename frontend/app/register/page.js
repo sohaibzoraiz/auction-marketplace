@@ -6,11 +6,11 @@ import { useForm } from "react-hook-form";
 import Modal from "../components/auction-single/modal";
 import Breadcrumb2 from "../components/common/Breadcrumb2";
 import axios from 'axios';
+import debounce from 'lodash.debounce';
+
 
 const RegisterPage = () => {
   const [step, setStep] = useState(1);
-  const [emailError, setEmailError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
   const [customerType, setCustomerType] = useState("individual");
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({
@@ -23,31 +23,24 @@ const RegisterPage = () => {
   });
   const { register, handleSubmit, formState: { errors }, watch, setError, clearErrors } = useForm();
   
-
-  //const router = useRouter();
-  const validateEmailPhone = async (email, phone) => {
+  const debouncedValidate = debounce(async (email, phone) => {
     try {
       const response = await axios.post('https://api.carmandi.com.pk/api/auth/validate-email-phone', {
         email_address: email,
         contact_number: phone
       });
   
-      if (response.status === 200) {
-        // No errors, reset error messages
-        setEmailError('');
-        setPhoneError('');
-        clearErrors(['email_address', 'contact_number']);
-      }
+      // No error, clear validation
+      clearErrors(['email_address', 'contact_number']);
     } catch (error) {
       if (error.response) {
         if (error.response.data.message.includes('Email')) {
-          setEmailError(error.response.data.message);
           setError("email_address", {
             type: "manual",
             message: error.response.data.message
           });
-        } else if (error.response.data.message.includes('Phone')) {
-          setPhoneError(error.response.data.message);
+        }
+        if (error.response.data.message.includes('Phone')) {
           setError("contact_number", {
             type: "manual",
             message: error.response.data.message
@@ -55,18 +48,8 @@ const RegisterPage = () => {
         }
       }
     }
-  };
-  const handleEmailChange = (e) => {
-    const email = e.target.value;
-    const phone = watch('contact_number'); // Get current phone value
-    validateEmailPhone(email, phone);
-  };
+  }, 500); // delay by 500ms
   
-  const handlePhoneChange = (e) => {
-    const phone = e.target.value;
-    const email = watch('email_address'); // Get current email value
-    validateEmailPhone(email, phone);
-  };
   
   
   const onSubmit = async (data) => {
@@ -195,18 +178,19 @@ const RegisterPage = () => {
               {errors.name && <p className="text-danger">Minimum 3 characters required</p>}
 
               <label>Contact Number:</label>
-              <input {...register("contact_number", { required: true, pattern: /^[0-9+]{10,15}$/ })}
-              className="form-control"  onChange={handlePhoneChange} // Call validateEmailPhone when phone changes
-              />
-              {phoneError && <p className="text-danger">{phoneError}</p>}
-              {errors.contact_number && <p className="text-danger">Valid phone number required</p>}
+              <input {...register("contact_number", {   required: "Valid phone number required",
+               pattern: { value: /^[0-9+]{10,15}$/,  message: "Phone number format invalid" }})}
+               className="form-control" onChange={(e) => {   const email = watch("email_address"); debouncedValidate(email, e.target.value);
+              }} />
+              {errors.contact_number && <p className="text-danger">{errors.contact_number.message}</p>}
 
               <label>Email:</label>
-              <input type="email" {...register("email_address", { required: true, pattern: /^[^@\s]+@[^@\s]+\.[^@\s]+$/ })}
-              className="form-control" onChange={handleEmailChange} // Call validateEmailPhone when email changes
-              />
-              {emailError && <p className="text-danger">{emailError}</p>}
-              {errors.email_address && <p className="text-danger">Valid email required</p>}
+              <input type="email" {...register("email_address", { required: "Valid email required",
+                 pattern: { value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/, message: "Invalid email format" }})}
+                className="form-control" onChange={(e) => { const phone = watch("contact_number"); debouncedValidate(e.target.value, phone);
+               }}/>
+              {errors.email_address && <p className="text-danger">{errors.email_address.message}</p>}
+
 
 
               <label>Password:</label>
