@@ -81,31 +81,43 @@ async function validateEmailPhone(req, res) {
     }
   
     try {
-      // Check if email exists in the database
-      const emailQuery = 'SELECT * FROM users WHERE email_address = $1';
-      const emailResult = await pool.query(emailQuery, [email_address]);
-  
-      // If email exists, return error
-      if (emailResult.rows.length > 0) {
-        return res.status(400).json({ message: 'Email already exists' });
+      let emailExists = false;
+      let phoneExists = false;
+
+      if (email_address) {
+        const emailQuery = 'SELECT * FROM users WHERE email_address = $1';
+        const emailResult = await pool.query(emailQuery, [email_address]);
+        emailExists = emailResult.rows.length > 0;
       }
-  
-      // Check if contact number exists in the database
-      const phoneQuery = 'SELECT * FROM users WHERE contact_number = $1';
-      const phoneResult = await pool.query(phoneQuery, [contact_number]);
-  
-      // If phone number exists, return error
-      if (phoneResult.rows.length > 0) {
+
+      if (contact_number) {
+        const phoneQuery = 'SELECT * FROM users WHERE contact_number = $1';
+        const phoneResult = await pool.query(phoneQuery, [contact_number]);
+        phoneExists = phoneResult.rows.length > 0;
+      }
+
+      if (emailExists && phoneExists) {
+        return res.status(400).json({ message: 'Email and phone number already exist' });
+      } else if (emailExists) {
+        return res.status(400).json({ message: 'Email already exists' });
+      } else if (phoneExists) {
         return res.status(400).json({ message: 'Phone number already exists' });
       }
-  
-      // If both email and phone are available
-      return res.status(200).json({ message: 'Email and phone are available' });
+
+      // Success message should be specific to provided fields
+      let successMessage = 'Available';
+      if (email_address && !contact_number) successMessage = 'Email is available';
+      if (!email_address && contact_number) successMessage = 'Phone number is available';
+      if (email_address && contact_number) successMessage = 'Email and phone are available';
+
+      return res.status(200).json({ message: successMessage });
+
     } catch (error) {
       console.error('Error validating email and phone:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
 }
+
 
 const jwt = require('jsonwebtoken');
 
