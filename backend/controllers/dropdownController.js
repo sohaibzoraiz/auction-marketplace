@@ -74,10 +74,60 @@ const getYearRangeByVersion = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch year range' });
   }
 };
+const getVariantsByModelAndYear = async (req, res) => {
+    const { model_id, year } = req.query;
+  
+    if (!model_id || !year) {
+      return res.status(400).json({ message: 'Missing model_id or year parameter' });
+    }
+  
+    try {
+      const result = await pool.query(
+        `SELECT cv.id, cv.slug, cv.name AS version_name
+         FROM car_versions cv
+         JOIN car_generations cg ON cv.generation_id = cg.id
+         WHERE cg.model_id = $1
+         AND $2 BETWEEN cg.start_year AND cg.end_year
+         ORDER BY cv.name`,
+        [model_id, year]
+      );
+  
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Error fetching variants by model and year:', err);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
+  const getYearRangesByModel = async (req, res) => {
+    const { model_id } = req.query;
+  
+    if (!model_id) {
+      return res.status(400).json({ message: 'Missing model_id parameter' });
+    }
+  
+    try {
+      const result = await pool.query(
+        `SELECT DISTINCT start_year, end_year
+         FROM car_generations
+         WHERE model_id = $1
+         ORDER BY start_year DESC`,
+        [model_id]
+      );
+  
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Error fetching year ranges by model:', err);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 
 module.exports = {
   getMakes,
   getModelsByMake,
   getVariantsByModel,
   getYearRangeByVersion,
+  getVariantsByModelAndYear,
+  getYearRangesByModel,
+  
 };

@@ -21,7 +21,7 @@ function CarDetailsStep() {
 
   const selectedMake = watch('car_make');
   const selectedModel = watch('model');
-  const selectedVariant = watch('variant');
+  const selectedYear = watch('year_model');
 
   // Load makes on mount
   useEffect(() => {
@@ -41,33 +41,39 @@ function CarDetailsStep() {
     setYearOptions([]);
   }, [selectedMake]);
 
-  // Load variants when model changes
+  // Load year options when model changes
   useEffect(() => {
     if (selectedModel && selectedModel !== 'other') {
-      axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', { params: { model_id: selectedModel } })
-        .then(res => setVariants(res.data));
-    } else {
-      setVariants([]);
-    }
-    setYearOptions([]);
-  }, [selectedModel]);
-
-  // Load year options when variant changes
-  useEffect(() => {
-    if (selectedVariant && selectedVariant !== 'other') {
-      axios.get('https://api.carmandi.com.pk/api/dropdowns/years', { params: { version_id: selectedVariant } })
+      axios.get('https://api.carmandi.com.pk/api/dropdowns/years', { params: { model_id: selectedModel } })
         .then(res => {
-          const { start_year, end_year } = res.data;
-          const years = [];
-          for (let y = start_year; y <= end_year; y++) {
-            years.push(y);
-          }
-          setYearOptions(years);
+          const uniqueYears = new Set();
+          res.data.forEach(row => {
+            for (let y = row.start_year; y <= row.end_year; y++) {
+              uniqueYears.add(y);
+            }
+          });
+          setYearOptions([...uniqueYears].sort((a, b) => b - a));
         });
     } else {
       setYearOptions([]);
     }
-  }, [selectedVariant]);
+    setVariants([]);
+  }, [selectedModel]);
+
+  // Load variants when year is selected
+  useEffect(() => {
+    if (selectedModel && selectedModel !== 'other' && selectedYear) {
+      axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
+        params: {
+          model_id: selectedModel,
+          year: selectedYear
+        }
+      })
+        .then(res => setVariants(res.data));
+    } else {
+      setVariants([]);
+    }
+  }, [selectedModel, selectedYear]);
 
   const handleFeaturedImageChange = (e) => {
     const file = e.target.files[0];
@@ -122,23 +128,6 @@ function CarDetailsStep() {
       </div>
 
       <div className="col-md-6 mb-20">
-        <label>Trim*</label>
-        <select
-          {...register('variant', { required: true, onChange: (e) => setShowVariantInput(e.target.value === 'other') })}
-          className="form-control"
-        >
-          <option value="">Select Variant</option>
-          {variants.map(variant => (
-            <option key={variant.id} value={variant.id}>{variant.name}</option>
-          ))}
-          <option value="other">Other</option>
-        </select>
-        {showVariantInput && (
-          <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
-        )}
-      </div>
-
-      <div className="col-md-6 mb-20">
         <label>Year Model*</label>
         <select {...register('year_model', { required: true })} className="form-control">
           <option value="">Select Year</option>
@@ -146,6 +135,23 @@ function CarDetailsStep() {
             <option key={year} value={year}>{year}</option>
           ))}
         </select>
+      </div>
+
+      <div className="col-md-6 mb-20">
+        <label>Trim*</label>
+        <select
+          {...register('variant', { required: true, onChange: (e) => setShowVariantInput(e.target.value === 'other') })}
+          className="form-control"
+        >
+          <option value="">Select Variant</option>
+          {variants.map(variant => (
+            <option key={variant.id} value={variant.id}>{variant.version_name}</option>
+          ))}
+          <option value="other">Other</option>
+        </select>
+        {showVariantInput && (
+          <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
+        )}
       </div>
 
       <div className="col-md-6 mb-20">
