@@ -57,9 +57,9 @@ function CarDetailsStep() {
     if (selectedVariant && selectedVariant !== 'other') {
       axios.get('https://api.carmandi.com.pk/api/dropdowns/years', { params: { version_id: selectedVariant } })
         .then(res => {
-          const { gen_start_year, gen_end_year } = res.data;
+          const { start_year, end_year } = res.data;
           const years = [];
-          for (let y = gen_start_year; y <= gen_end_year; y++) {
+          for (let y = start_year; y <= end_year; y++) {
             years.push(y);
           }
           setYearOptions(years);
