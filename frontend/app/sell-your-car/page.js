@@ -1,4 +1,6 @@
+
 "use client";
+
 
 import React, { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -55,60 +57,7 @@ function CreateAuctionPage() {
         }
     }
       }, [userData, router, isLoading]);
-   /* useEffect(() => {
-        const fetchUser = async () => {
-            setLoading(true);
-            try {
-                // Retrieve token from localStorage
-                const token = localStorage.getItem('accessToken');
-
-                if (!token) {
-                    // If no token, redirect to login page
-                    console.log('Token not found in localStorage');
-                    const originalUrl = window.location.pathname;
-                    router.push(`/login?redirect=${originalUrl}`);
-                    return;
-                }
-
-                // Check if user is logged in and get user data
-                const response = await fetch('/api/auth/user', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // Include token in header
-                    },
-                });
-                if (!response.ok) {
-                    // If not logged in, redirect to login page
-
-                    const originalUrl = window.location.pathname;
-                    router.push(`/login?redirect=${originalUrl}`);
-                    return;
-                }
-
-                const userData = await response.json();
-            //    console.log('User Data:', userData);
-                setUser(userData);
-
-                // Check user's plan and listing count
-                if (userData.plan === 'basic') {
-                    if (userData.listingCount < 1) {
-                        setCanCreateListing(true);
-                    } else {
-                        setCanCreateListing(false);
-                        setUpgradeMessage('Basic plan users can only create one listing. Upgrade to create more.');
-                    }
-                } else {
-                    setCanCreateListing(true); // Premium plan users can create listings
-                }
-            } catch (err) {
-                setError(err.message || 'Failed to fetch user data');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUser();
-    }, [router]);*/
-
+  
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -170,6 +119,7 @@ function CreateAuctionPage() {
 
     return (
         <div className="container pt-110 mb-110">
+          <MultiStepForm userType={userData.plan} />
         <div className="row justify-content-center">
           <div className="col-lg-8">
             <div className="contact-form-area">
