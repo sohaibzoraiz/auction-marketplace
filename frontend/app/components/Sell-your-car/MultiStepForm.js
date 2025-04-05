@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import CarDetailsStep from '../components/Sell-your-car/CarDetails';
-import AuctionDetailsStep from '../components/Sell-your-car/AuctionDetails';
-import InspectionRequestStep from '../components/Sell-your-car/InspectionRequest';
-import PaymentStep from '../components/Sell-your-car/PaymentDetails';
+import CarDetailsStep from './CarDetails';
+import AuctionDetailsStep from './AuctionDetails';
+import InspectionRequestStep from './InspectionRequest';
+import PaymentStep from './PaymentDetails';
 
 function MultiStepForm({ userType }) {
   const [currentStep, setCurrentStep] = useState(1);
