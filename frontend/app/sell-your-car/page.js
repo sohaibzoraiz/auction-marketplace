@@ -6,6 +6,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { UserContext } from '../contexts/UserContext';
+import MultiStepForm from '../components/Sell-your-car/MultiStepForm';
 
 function CreateAuctionPage() {
     const router = useRouter();

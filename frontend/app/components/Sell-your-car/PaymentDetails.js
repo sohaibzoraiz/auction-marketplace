@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 function PaymentStep() {
-  const { register, setValue, watch } = useFormContext();
+  const { register, setValue } = useFormContext();
   const [paymentMethod, setPaymentMethod] = useState('');
   const inspectionCharges = 2500; // Inspection fee of 2500 PKR
 
