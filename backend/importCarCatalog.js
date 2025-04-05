@@ -4,6 +4,8 @@ const path = require('path');
 const csv = require('csv-parser');
 const { Pool } = require('pg');
 
+const DRY_RUN = false; // set to true to preview without inserting
+
 const pool = new Pool({
   user: 'auction_user',
   host: 'localhost',
@@ -24,7 +26,15 @@ async function insertIfNotExists(table, condition, insertValues, returning = 'id
     const selectQuery = `SELECT ${returning} FROM ${table} WHERE ${whereClause}`;
     const result = await client.query(selectQuery, conditionVals);
 
-    if (result.rows.length > 0) return result.rows[0][returning];
+    if (result.rows.length > 0) {
+      console.log(`[SKIP] ${table} exists with`, condition);
+      return result.rows[0][returning];
+    }
+
+    if (DRY_RUN) {
+      console.log(`[DRY RUN] Would insert into ${table}:`, insertValues);
+      return null;
+    }
 
     const insertKeys = Object.keys(insertValues);
     const insertVals = Object.values(insertValues);
@@ -33,6 +43,7 @@ async function insertIfNotExists(table, condition, insertValues, returning = 'id
     const insertQuery = `INSERT INTO ${table} (${insertKeys.join(', ')}) VALUES (${placeholders}) RETURNING ${returning}`;
     const insertResult = await client.query(insertQuery, insertVals);
 
+    console.log(`[INSERTED] into ${table}:`, insertValues);
     return insertResult.rows[0][returning];
   } finally {
     client.release();
@@ -44,6 +55,11 @@ function cleanBool(value) {
     return ['true', '1'].includes(value.trim().toLowerCase());
   }
   return !!value;
+}
+
+function cleanInt(value) {
+  const num = parseInt(value);
+  return isNaN(num) ? null : num;
 }
 
 async function importCSV() {
@@ -80,15 +96,15 @@ async function importCSV() {
               gen_g_name: genName,
               gen_slug: row.gen_slug,
               gen_imported: cleanBool(row.gen_imported),
-              start_year: parseInt(row.gen_start_year),
-              end_year: parseInt(row.gen_end_year),
+              start_year: cleanInt(row.gen_start_year),
+              end_year: cleanInt(row.gen_end_year),
               gen_photos: row.gen_photos,
             }
           );
 
           await insertIfNotExists(
             'car_versions',
-            { slug: row.version_slug },
+            { generation_id: generationId, slug: row.version_slug },
             {
               generation_id: generationId,
               name: row.version_name,
