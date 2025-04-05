@@ -52,12 +52,16 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
-//module.exports = pool;
+
 
 // Sample route for testing
 app.get('/', (req, res) => {
   res.send('<h1>Hello, Car Auction Marketplace!</h1>');
 });
+
+// API routes for car dropdowns
+const dropdownRoutes = require('./routes/dropdownRoutes');
+app.use('/api/dropdowns', dropdownRoutes);
 
 // Authentication routes
 app.post('/auth/login', require('./controllers/auth').login);
