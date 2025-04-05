@@ -16,6 +16,10 @@ const pool = new Pool({
 
 const csvFilePath = path.join(__dirname, 'data', 'versions-2022-01-28.csv');
 
+let insertedCount = 0;
+let skippedCount = 0;
+let initialVersionCount = 0;
+
 async function insertIfNotExists(table, condition, insertValues, returning = 'id') {
   const client = await pool.connect();
   try {
@@ -28,6 +32,7 @@ async function insertIfNotExists(table, condition, insertValues, returning = 'id
 
     if (result.rows.length > 0) {
       console.log(`[SKIP] ${table} exists with`, condition);
+      skippedCount++;
       return result.rows[0][returning];
     }
 
@@ -44,6 +49,7 @@ async function insertIfNotExists(table, condition, insertValues, returning = 'id
     const insertResult = await client.query(insertQuery, insertVals);
 
     console.log(`[INSERTED] into ${table}:`, insertValues);
+    insertedCount++;
     return insertResult.rows[0][returning];
   } finally {
     client.release();
@@ -63,12 +69,22 @@ function cleanInt(value) {
 }
 
 async function importCSV() {
+  const client = await pool.connect();
+  try {
+    const versionCountResult = await client.query('SELECT COUNT(*) FROM car_versions');
+    initialVersionCount = parseInt(versionCountResult.rows[0].count);
+  } finally {
+    client.release();
+  }
+
   const rows = [];
 
   fs.createReadStream(csvFilePath)
     .pipe(csv())
     .on('data', (data) => rows.push(data))
     .on('end', async () => {
+      console.log(`Total rows in CSV: ${rows.length}`);
+
       for (const row of rows) {
         try {
           const makeName = row.make.trim();
@@ -102,7 +118,6 @@ async function importCSV() {
             }
           );
 
-          // Modified condition to allow same version_slug across different generations
           await insertIfNotExists(
             'car_versions',
             { slug: row.version_slug, generation_id: generationId },
@@ -136,6 +151,11 @@ async function importCSV() {
       }
 
       console.log('CSV import complete.');
+      console.log(`Total inserted this run: ${insertedCount}`);
+      console.log(`Total skipped this run: ${skippedCount}`);
+      console.log(`Total processed from CSV: ${rows.length}`);
+      console.log(`Initial car_versions count: ${initialVersionCount}`);
+      console.log(`Final car_versions count: ${initialVersionCount + insertedCount}`);
       process.exit();
     });
 }
