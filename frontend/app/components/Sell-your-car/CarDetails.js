@@ -18,6 +18,7 @@ function CarDetailsStep() {
   const [showMakeInput, setShowMakeInput] = useState(false);
   const [showModelInput, setShowModelInput] = useState(false);
   const [showVariantInput, setShowVariantInput] = useState(false);
+  const [showYearInput, setShowYearInput] = useState(false);
 
   const selectedMake = watch('car_make');
   const selectedModel = watch('model');
@@ -62,7 +63,7 @@ function CarDetailsStep() {
 
   // Load variants when year is selected
   useEffect(() => {
-    if (selectedModel && selectedModel !== 'other' && selectedYear) {
+    if (selectedModel && selectedModel !== 'other' && selectedYear && selectedYear !== 'other') {
       axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
         params: {
           model_id: selectedModel,
@@ -113,7 +114,14 @@ function CarDetailsStep() {
       <div className="col-md-6 mb-20">
         <label>Model*</label>
         <select
-          {...register('model', { required: true, onChange: (e) => setShowModelInput(e.target.value === 'other') })}
+          {...register('model', {
+            required: true,
+            onChange: (e) => {
+              const isOther = e.target.value === 'other';
+              setShowModelInput(isOther);
+              setShowYearInput(isOther); // show year input if model is 'other'
+            }
+          })}
           className="form-control"
         >
           <option value="">Select Model</option>
@@ -129,12 +137,22 @@ function CarDetailsStep() {
 
       <div className="col-md-6 mb-20">
         <label>Year Model*</label>
-        <select {...register('year_model', { required: true })} className="form-control">
+        <select
+          {...register('year_model', {
+            required: true,
+            onChange: (e) => setShowYearInput(e.target.value === 'other')
+          })}
+          className="form-control"
+        >
           <option value="">Select Year</option>
           {yearOptions.map(year => (
             <option key={year} value={year}>{year}</option>
           ))}
+          <option value="other">Other</option>
         </select>
+        {showYearInput && (
+          <input type="text" {...register('year_model_other')} placeholder="Enter other year" className="form-control mt-2" />
+        )}
       </div>
 
       <div className="col-md-6 mb-20">
