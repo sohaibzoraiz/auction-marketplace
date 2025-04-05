@@ -40,7 +40,7 @@ const getVariantsByModel = async (req, res) => {
        FROM car_versions cv
        JOIN car_generations cg ON cv.generation_id = cg.id
        WHERE cg.model_id = $1
-       ORDER BY cv.version_name`,
+       ORDER BY cv.name`,
       [model_id]
     );
     res.json(result.rows);
