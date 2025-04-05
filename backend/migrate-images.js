@@ -1,10 +1,15 @@
-// migrateGenPhotosToS3.js (from database directly)
+// migrate-images.js
+
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+const fs = require('fs');
+const path = require('path');
 const { Pool } = require('pg');
+// migrateGenPhotosToS3.js (from database directly)
+
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
-const path = require('path');
-require('dotenv').config();
+
 
 
 const pool = new Pool({
