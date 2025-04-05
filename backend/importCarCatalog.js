@@ -8,7 +8,7 @@ const pool = new Pool({
   user: 'auction_user',
   host: 'localhost',
   database: 'car_auction',
-  password: 'your_password_here', // update this
+  password: 'Zoraiz1!', // update this
   port: 5432,
 });
 
