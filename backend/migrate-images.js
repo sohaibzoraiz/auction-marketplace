@@ -99,13 +99,27 @@ async function importVersionPhotosFromCSV() {
 
         const client = await pool.connect();
         try {
-          const result = await client.query(
-            'UPDATE car_versions SET version_photos = $1 WHERE slug = $2 AND generation_id = (SELECT id FROM car_generations WHERE gen_slug = $3)',
-            [photos, slug, genSlug]
+          const existing = await client.query(
+            `SELECT version_photos FROM car_versions cv
+             JOIN car_generations cg ON cv.generation_id = cg.id
+             WHERE cv.slug = $1 AND cg.gen_slug = $2`,
+            [slug, genSlug]
           );
-          if (result.rowCount > 0) {
-            console.log(`🔄 Imported photos for ${slug} (${genSlug})`);
-            updated++;
+
+          if (existing.rowCount === 1 && (!existing.rows[0].version_photos || !existing.rows[0].version_photos.includes('s3.'))) {
+            const result = await client.query(
+              `UPDATE car_versions SET version_photos = $1
+               FROM car_generations
+               WHERE car_versions.slug = $2
+               AND car_generations.gen_slug = $3
+               AND car_versions.generation_id = car_generations.id`,
+              [photos, slug, genSlug]
+            );
+
+            if (result.rowCount > 0) {
+              console.log(`🔄 Imported photos for ${slug} (${genSlug})`);
+              updated++;
+            }
           }
         } catch (err) {
           console.error(`⚠️ Failed to import ${slug} (${genSlug}): ${err.message}`);
