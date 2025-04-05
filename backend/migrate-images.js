@@ -48,23 +48,30 @@ async function processGeneration(gen) {
   const { id, gen_slug, gen_photos } = gen;
   if (!gen_photos || gen_photos === '-' || gen_photos === 'null') return;
 
+  const photoUrls = gen_photos.split('|').map(p => p.trim()).filter(Boolean);
+  const uploadedUrls = [];
+
   try {
-    const response = await axios.get(gen_photos, { responseType: 'arraybuffer' });
-    const buffer = Buffer.from(response.data);
-    const extension = path.extname(gen_photos).split('?')[0].replace('.', '') || 'jpg';
-    const filename = `${uuidv4()}.${extension}`;
+    for (const originalUrl of photoUrls) {
+      const response = await axios.get(originalUrl, { responseType: 'arraybuffer' });
+      const buffer = Buffer.from(response.data);
+      const extension = path.extname(originalUrl).split('?')[0].replace('.', '') || 'jpg';
+      const filename = `${uuidv4()}.${extension}`;
 
-    const uploadedUrl = await uploadToS3(buffer, filename, response.headers['content-type']);
+      const uploadedUrl = await uploadToS3(buffer, filename, response.headers['content-type']);
+      uploadedUrls.push(uploadedUrl);
+    }
 
+    const newPhotoString = uploadedUrls.join(' | ');
     const client = await pool.connect();
     try {
-      await client.query('UPDATE car_generations SET gen_photos = $1 WHERE id = $2', [uploadedUrl, id]);
-      console.log(`✅ Updated ${gen_slug} (${id}) with new S3 URL.`);
+      await client.query('UPDATE car_generations SET gen_photos = $1 WHERE id = $2', [newPhotoString, id]);
+      console.log(`✅ Updated ${gen_slug} (${id}) with ${uploadedUrls.length} image(s).`);
     } finally {
       client.release();
     }
   } catch (err) {
-    console.error(`❌ Failed for ${gen_slug} (${id}) — ${gen_photos}: ${err.message}`);
+    console.error(`❌ Failed for ${gen_slug} (${id}): ${err.message}`);
   }
 }
 
