@@ -129,7 +129,7 @@ function CarDetailsStep() {
         >
           <option value="">Select Variant</option>
           {variants.map(variant => (
-            <option key={variant.id} value={variant.id}>{variant.version_name}</option>
+            <option key={variant.id} value={variant.id}>{variant.name}</option>
           ))}
           <option value="other">Other</option>
         </select>
