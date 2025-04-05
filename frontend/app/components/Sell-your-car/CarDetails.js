@@ -119,7 +119,7 @@ function CarDetailsStep() {
             onChange: (e) => {
               const isOther = e.target.value === 'other';
               setShowModelInput(isOther);
-              setShowYearInput(isOther); // show year input if model is 'other'
+              // show year input if model is 'other'
             }
           })}
           className="form-control"
