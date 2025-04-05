@@ -4,6 +4,8 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 const path = require('path');
+require('dotenv').config();
+
 
 const pool = new Pool({
   user: 'auction_user',
