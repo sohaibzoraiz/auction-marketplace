@@ -10,7 +10,7 @@ const pool = new Pool({
   user: 'auction_user',
   host: 'localhost',
   database: 'car_auction',
-  password: 'Zoraiz1!', // update this
+  password: 'your_password_here', // update this
   port: 5432,
 });
 
@@ -102,9 +102,10 @@ async function importCSV() {
             }
           );
 
+          // Modified condition to allow same version_slug across different generations
           await insertIfNotExists(
             'car_versions',
-            { generation_id: generationId, slug: row.version_slug },
+            { slug: row.version_slug, generation_id: generationId },
             {
               generation_id: generationId,
               name: row.version_name,
