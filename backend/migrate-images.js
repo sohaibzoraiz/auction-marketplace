@@ -53,6 +53,12 @@ async function processGeneration(gen) {
 
   try {
     for (const originalUrl of photoUrls) {
+      if (originalUrl.includes(S3_BASE_URL)) {
+        // Already uploaded to S3, keep it as-is
+        uploadedUrls.push(originalUrl);
+        continue;
+      }
+
       const response = await axios.get(originalUrl, { responseType: 'arraybuffer' });
       const buffer = Buffer.from(response.data);
       const extension = path.extname(originalUrl).split('?')[0].replace('.', '') || 'jpg';
