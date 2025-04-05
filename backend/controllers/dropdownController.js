@@ -57,7 +57,7 @@ const getYearRangeByVersion = async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT cg.gen_start_year, cg.gen_end_year
+      `SELECT cg.start_year, cg.end_year
        FROM car_generations cg
        JOIN car_versions cv ON cv.generation_id = cg.id
        WHERE cv.id = $1`,
