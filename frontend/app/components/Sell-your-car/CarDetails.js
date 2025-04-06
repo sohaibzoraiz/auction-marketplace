@@ -51,10 +51,12 @@ function CarDetailsStep() {
       }).then(res => {
         const years = [];
         res.data.forEach(row => {
-          for (let y = row.start_year; y <= row.end_year; y++) {
-            years.push({ year: y, generation_id: row.generation_id });
-          }
-        });
+            if (row.start_year && row.end_year && row.generation_id) {
+              for (let y = row.start_year; y <= row.end_year; y++) {
+                years.push({ year: y, generation_id: row.generation_id });
+              }
+            }
+         });          
         setYearOptions(years.sort((a, b) => b.year - a.year));
       });
     } else {
@@ -160,11 +162,12 @@ function CarDetailsStep() {
           onChange={(e) => {
             const val = e.target.value;
             setShowYearInput(val === 'other');
-
-            const selected = yearOptions.find(y => y.year.toString() === val);
+          
+            const selected = yearOptions.find(y => y && y.year?.toString() === val);
             setValue('year_model', val);
             setValue('generation_id', selected?.generation_id || null);
           }}
+          
         >
           <option value="">Select Year</option>
           {yearOptions.map(opt => (
