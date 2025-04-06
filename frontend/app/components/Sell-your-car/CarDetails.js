@@ -271,10 +271,8 @@ function CarDetailsStep() {
   render={({ field }) => (
     <Autocomplete
       freeSolo
-      options={yearOptions.map(option => option.y)}
-      getOptionLabel={(option) =>
-        typeof option === 'string' ? option : option?.toString?.() || ''
-      }
+      options={yearOptions.map(o => o.year)}
+      getOptionLabel={(option) => option?.toString?.() || ''}
       isOptionEqualToValue={(option, value) => option === value}
       value={field.value || ''}
       onChange={(_, newValue) => {
@@ -283,6 +281,13 @@ function CarDetailsStep() {
 
         const match = yearOptions.find(y => y.year.toString() === newValue?.toString());
         setIsCustomYear(!match);
+
+        // optionally set generation_id if found
+        if (match) {
+          setValue('generation_id', match.generation_id);
+        } else {
+          setValue('generation_id', null);
+        }
       }}
       onInputChange={(_, newInputValue) => {
         field.onChange(newInputValue);
@@ -290,6 +295,12 @@ function CarDetailsStep() {
 
         const match = yearOptions.find(y => y.year.toString() === newInputValue?.toString());
         setIsCustomYear(!match);
+
+        if (match) {
+          setValue('generation_id', match.generation_id);
+        } else {
+          setValue('generation_id', null);
+        }
       }}
       renderInput={(params) => (
         <TextField {...params} label="Year*" placeholder="Select or enter year" fullWidth />
@@ -297,6 +308,7 @@ function CarDetailsStep() {
     />
   )}
 />
+
 
 
       </div>
@@ -326,8 +338,39 @@ function CarDetailsStep() {
         {showVariantInput && (
           <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
         )}
-        <input type="hidden" {...register('version_id')} />
-        <input type="hidden" {...register('variant')} />
+        <Controller
+    name="variant"
+    control={control}
+    defaultValue=""
+    render={({ field }) => (
+      <Autocomplete
+        freeSolo
+        options={variants.map(v => v.version_name)}
+        getOptionLabel={(option) => option}
+        isOptionEqualToValue={(option, value) => option === value}
+        value={field.value || ''}
+        onInputChange={(_, newInputValue) => {
+          field.onChange(newInputValue);
+          const matched = variants.find(v => v.version_name === newInputValue);
+          setValue('version_id', matched ? matched.id : null);
+          setValue('generation_id', matched ? matched.generation_id : null); // ✅ set generation_id here
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Trim*"
+            placeholder="Select or enter variant"
+            required
+            fullWidth
+          />
+        )}
+      />
+    )}
+  />
+  <input type="hidden" {...register('version_id')} />
+  <input type="hidden" {...register('generation_id')} />
+        {/*<input type="hidden" {...register('version_id')} />
+        <input type="hidden" {...register('variant')} />*/}
       </div>
 
       {/* Remaining fields */}
