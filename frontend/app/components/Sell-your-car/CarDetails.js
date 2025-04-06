@@ -261,7 +261,7 @@ function CarDetailsStep() {
           </>
         ) : (
           <>
-            <input type="text" {...register('year_model')} placeholder="Enter year" fullWidth/>
+            <input type="text" {...register('year_model')} placeholder="Enter year" className="form-control" />
           </>
         )}
         <Controller
