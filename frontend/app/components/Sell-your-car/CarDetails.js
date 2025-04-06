@@ -263,6 +263,24 @@ function CarDetailsStep() {
             <input type="text" {...register('year_model')} placeholder="Enter year" className="form-control" />
           </>
         )}
+        <Controller
+    name="year_model"
+    control={control}
+    rules={{ required: true }}
+    render={({ field }) => (
+      <Autocomplete
+        freeSolo // allows custom input not in the dropdown
+        options={yearOptions}
+        getOptionLabel={(option) => option.toString()}
+        isOptionEqualToValue={(option, value) => option === value}
+        value={field.value || ''}
+        onInputChange={(_, newInputValue) => field.onChange(newInputValue)}
+        renderInput={(params) => (
+          <TextField {...params} label="year*" placeholder="Select or enter year" />
+        )}
+      />
+    )}
+  />
         <input type="hidden" {...register('generation_id')} />
       </div>
 
