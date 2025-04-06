@@ -50,14 +50,15 @@ function CarDetailsStep() {
         params: { model_id: selectedModelId }
       }).then(res => {
         const years = [];
-        res.data.forEach(row => {
-            if (row.start_year && row.end_year && row.generation_id) {
-              for (let y = row.start_year; y <= row.end_year; y++) {
-                years.push({ year: y, generation_id: row.generation_id });
-              }
-            }
-         });          
-        setYearOptions(years.sort((a, b) => b.year - a.year));
+res.data.forEach(row => {
+  if (row.start_year != null && row.end_year != null && row.generation_id != null) {
+    for (let y = row.start_year; y <= row.end_year; y++) {
+      years.push({ year: y, generation_id: row.generation_id });
+    }
+  }
+});
+setYearOptions(years.sort((a, b) => b.year - a.year));
+
       });
     } else {
       setYearOptions([]);
