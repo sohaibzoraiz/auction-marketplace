@@ -177,34 +177,7 @@ function CarDetailsStep() {
       </div>
 
       {/* MODEL */}
-      <div className="col-md-6 mb-20">
-  <label>Model*</label>
-  <Controller
-    name="model"
-    control={control}
-    rules={{ required: true }}
-    render={({ field: { onChange, value } }) => (
-      <Autocomplete
-        options={models}
-        getOptionLabel={(option) => option?.name || ''}
-        value={models.find(m => m.name === value) || null}
-        onInputChange={(e, newInput) => {
-          const matchedModel = models.find(m => m.name.toLowerCase() === newInput.toLowerCase());
-          setValue('model_id', matchedModel ? matchedModel.id : null);
-          onChange(newInput);
-        }}
-        onChange={(e, selectedOption) => {
-          setValue('model_id', selectedOption ? selectedOption.id : null);
-          onChange(selectedOption?.name || '');
-        }}
-        renderInput={(params) => (
-          <input {...params} placeholder="Select or type model" className="form-control" />
-        )}
-      />
-    )}
-  />
-  <input type="hidden" {...register('model_id')} />
-</div>
+      
 
 
       <div className="col-md-6 mb-20">
@@ -230,8 +203,33 @@ function CarDetailsStep() {
         {showModelInput && (
           <input type="text" {...register('model_other')} placeholder="Enter other model" className="form-control mt-2" />
         )}
-        <input type="hidden" {...register('model_id')} />
-        <input type="hidden" {...register('model')} />
+        <Controller
+  name="model"
+  control={control}
+  rules={{ required: true }}
+  render={({ field: { onChange, value } }) => (
+    <Autocomplete
+      options={models}
+      getOptionLabel={(option) => option?.name || ''}
+      value={models.find(m => m.name === value) || null}
+      onInputChange={(e, newInput) => {
+        const matchedModel = models.find(m => m.name.toLowerCase() === newInput.toLowerCase());
+        setValue('model_id', matchedModel ? matchedModel.id : null);
+        onChange(newInput);
+      }}
+      onChange={(e, selectedOption) => {
+        setValue('model_id', selectedOption ? selectedOption.id : null);
+        onChange(selectedOption?.name || '');
+      }}
+      renderInput={(params) => (
+        <TextField {...params} label="Model*" variant="outlined" fullWidth />
+      )}
+    />
+  )}
+/>
+<input type="hidden" {...register('model_id')} />
+        {/*<input type="hidden" {...register('model_id')} />
+        <input type="hidden" {...register('model')} />*/}
       </div>
 
       {/* YEAR */}
