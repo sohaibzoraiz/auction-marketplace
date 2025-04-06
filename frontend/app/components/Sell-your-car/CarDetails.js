@@ -47,13 +47,13 @@ function CarDetailsStep() {
     if (selectedModel && selectedModel !== 'other') {
       axios.get('https://api.carmandi.com.pk/api/dropdowns/years', { params: { model_id: selectedModel } })
         .then(res => {
-          const uniqueYears = new Set();
+          const years = [];
           res.data.forEach(row => {
             for (let y = row.start_year; y <= row.end_year; y++) {
-              uniqueYears.add(y);
+              years.push({ year: y, generation_id: row.generation_id });
             }
           });
-          setYearOptions([...uniqueYears].sort((a, b) => b - a));
+          setYearOptions(years.sort((a, b) => b.year - a.year));
         });
     } else {
       setYearOptions([]);
@@ -79,7 +79,6 @@ function CarDetailsStep() {
   const handleFeaturedImageChange = (e) => {
     const file = e.target.files[0];
     setFeaturedImage(file);
-
     const currentImages = watch('car_photos_jsonb') || [];
     setValue('car_photos_jsonb', [file, ...currentImages.filter(f => f !== file)]);
   };
@@ -87,17 +86,30 @@ function CarDetailsStep() {
   const handleCarImagesChange = (e) => {
     const files = Array.from(e.target.files);
     setCarImages(files);
-
     const allImages = [featuredImage, ...files].filter(Boolean);
     setValue('car_photos_jsonb', allImages);
   };
 
   return (
     <div className="row">
+      {/* Make */}
       <div className="col-md-6 mb-20">
         <label>Make*</label>
         <select
-          {...register('car_make', { required: true, onChange: (e) => setShowMakeInput(e.target.value === 'other') })}
+          {...register('car_make', {
+            required: true,
+            onChange: (e) => {
+              const isOther = e.target.value === 'other';
+              setShowMakeInput(isOther);
+              const selected = makes.find(m => m.id.toString() === e.target.value);
+              if (selected) {
+                setValue('car_make', selected.name);
+                setValue('make_id', selected.id);
+              } else {
+                setValue('make_id', null);
+              }
+            }
+          })}
           className="form-control"
         >
           <option value="">Select Make</option>
@@ -109,8 +121,10 @@ function CarDetailsStep() {
         {showMakeInput && (
           <input type="text" {...register('car_make_other')} placeholder="Enter other make" className="form-control mt-2" />
         )}
+        <input type="hidden" {...register('make_id')} />
       </div>
 
+      {/* Model */}
       <div className="col-md-6 mb-20">
         <label>Model*</label>
         <select
@@ -119,7 +133,13 @@ function CarDetailsStep() {
             onChange: (e) => {
               const isOther = e.target.value === 'other';
               setShowModelInput(isOther);
-              // show year input if model is 'other'
+              const selected = models.find(m => m.id.toString() === e.target.value);
+              if (selected) {
+                setValue('model', selected.name);
+                setValue('model_id', selected.id);
+              } else {
+                setValue('model_id', null);
+              }
             }
           })}
           className="form-control"
@@ -133,40 +153,59 @@ function CarDetailsStep() {
         {showModelInput && (
           <input type="text" {...register('model_other')} placeholder="Enter other model" className="form-control mt-2" />
         )}
+        <input type="hidden" {...register('model_id')} />
       </div>
 
+      {/* Year */}
       <div className="col-md-6 mb-20">
         <label>Year Model*</label>
         <select
           {...register('year_model', {
             required: true,
-            onChange: (e) => setShowYearInput(e.target.value === 'other')
+            onChange: (e) => {
+              const year = e.target.value;
+              const genId = e.target.selectedOptions[0]?.getAttribute('data-generation');
+              setShowYearInput(year === 'other');
+              if (year !== 'other') {
+                setValue('year_model', year);
+                setValue('generation_id', genId);
+              } else {
+                setValue('generation_id', null);
+              }
+            }
           })}
           className="form-control"
         >
           <option value="">Select Year</option>
-          {yearOptions.map(year => (
-            <option key={year} value={year}>{year}</option>
+          {yearOptions.map(option => (
+            <option key={option.year} value={option.year} data-generation={option.generation_id}>
+              {option.year}
+            </option>
           ))}
           <option value="other">Other</option>
         </select>
         {showYearInput && (
           <input type="text" {...register('year_model_other')} placeholder="Enter other year" className="form-control mt-2" />
         )}
+        <input type="hidden" {...register('generation_id')} />
       </div>
 
+      {/* Trim */}
       <div className="col-md-6 mb-20">
         <label>Trim*</label>
         <select
-          {...register('variant', { required: true, onChange: (e) => {
-            const val = e.target.value;
-            setShowVariantInput(val === 'other');
-            if (val !== 'other') {
-              setValue('version_id', val); // ← ✅ Save version_id in RHF
-            } else {
-              setValue('version_id', null); // ← or clear if user chose "Other"
+          {...register('variant', {
+            required: true,
+            onChange: (e) => {
+              const val = e.target.value;
+              setShowVariantInput(val === 'other');
+              if (val !== 'other') {
+                setValue('version_id', val);
+              } else {
+                setValue('version_id', null);
+              }
             }
-          }})}
+          })}
           className="form-control"
         >
           <option value="">Select Variant</option>
@@ -181,6 +220,7 @@ function CarDetailsStep() {
         <input type="hidden" {...register('version_id')} />
       </div>
 
+      {/* Other fields below (unchanged) */}
       <div className="col-md-6 mb-20">
         <label>Registration City*</label>
         <input type="text" {...register('registration_city', { required: true })} className="form-control" />

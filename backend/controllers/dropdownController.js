@@ -103,12 +103,12 @@ const getVariantsByModelAndYear = async (req, res) => {
     const { model_id } = req.query;
   
     if (!model_id) {
-      return res.status(400).json({ message: 'Missing model_id parameter' });
+      return res.status(400).json({ message: 'Missing model_id' });
     }
   
     try {
       const result = await pool.query(
-        `SELECT DISTINCT start_year, end_year
+        `SELECT id AS generation_id, start_year, end_year
          FROM car_generations
          WHERE model_id = $1
          ORDER BY start_year DESC`,
@@ -116,11 +116,12 @@ const getVariantsByModelAndYear = async (req, res) => {
       );
   
       res.json(result.rows);
-    } catch (err) {
-      console.error('Error fetching year ranges by model:', err);
-      res.status(500).json({ message: 'Internal server error' });
+    } catch (error) {
+      console.error('Error fetching year ranges:', error);
+      res.status(500).json({ message: 'Failed to fetch year ranges' });
     }
   };
+  
 
 module.exports = {
   getMakes,
