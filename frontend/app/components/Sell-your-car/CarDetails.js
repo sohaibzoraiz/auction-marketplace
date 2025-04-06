@@ -265,29 +265,37 @@ function CarDetailsStep() {
           </>
         )}
         <Controller
-    name="year_model"
-    control={control}
-    rules={{ required: true }}
-    render={({ field }) => (
-        <Autocomplete
-        freeSolo // ← required to allow custom input
-        options={yearOptions.map(option => option.year)}
-        getOptionLabel={(option) => option.toString()}
-        isOptionEqualToValue={(option, value) => option === value}
-        value={watch('year_model') || ''}
-        onInputChange={(_, newInputValue) => {
-            field.onChange(newInputValue);
-          setValue('year_model', newInputValue);
-      
-          const match = yearOptions.find(y => y.year.toString() === newInputValue);
-          setIsCustomYear(!match); // custom if not matched
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label="year*" placeholder="Select or enter year" fullWidth/>
-        )}
-      />
-    )}
-  />
+  name="year_model"
+  control={control}
+  rules={{ required: true }}
+  render={({ field }) => (
+    <Autocomplete
+      freeSolo // Allow custom values
+      options={yearOptions.map(option => option.year)}
+      getOptionLabel={(option) => option?.toString?.() || ''}
+      isOptionEqualToValue={(option, value) => option === value}
+      value={field.value || ''}
+      onChange={(_, newValue) => {
+        field.onChange(newValue);
+        setValue('year_model', newValue);
+
+        const match = yearOptions.find(y => y.year.toString() === newValue?.toString());
+        setIsCustomYear(!match);
+      }}
+      onInputChange={(_, newInputValue) => {
+        field.onChange(newInputValue);
+        setValue('year_model', newInputValue);
+
+        const match = yearOptions.find(y => y.year.toString() === newInputValue?.toString());
+        setIsCustomYear(!match);
+      }}
+      renderInput={(params) => (
+        <TextField {...params} label="Year*" placeholder="Select or enter year" fullWidth />
+      )}
+    />
+  )}
+/>
+
       </div>
 
       {/* TRIM / VERSION */}
