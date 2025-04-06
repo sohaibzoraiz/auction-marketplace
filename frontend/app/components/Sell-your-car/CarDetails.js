@@ -270,13 +270,15 @@ function CarDetailsStep() {
   rules={{ required: true }}
   render={({ field }) => (
     <Autocomplete
-      freeSolo // Allow custom values
+      freeSolo
       options={yearOptions.map(option => option.year)}
-      getOptionLabel={(option) => option?.toString?.() || ''}
+      getOptionLabel={(option) =>
+        typeof option === 'string' ? option : option?.toString?.() || ''
+      }
       isOptionEqualToValue={(option, value) => option === value}
       value={field.value || ''}
       onChange={(_, newValue) => {
-       // field.onChange(newValue);
+        field.onChange(newValue);
         setValue('year_model', newValue);
 
         const match = yearOptions.find(y => y.year.toString() === newValue?.toString());
@@ -295,6 +297,7 @@ function CarDetailsStep() {
     />
   )}
 />
+
 
       </div>
 
