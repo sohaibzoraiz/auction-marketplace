@@ -222,7 +222,7 @@ function CarDetailsStep() {
         onChange(selectedOption?.name || '');
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Model*" variant="outlined" fullWidth />
+        <TextField {...params} label="Model*" fullWidth />
       )}
     />
   )}
@@ -276,7 +276,7 @@ function CarDetailsStep() {
         value={field.value || ''}
         onInputChange={(_, newInputValue) => field.onChange(newInputValue)}
         renderInput={(params) => (
-          <TextField {...params} label="year*" placeholder="Select or enter year" />
+          <TextField {...params} label="year*" placeholder="Select or enter year" fullWidth/>
         )}
       />
     )}
