@@ -271,43 +271,29 @@ function CarDetailsStep() {
   render={({ field }) => (
     <Autocomplete
       freeSolo
-      options={yearOptions.map(o => o.year)}
-      getOptionLabel={(option) => option?.toString?.() || ''}
+      options={yearOptions} // ← now just an array of numbers
+      getOptionLabel={(option) => option?.toString() ?? ''}
       isOptionEqualToValue={(option, value) => option === value}
       value={field.value || ''}
-      onChange={(_, newValue) => {
-        field.onChange(newValue);
-        setValue('year_model', newValue);
-
-        const match = yearOptions.find(y => y.year.toString() === newValue?.toString());
-        setIsCustomYear(!match);
-
-        // optionally set generation_id if found
-        if (match) {
-          setValue('generation_id', match.generation_id);
-        } else {
-          setValue('generation_id', null);
-        }
-      }}
       onInputChange={(_, newInputValue) => {
         field.onChange(newInputValue);
         setValue('year_model', newInputValue);
 
-        const match = yearOptions.find(y => y.year.toString() === newInputValue?.toString());
-        setIsCustomYear(!match);
-
-        if (match) {
-          setValue('generation_id', match.generation_id);
-        } else {
-          setValue('generation_id', null);
-        }
+        // Check if user typed a year not in dropdown
+        setIsCustomYear(!yearOptions.includes(Number(newInputValue)));
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Year*" placeholder="Select or enter year" fullWidth />
+        <TextField
+          {...params}
+          label="Year*"
+          placeholder="Select or enter year"
+          fullWidth
+        />
       )}
     />
   )}
 />
+
 
 
 
