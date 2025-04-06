@@ -276,6 +276,7 @@ function CarDetailsStep() {
         isOptionEqualToValue={(option, value) => option === value}
         value={watch('year_model') || ''}
         onInputChange={(_, newInputValue) => {
+            field.onChange(newInputValue);
           setValue('year_model', newInputValue);
       
           const match = yearOptions.find(y => y.year.toString() === newInputValue);
@@ -315,8 +316,39 @@ function CarDetailsStep() {
         {showVariantInput && (
           <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
         )}
-        <input type="hidden" {...register('version_id')} />
-        <input type="hidden" {...register('variant')} />
+        <Controller
+    name="variant"
+    control={control}
+    defaultValue=""
+    render={({ field }) => (
+      <Autocomplete
+        freeSolo
+        options={variants.map(v => v.version_name)}
+        getOptionLabel={(option) => option}
+        isOptionEqualToValue={(option, value) => option === value}
+        value={field.value || ''}
+        onInputChange={(_, newInputValue) => {
+          field.onChange(newInputValue);
+          const matched = variants.find(v => v.version_name === newInputValue);
+          setValue('version_id', matched ? matched.id : null);
+          setValue('generation_id', matched ? matched.generation_id : null); // ✅ set generation_id here
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Trim*"
+            placeholder="Select or enter variant"
+            required
+            fullWidth
+          />
+        )}
+      />
+    )}
+  />
+  <input type="hidden" {...register('version_id')} />
+  <input type="hidden" {...register('generation_id')} />
+        {/*<input type="hidden" {...register('version_id')} />
+        <input type="hidden" {...register('variant')} />*/}
       </div>
 
       {/* Remaining fields */}
