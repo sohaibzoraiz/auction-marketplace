@@ -187,12 +187,15 @@ function CarDetailsStep() {
       <Autocomplete
         options={models}
         getOptionLabel={(option) => option?.name || ''}
-        filterSelectedOptions
         value={models.find(m => m.name === value) || null}
         onInputChange={(e, newInput) => {
           const matchedModel = models.find(m => m.name.toLowerCase() === newInput.toLowerCase());
           setValue('model_id', matchedModel ? matchedModel.id : null);
           onChange(newInput);
+        }}
+        onChange={(e, selectedOption) => {
+          setValue('model_id', selectedOption ? selectedOption.id : null);
+          onChange(selectedOption?.name || '');
         }}
         renderInput={(params) => (
           <input {...params} placeholder="Select or type model" className="form-control" />
@@ -202,6 +205,7 @@ function CarDetailsStep() {
   />
   <input type="hidden" {...register('model_id')} />
 </div>
+
 
       <div className="col-md-6 mb-20">
         <label>Model*</label>
