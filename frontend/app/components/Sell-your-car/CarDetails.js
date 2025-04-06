@@ -25,13 +25,13 @@ function CarDetailsStep() {
   const selectedModelId = watch('model_id');
   const selectedYear = watch('year_model');
 
-  // Load makes on mount
+  // Load makes
   useEffect(() => {
     axios.get('https://api.carmandi.com.pk/api/dropdowns/makes')
       .then(res => setMakes(res.data));
   }, []);
 
-  // Load models based on make_id
+  // Load models on make change
   useEffect(() => {
     if (selectedMakeId && selectedMakeId !== 'other') {
       axios.get('https://api.carmandi.com.pk/api/dropdowns/models', {
@@ -44,64 +44,53 @@ function CarDetailsStep() {
     setYearOptions([]);
   }, [selectedMakeId]);
 
-  // Load year options based on model_id
+  // Load years on model change
   useEffect(() => {
     if (selectedModelId && selectedModelId !== 'other') {
-      axios
-        .get('https://api.carmandi.com.pk/api/dropdowns/years', {
-          params: { make_id: selectedMakeId, model_id: selectedModelId },
-        })
-        .then(res => {
-          const years = [];
-          let hasGenerations = false;
-  
-          res.data.forEach(row => {
-            if (row.start_year != null && row.end_year != null && row.generation_id != null) {
-              hasGenerations = true;
-              for (let y = row.start_year; y <= row.end_year; y++) {
-                years.push({ year: y, generation_id: row.generation_id });
-              }
+      axios.get('https://api.carmandi.com.pk/api/dropdowns/years', {
+        params: { make_id: selectedMakeId, model_id: selectedModelId }
+      }).then(res => {
+        const uniqueYears = new Set();
+        let hasGenerations = false;
+
+        res.data.forEach(row => {
+          if (row.start_year != null && row.end_year != null) {
+            hasGenerations = true;
+            for (let y = row.start_year; y <= row.end_year; y++) {
+              uniqueYears.add(y);
             }
-          });
-  
-          setYearOptions(years.sort((a, b) => b.year - a.year));
-          setGenerationsAvailable(hasGenerations);
-          setShowYearInput(!hasGenerations); // if no generations, show year input
+          }
         });
+
+        setYearOptions(Array.from(uniqueYears).sort((a, b) => b - a));
+        setGenerationsAvailable(hasGenerations);
+        setShowYearInput(!hasGenerations); // fallback if no year data
+      });
     } else {
       setYearOptions([]);
       setGenerationsAvailable(false);
       setShowYearInput(false);
     }
-  
+
     setVariants([]);
   }, [selectedModelId]);
-  // Load variants based on model_id and year
-  
+
+  // Load variants on year or model change
   useEffect(() => {
     if (selectedModelId && selectedModelId !== 'other') {
-      // If generations available, require year
       if (generationsAvailable && selectedYear && selectedYear !== 'other') {
         axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
-          params: {
-            model_id: selectedModelId,
-            year: selectedYear
-          }
+          params: { model_id: selectedModelId, year: selectedYear }
         }).then(res => setVariants(res.data));
-      }
-      // If no generations, fetch variants using only model_id
-      else if (!generationsAvailable) {
+      } else if (!generationsAvailable) {
         axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
           params: { model_id: selectedModelId }
         }).then(res => setVariants(res.data));
-      } else {
-        setVariants([]);
       }
-    } else {
-      setVariants([]);
     }
   }, [selectedModelId, selectedYear, generationsAvailable]);
-  
+
+  // Image handlers
   const handleFeaturedImageChange = (e) => {
     const file = e.target.files[0];
     setFeaturedImage(file);
@@ -118,7 +107,8 @@ function CarDetailsStep() {
 
   return (
     <div className="row">
-      {/* Make */}
+
+      {/* MAKE */}
       <div className="col-md-6 mb-20">
         <label>Make*</label>
         <select
@@ -128,7 +118,6 @@ function CarDetailsStep() {
             const val = e.target.value;
             const isOther = val === 'other';
             setShowMakeInput(isOther);
-
             const selected = makes.find(m => m.id.toString() === val);
             setValue('make_id', isOther ? null : selected?.id || null);
             setValue('car_make', isOther ? '' : selected?.name || '');
@@ -147,7 +136,7 @@ function CarDetailsStep() {
         <input type="hidden" {...register('car_make')} />
       </div>
 
-      {/* Model */}
+      {/* MODEL */}
       <div className="col-md-6 mb-20">
         <label>Model*</label>
         <select
@@ -157,7 +146,6 @@ function CarDetailsStep() {
             const val = e.target.value;
             const isOther = val === 'other';
             setShowModelInput(isOther);
-
             const selected = models.find(m => m.id.toString() === val);
             setValue('model_id', isOther ? null : selected?.id || null);
             setValue('model', isOther ? '' : selected?.name || '');
@@ -176,47 +164,41 @@ function CarDetailsStep() {
         <input type="hidden" {...register('model')} />
       </div>
 
-      {/* Year */}
+      {/* YEAR */}
       <div className="col-md-6 mb-20">
-  <label>Year Model*</label>
+        <label>Year Model*</label>
+        {generationsAvailable ? (
+          <>
+            <select
+              {...register('year_model', {
+                required: true,
+                onChange: (e) => {
+                  const val = e.target.value;
+                  setShowYearInput(val === 'other');
+                  setValue('year_model', val);
+                },
+              })}
+              className="form-control"
+            >
+              <option value="">Select Year</option>
+              {yearOptions.map(y => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+              <option value="other">Other</option>
+            </select>
+            {showYearInput && (
+              <input type="text" {...register('year_model_other')} placeholder="Enter other year" className="form-control mt-2" />
+            )}
+          </>
+        ) : (
+          <>
+            <input type="text" {...register('year_model')} placeholder="Enter year" className="form-control" />
+          </>
+        )}
+        <input type="hidden" {...register('generation_id')} />
+      </div>
 
-  {generationsAvailable ? (
-    <>
-      <select
-        {...register('year_model', {
-          required: true,
-          onChange: (e) => {
-            const val = e.target.value;
-            setShowYearInput(val === 'other');
-
-            const selected = yearOptions.find(y => y.year.toString() === val);
-            setValue('year_model', val);
-            setValue('generation_id', selected ? selected.generation_id : null);
-          },
-        })}
-        className="form-control"
-      >
-        <option value="">Select Year</option>
-        {yearOptions.map(option => (
-          <option key={option.year} value={option.year}>{option.year}</option>
-        ))}
-        <option value="other">Other</option>
-      </select>
-
-      {showYearInput && (
-        <input type="text" {...register('year_model_other')} placeholder="Enter other year" className="form-control mt-2" />
-      )}
-    </>
-  ) : (
-    <>
-      <input type="text" {...register('year_model')} placeholder="Enter year" className="form-control" />
-      <input type="hidden" {...register('generation_id')} value="" />
-    </>
-  )}
-</div>
-
-
-      {/* Variant */}
+      {/* TRIM / VERSION */}
       <div className="col-md-6 mb-20">
         <label>Trim*</label>
         <select
@@ -224,10 +206,12 @@ function CarDetailsStep() {
           value={watch('version_id') || ''}
           onChange={(e) => {
             const val = e.target.value;
-            setShowVariantInput(val === 'other');
+            const isOther = val === 'other';
+            setShowVariantInput(isOther);
             const selected = variants.find(v => v.id.toString() === val);
             setValue('variant', selected?.version_name || '');
-            setValue('version_id', val === 'other' ? null : selected?.id || null);
+            setValue('version_id', isOther ? null : selected?.id || null);
+            setValue('generation_id', isOther ? null : selected?.generation_id || null); // ✅ Now set generation_id here
           }}
         >
           <option value="">Select Variant</option>
@@ -243,31 +227,23 @@ function CarDetailsStep() {
         <input type="hidden" {...register('variant')} />
       </div>
 
-      {/* Registration City */}
+      {/* Remaining fields */}
       <div className="col-md-6 mb-20">
         <label>Registration City*</label>
         <input type="text" {...register('registration_city', { required: true })} className="form-control" />
       </div>
-
-      {/* Mileage */}
       <div className="col-md-6 mb-20">
         <label>Mileage*</label>
         <input type="number" {...register('mileage', { required: true })} className="form-control" />
       </div>
-
-      {/* Price */}
       <div className="col-md-6 mb-20">
         <label>Demand Price*</label>
         <input type="number" {...register('demand_price', { required: true })} className="form-control" />
       </div>
-
-      {/* Description */}
       <div className="col-md-12 mb-20">
         <label>Description*</label>
         <textarea {...register('description', { required: true })} className="form-control" />
       </div>
-
-      {/* City */}
       <div className="col-md-6 mb-20">
         <label>City*</label>
         <input type="text" {...register('city', { required: true })} className="form-control" />
