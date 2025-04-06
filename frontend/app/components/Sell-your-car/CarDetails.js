@@ -7,7 +7,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { Controller } from 'react-hook-form';
 
 function CarDetailsStep() {
-  const { register, setValue, watch } = useFormContext();
+  const { register, setValue, watch, control } = useFormContext();
 
   const [featuredImage, setFeaturedImage] = useState(null);
   const [carImages, setCarImages] = useState([]);
