@@ -276,7 +276,7 @@ function CarDetailsStep() {
       isOptionEqualToValue={(option, value) => option === value}
       value={field.value || ''}
       onChange={(_, newValue) => {
-        field.onChange(newValue);
+       // field.onChange(newValue);
         setValue('year_model', newValue);
 
         const match = yearOptions.find(y => y.year.toString() === newValue?.toString());
