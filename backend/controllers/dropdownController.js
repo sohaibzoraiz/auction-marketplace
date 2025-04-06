@@ -36,7 +36,7 @@ const getVariantsByModel = async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT cv.id, cv.slug, cv.name
+      `SELECT cv.id, cv.slug, cv.name AS version_name
        FROM car_versions cv
        JOIN car_generations cg ON cv.generation_id = cg.id
        WHERE cg.model_id = $1
