@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import axios from 'axios';
+import { Autocomplete, TextField } from '@mui/material';
+import { Controller } from 'react-hook-form';
 
 function CarDetailsStep() {
   const { register, setValue, watch } = useFormContext();
@@ -139,7 +141,7 @@ function CarDetailsStep() {
       {/* MODEL */}
       <div className="col-md-6 mb-20">
         <label>Model*</label>
-        <select
+        {/*<select
           className="form-control"
           value={selectedModelId || ''}
           onChange={(e) => {
@@ -161,7 +163,44 @@ function CarDetailsStep() {
           <input type="text" {...register('model_other')} placeholder="Enter other model" className="form-control mt-2" />
         )}
         <input type="hidden" {...register('model_id')} />
-        <input type="hidden" {...register('model')} />
+        <input type="hidden" {...register('model')} />*/}
+        <Controller
+  name="car_make"
+  control={control}
+  defaultValue=""
+  render={({ field }) => (
+    <Autocomplete
+      options={makes}
+      getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
+      isOptionEqualToValue={(option, value) => option.name === value.name}
+      onChange={(event, newValue) => {
+        if (newValue && newValue.id) {
+          setValue('make_id', newValue.id);
+          field.onChange(newValue.name);
+        } else {
+          setValue('make_id', null);
+          field.onChange('');
+        }
+      }}
+      onInputChange={(event, newInputValue, reason) => {
+        if (reason === 'input') {
+          const match = makes.find(m => m.name.toLowerCase() === newInputValue.toLowerCase());
+          if (match) {
+            setValue('make_id', match.id);
+            field.onChange(match.name);
+          } else {
+            setValue('make_id', null);
+          }
+        }
+      }}
+      renderInput={(params) => (
+        <TextField {...params} label="Make*" required />
+      )}
+      freeSolo
+    />
+  )}
+/>
+<input type="hidden" {...register('make_id')} />
       </div>
 
       {/* YEAR */}
