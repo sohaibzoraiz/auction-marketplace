@@ -83,7 +83,7 @@ function CarDetailsStep() {
           params: { model_id: selectedModelId, year: selectedYear }
         }).then(res => setVariants(res.data));
       } else if (!generationsAvailable) {
-        axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
+        axios.get('https://api.carmandi.com.pk/api/dropdowns/variant-model', {
           params: { model_id: selectedModelId }
         }).then(res => setVariants(res.data));
       }
