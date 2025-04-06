@@ -80,8 +80,8 @@ function CarDetailsStep() {
 
   // Load variants on year or model change
   useEffect(() => {
-    if (!isCustomYear) {
-      if (generationsAvailable && selectedYear && selectedYear !== 'other') {
+    if (selectedModelId && selectedModelId !== 'other') {
+      if (generationsAvailable && selectedYear && !isCustomYear) {
         axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
           params: { model_id: selectedModelId, year: selectedYear }
         }).then(res => setVariants(res.data));
@@ -261,7 +261,7 @@ function CarDetailsStep() {
           </>
         ) : (
           <>
-            <input type="text" {...register('year_model')} placeholder="Enter year" className="form-control" />
+            <input type="text" {...register('year_model')} placeholder="Enter year" fullWidth/>
           </>
         )}
         <Controller
@@ -288,7 +288,6 @@ function CarDetailsStep() {
       />
     )}
   />
-        <input type="hidden" {...register('generation_id')} />
       </div>
 
       {/* TRIM / VERSION */}
@@ -316,39 +315,8 @@ function CarDetailsStep() {
         {showVariantInput && (
           <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
         )}
-        <Controller
-    name="variant"
-    control={control}
-    defaultValue=""
-    render={({ field }) => (
-      <Autocomplete
-        freeSolo
-        options={variants.map(v => v.version_name)}
-        getOptionLabel={(option) => option}
-        isOptionEqualToValue={(option, value) => option === value}
-        value={field.value || ''}
-        onInputChange={(_, newInputValue) => {
-          field.onChange(newInputValue);
-          const matched = variants.find(v => v.version_name === newInputValue);
-          setValue('version_id', matched ? matched.id : null);
-          setValue('generation_id', matched ? matched.generation_id : null); // ✅ set generation_id here
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Trim*"
-            placeholder="Select or enter variant"
-            required
-            fullWidth
-          />
-        )}
-      />
-    )}
-  />
-  <input type="hidden" {...register('version_id')} />
-  <input type="hidden" {...register('generation_id')} />
-        {/*<input type="hidden" {...register('version_id')} />
-        <input type="hidden" {...register('variant')} />*/}
+        <input type="hidden" {...register('version_id')} />
+        <input type="hidden" {...register('variant')} />
       </div>
 
       {/* Remaining fields */}
