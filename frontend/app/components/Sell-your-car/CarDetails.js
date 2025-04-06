@@ -271,7 +271,7 @@ function CarDetailsStep() {
   render={({ field }) => (
     <Autocomplete
       freeSolo
-      options={yearOptions.map(option => option.year)}
+      options={yearOptions.map(option => option.y)}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option?.toString?.() || ''
       }
