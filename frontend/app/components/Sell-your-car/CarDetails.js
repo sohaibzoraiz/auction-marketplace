@@ -158,7 +158,15 @@ function CarDetailsStep() {
       <div className="col-md-6 mb-20">
         <label>Trim*</label>
         <select
-          {...register('variant', { required: true, onChange: (e) => setShowVariantInput(e.target.value === 'other') })}
+          {...register('variant', { required: true, onChange: (e) => {
+            const val = e.target.value;
+            setShowVariantInput(val === 'other');
+            if (val !== 'other') {
+              setValue('version_id', val); // ← ✅ Save version_id in RHF
+            } else {
+              setValue('version_id', null); // ← or clear if user chose "Other"
+            }
+          }})}
           className="form-control"
         >
           <option value="">Select Variant</option>
@@ -170,6 +178,7 @@ function CarDetailsStep() {
         {showVariantInput && (
           <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
         )}
+        <input type="hidden" {...register('version_id')} />
       </div>
 
       <div className="col-md-6 mb-20">
