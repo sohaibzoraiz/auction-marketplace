@@ -20,8 +20,9 @@ function CarDetailsStep() {
   const [showVariantInput, setShowVariantInput] = useState(false);
   const [showYearInput, setShowYearInput] = useState(false);
 
-  const selectedMake = watch('car_make');
-  const selectedModel = watch('model');
+  // ✅ Watch IDs to trigger dropdown logic
+  const selectedMakeId = watch('make_id');
+  const selectedModelId = watch('model_id');
   const selectedYear = watch('year_model');
 
   // Load makes on mount
@@ -30,51 +31,52 @@ function CarDetailsStep() {
       .then(res => setMakes(res.data));
   }, []);
 
-  // Load models when make changes
+  // Load models based on make_id
   useEffect(() => {
-    if (selectedMake && selectedMake !== 'other') {
-      axios.get('https://api.carmandi.com.pk/api/dropdowns/models', { params: { make_id: selectedMake } })
-        .then(res => setModels(res.data));
+    if (selectedMakeId && selectedMakeId !== 'other') {
+      axios.get('https://api.carmandi.com.pk/api/dropdowns/models', {
+        params: { make_id: selectedMakeId }
+      }).then(res => setModels(res.data));
     } else {
       setModels([]);
     }
     setVariants([]);
     setYearOptions([]);
-  }, [selectedMake]);
+  }, [selectedMakeId]);
 
-  // Load year options when model changes
+  // Load year options based on model_id
   useEffect(() => {
-    if (selectedModel && selectedModel !== 'other') {
-      axios.get('https://api.carmandi.com.pk/api/dropdowns/years', { params: { model_id: selectedModel } })
-        .then(res => {
-          const years = [];
-          res.data.forEach(row => {
-            for (let y = row.start_year; y <= row.end_year; y++) {
-              years.push({ year: y, generation_id: row.generation_id });
-            }
-          });
-          setYearOptions(years.sort((a, b) => b.year - a.year));
+    if (selectedModelId && selectedModelId !== 'other') {
+      axios.get('https://api.carmandi.com.pk/api/dropdowns/years', {
+        params: { model_id: selectedModelId }
+      }).then(res => {
+        const years = [];
+        res.data.forEach(row => {
+          for (let y = row.start_year; y <= row.end_year; y++) {
+            years.push({ year: y, generation_id: row.generation_id });
+          }
         });
+        setYearOptions(years.sort((a, b) => b.year - a.year));
+      });
     } else {
       setYearOptions([]);
     }
     setVariants([]);
-  }, [selectedModel]);
+  }, [selectedModelId]);
 
-  // Load variants when year is selected
+  // Load variants based on model_id and year
   useEffect(() => {
-    if (selectedModel && selectedModel !== 'other' && selectedYear && selectedYear !== 'other') {
+    if (
+      selectedModelId && selectedModelId !== 'other' &&
+      selectedYear && selectedYear !== 'other'
+    ) {
       axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
-        params: {
-          model_id: selectedModel,
-          year: selectedYear
-        }
-      })
-        .then(res => setVariants(res.data));
+        params: { model_id: selectedModelId, year: selectedYear }
+      }).then(res => setVariants(res.data));
     } else {
       setVariants([]);
     }
-  }, [selectedModel, selectedYear]);
+  }, [selectedModelId, selectedYear]);
 
   const handleFeaturedImageChange = (e) => {
     const file = e.target.files[0];
@@ -190,7 +192,7 @@ function CarDetailsStep() {
         <input type="hidden" {...register('generation_id')} />
       </div>
 
-      {/* Trim */}
+      {/* Variant */}
       <div className="col-md-6 mb-20">
         <label>Trim*</label>
         <select
@@ -220,7 +222,7 @@ function CarDetailsStep() {
         <input type="hidden" {...register('version_id')} />
       </div>
 
-      {/* Other fields below (unchanged) */}
+      {/* Remaining fields (unchanged) */}
       <div className="col-md-6 mb-20">
         <label>Registration City*</label>
         <input type="text" {...register('registration_city', { required: true })} className="form-control" />
