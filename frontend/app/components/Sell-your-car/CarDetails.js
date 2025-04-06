@@ -20,7 +20,6 @@ function CarDetailsStep() {
   const [showVariantInput, setShowVariantInput] = useState(false);
   const [showYearInput, setShowYearInput] = useState(false);
 
-  // ✅ Watch IDs to trigger dropdown logic
   const selectedMakeId = watch('make_id');
   const selectedModelId = watch('model_id');
   const selectedYear = watch('year_model');
@@ -98,21 +97,17 @@ function CarDetailsStep() {
       <div className="col-md-6 mb-20">
         <label>Make*</label>
         <select
-          {...register('car_make', {
-            required: true,
-            onChange: (e) => {
-              const isOther = e.target.value === 'other';
-              setShowMakeInput(isOther);
-              const selected = makes.find(m => m.id.toString() === e.target.value);
-              if (selected) {
-                setValue('car_make', selected.name);
-                setValue('make_id', selected.id);
-              } else {
-                setValue('make_id', null);
-              }
-            }
-          })}
           className="form-control"
+          value={selectedMakeId || ''}
+          onChange={(e) => {
+            const val = e.target.value;
+            const isOther = val === 'other';
+            setShowMakeInput(isOther);
+
+            const selected = makes.find(m => m.id.toString() === val);
+            setValue('make_id', isOther ? null : selected?.id || null);
+            setValue('car_make', isOther ? '' : selected?.name || '');
+          }}
         >
           <option value="">Select Make</option>
           {makes.map(make => (
@@ -124,27 +119,24 @@ function CarDetailsStep() {
           <input type="text" {...register('car_make_other')} placeholder="Enter other make" className="form-control mt-2" />
         )}
         <input type="hidden" {...register('make_id')} />
+        <input type="hidden" {...register('car_make')} />
       </div>
 
       {/* Model */}
       <div className="col-md-6 mb-20">
         <label>Model*</label>
         <select
-          {...register('model', {
-            required: true,
-            onChange: (e) => {
-              const isOther = e.target.value === 'other';
-              setShowModelInput(isOther);
-              const selected = models.find(m => m.id.toString() === e.target.value);
-              if (selected) {
-                setValue('model', selected.name);
-                setValue('model_id', selected.id);
-              } else {
-                setValue('model_id', null);
-              }
-            }
-          })}
           className="form-control"
+          value={selectedModelId || ''}
+          onChange={(e) => {
+            const val = e.target.value;
+            const isOther = val === 'other';
+            setShowModelInput(isOther);
+
+            const selected = models.find(m => m.id.toString() === val);
+            setValue('model_id', isOther ? null : selected?.id || null);
+            setValue('model', isOther ? '' : selected?.name || '');
+          }}
         >
           <option value="">Select Model</option>
           {models.map(model => (
@@ -156,33 +148,27 @@ function CarDetailsStep() {
           <input type="text" {...register('model_other')} placeholder="Enter other model" className="form-control mt-2" />
         )}
         <input type="hidden" {...register('model_id')} />
+        <input type="hidden" {...register('model')} />
       </div>
 
       {/* Year */}
       <div className="col-md-6 mb-20">
         <label>Year Model*</label>
         <select
-          {...register('year_model', {
-            required: true,
-            onChange: (e) => {
-              const year = e.target.value;
-              const genId = e.target.selectedOptions[0]?.getAttribute('data-generation');
-              setShowYearInput(year === 'other');
-              if (year !== 'other') {
-                setValue('year_model', year);
-                setValue('generation_id', genId);
-              } else {
-                setValue('generation_id', null);
-              }
-            }
-          })}
           className="form-control"
+          value={selectedYear || ''}
+          onChange={(e) => {
+            const val = e.target.value;
+            setShowYearInput(val === 'other');
+
+            const selected = yearOptions.find(y => y.year.toString() === val);
+            setValue('year_model', val);
+            setValue('generation_id', selected?.generation_id || null);
+          }}
         >
           <option value="">Select Year</option>
-          {yearOptions.map(option => (
-            <option key={option.year} value={option.year} data-generation={option.generation_id}>
-              {option.year}
-            </option>
+          {yearOptions.map(opt => (
+            <option key={opt.year} value={opt.year}>{opt.year}</option>
           ))}
           <option value="other">Other</option>
         </select>
@@ -196,23 +182,19 @@ function CarDetailsStep() {
       <div className="col-md-6 mb-20">
         <label>Trim*</label>
         <select
-          {...register('variant', {
-            required: true,
-            onChange: (e) => {
-              const val = e.target.value;
-              setShowVariantInput(val === 'other');
-              if (val !== 'other') {
-                setValue('version_id', val);
-              } else {
-                setValue('version_id', null);
-              }
-            }
-          })}
           className="form-control"
+          value={watch('version_id') || ''}
+          onChange={(e) => {
+            const val = e.target.value;
+            setShowVariantInput(val === 'other');
+            const selected = variants.find(v => v.id.toString() === val);
+            setValue('variant', selected?.version_name || '');
+            setValue('version_id', val === 'other' ? null : selected?.id || null);
+          }}
         >
           <option value="">Select Variant</option>
-          {variants.map(variant => (
-            <option key={variant.id} value={variant.id}>{variant.version_name}</option>
+          {variants.map(v => (
+            <option key={v.id} value={v.id}>{v.version_name}</option>
           ))}
           <option value="other">Other</option>
         </select>
@@ -220,29 +202,34 @@ function CarDetailsStep() {
           <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
         )}
         <input type="hidden" {...register('version_id')} />
+        <input type="hidden" {...register('variant')} />
       </div>
 
-      {/* Remaining fields (unchanged) */}
+      {/* Registration City */}
       <div className="col-md-6 mb-20">
         <label>Registration City*</label>
         <input type="text" {...register('registration_city', { required: true })} className="form-control" />
       </div>
 
+      {/* Mileage */}
       <div className="col-md-6 mb-20">
         <label>Mileage*</label>
         <input type="number" {...register('mileage', { required: true })} className="form-control" />
       </div>
 
+      {/* Price */}
       <div className="col-md-6 mb-20">
         <label>Demand Price*</label>
         <input type="number" {...register('demand_price', { required: true })} className="form-control" />
       </div>
 
+      {/* Description */}
       <div className="col-md-12 mb-20">
         <label>Description*</label>
         <textarea {...register('description', { required: true })} className="form-control" />
       </div>
 
+      {/* City */}
       <div className="col-md-6 mb-20">
         <label>City*</label>
         <input type="text" {...register('city', { required: true })} className="form-control" />
@@ -262,8 +249,8 @@ function CarDetailsStep() {
         <label>Car Images*</label>
         <input type="file" multiple onChange={handleCarImagesChange} accept="image/*" className="form-control" />
         <div className="flex mt-2 flex-wrap">
-          {carImages.map((image, index) => (
-            <img key={index} src={URL.createObjectURL(image)} alt={`Car ${index}`} className="max-h-40 mr-2 mb-2" />
+          {carImages.map((img, i) => (
+            <img key={i} src={URL.createObjectURL(img)} alt={`Car ${i}`} className="max-h-40 mr-2 mb-2" />
           ))}
         </div>
       </div>
