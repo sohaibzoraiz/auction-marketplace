@@ -16,6 +16,7 @@ function CarDetailsStep() {
   const [models, setModels] = useState([]);
   const [variants, setVariants] = useState([]);
   const [yearOptions, setYearOptions] = useState([]);
+  const [isCustomYear, setIsCustomYear] = useState(false);
 
   const [showMakeInput, setShowMakeInput] = useState(false);
   const [showModelInput, setShowModelInput] = useState(false);
@@ -79,7 +80,7 @@ function CarDetailsStep() {
 
   // Load variants on year or model change
   useEffect(() => {
-    if (selectedModelId && selectedModelId !== 'other') {
+    if (!isCustomYear) {
       if (generationsAvailable && selectedYear && selectedYear !== 'other') {
         axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
           params: { model_id: selectedModelId, year: selectedYear }
@@ -268,13 +269,18 @@ function CarDetailsStep() {
     control={control}
     rules={{ required: true }}
     render={({ field }) => (
-      <Autocomplete
-        freeSolo // allows custom input not in the dropdown
-        options={yearOptions}
+        <Autocomplete
+        freeSolo // ← required to allow custom input
+        options={yearOptions.map(option => option.year)}
         getOptionLabel={(option) => option.toString()}
         isOptionEqualToValue={(option, value) => option === value}
-        value={field.value || ''}
-        onInputChange={(_, newInputValue) => field.onChange(newInputValue)}
+        value={watch('year_model') || ''}
+        onInputChange={(_, newInputValue) => {
+          setValue('year_model', newInputValue);
+      
+          const match = yearOptions.find(y => y.year.toString() === newInputValue);
+          setIsCustomYear(!match); // custom if not matched
+        }}
         renderInput={(params) => (
           <TextField {...params} label="year*" placeholder="Select or enter year" fullWidth/>
         )}
