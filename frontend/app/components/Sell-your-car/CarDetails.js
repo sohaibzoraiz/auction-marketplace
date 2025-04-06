@@ -134,36 +134,6 @@ function CarDetailsStep() {
         {showMakeInput && (
           <input type="text" {...register('car_make_other')} placeholder="Enter other make" className="form-control mt-2" />
         )}
-        <input type="hidden" {...register('make_id')} />
-        <input type="hidden" {...register('car_make')} />
-      </div>
-
-      {/* MODEL */}
-      <div className="col-md-6 mb-20">
-        <label>Model*</label>
-        {/*<select
-          className="form-control"
-          value={selectedModelId || ''}
-          onChange={(e) => {
-            const val = e.target.value;
-            const isOther = val === 'other';
-            setShowModelInput(isOther);
-            const selected = models.find(m => m.id.toString() === val);
-            setValue('model_id', isOther ? null : selected?.id || null);
-            setValue('model', isOther ? '' : selected?.name || '');
-          }}
-        >
-          <option value="">Select Model</option>
-          {models.map(model => (
-            <option key={model.id} value={model.id}>{model.name}</option>
-          ))}
-          <option value="other">Other</option>
-        </select>
-        {showModelInput && (
-          <input type="text" {...register('model_other')} placeholder="Enter other model" className="form-control mt-2" />
-        )}
-        <input type="hidden" {...register('model_id')} />
-        <input type="hidden" {...register('model')} />*/}
         <Controller
   name="car_make"
   control={control}
@@ -201,6 +171,37 @@ function CarDetailsStep() {
   )}
 />
 <input type="hidden" {...register('make_id')} />
+       {/*} <input type="hidden" {...register('make_id')} />
+        <input type="hidden" {...register('car_make')} />*/}
+
+      </div>
+
+      {/* MODEL */}
+      <div className="col-md-6 mb-20">
+        <label>Model*</label>
+        <select
+          className="form-control"
+          value={selectedModelId || ''}
+          onChange={(e) => {
+            const val = e.target.value;
+            const isOther = val === 'other';
+            setShowModelInput(isOther);
+            const selected = models.find(m => m.id.toString() === val);
+            setValue('model_id', isOther ? null : selected?.id || null);
+            setValue('model', isOther ? '' : selected?.name || '');
+          }}
+        >
+          <option value="">Select Model</option>
+          {models.map(model => (
+            <option key={model.id} value={model.id}>{model.name}</option>
+          ))}
+          <option value="other">Other</option>
+        </select>
+        {showModelInput && (
+          <input type="text" {...register('model_other')} placeholder="Enter other model" className="form-control mt-2" />
+        )}
+        <input type="hidden" {...register('model_id')} />
+        <input type="hidden" {...register('model')} />
       </div>
 
       {/* YEAR */}
