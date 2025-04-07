@@ -3,7 +3,7 @@
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { TextField, Typography, Box } from '@mui/material';
-import InspectionSlotPicker from '../common/InspectionSlotPicker'; // Adjust path if needed
+import InspectionSlotPicker from './inspectionSlotPicker'; // Adjust path if needed
 
 function InspectionRequestStep() {
   const { control } = useFormContext();
