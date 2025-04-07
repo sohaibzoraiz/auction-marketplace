@@ -36,43 +36,43 @@ function AuctionDetailsStep({ userType }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="row">
         <div className="col-md-6 mb-20">
-          <Controller
-            name="start_time"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <DatePicker
-                label="Tentative Start Date"
-                {...field}
-                disablePast
-                onChange={(date) => {
-                  setValue('start_time', date?.startOf('day').toISOString());
-                }}
-                renderInput={(params) => <TextField fullWidth {...params} />}
-              />
-            )}
-          />
+        <Controller
+  name="start_time"
+  control={control}
+  rules={{ required: true }}
+  render={({ field }) => (
+    <DatePicker
+      label="Tentative Start Date"
+      value={field.value ? dayjs(field.value) : null} // ← Convert to dayjs
+      onChange={(date) => {
+        field.onChange(date?.startOf('day').toISOString()); // ← Store as ISO
+      }}
+      disablePast
+      renderInput={(params) => <TextField fullWidth {...params} />}
+    />
+  )}
+/>
         </div>
 
         <div className="col-md-6 mb-20">
-          <Controller
-            name="end_time"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <DatePicker
-                label="Auction End Date"
-                {...field}
-                disablePast
-                minDate={minEndDate}
-                maxDate={maxEndDate}
-                onChange={(date) => {
-                  setValue('end_time', date?.startOf('day').toISOString());
-                }}
-                renderInput={(params) => <TextField fullWidth {...params} />}
-              />
-            )}
-          />
+        <Controller
+  name="end_time"
+  control={control}
+  rules={{ required: true }}
+  render={({ field }) => (
+    <DatePicker
+      label="Auction End Date"
+      value={field.value ? dayjs(field.value) : null} // ← Convert to dayjs
+      onChange={(date) => {
+        field.onChange(date?.startOf('day').toISOString()); // ← Store as ISO
+      }}
+      minDate={minEndDate}
+      maxDate={maxEndDate}
+      disablePast
+      renderInput={(params) => <TextField fullWidth {...params} />}
+    />
+  )}
+/>
           <Typography variant="caption" color="textSecondary">
             {userType === 'premium'
               ? 'You can select up to 30 days from start date'
