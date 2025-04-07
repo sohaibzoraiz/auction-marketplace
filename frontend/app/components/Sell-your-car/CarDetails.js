@@ -149,6 +149,7 @@ function CarDetailsStep() {
                 onChange(selected?.name || '');
               }}
               renderInput={(params) => <TextField {...params} label="Model" placeholder="Select or enter model" fullWidth />}
+              freeSolo
             />
           )}
         />
