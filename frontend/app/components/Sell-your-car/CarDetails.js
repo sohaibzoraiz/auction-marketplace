@@ -12,8 +12,7 @@ import  ImageDropzone  from '../common/ImageDropzone';
 function CarDetailsStep() {
   const { register, setValue, watch, control } = useFormContext();
 
-  const [featuredImage, setFeaturedImage] = useState(null);
-  const [carImages, setCarImages] = useState([]);
+ 
   const [makes, setMakes] = useState([]);
   const [models, setModels] = useState([]);
   const [variants, setVariants] = useState([]);
@@ -84,19 +83,7 @@ function CarDetailsStep() {
     }
   }, [selectedModelId, selectedYear, generationsAvailable]);
 
-  const handleFeaturedImageChange = (e) => {
-    const file = e.target.files[0];
-    setFeaturedImage(file);
-    const currentImages = watch('car_photos_jsonb') || [];
-    setValue('car_photos_jsonb', [file, ...currentImages.filter(f => f !== file)]);
-  };
 
-  const handleCarImagesChange = (e) => {
-    const files = Array.from(e.target.files);
-    setCarImages(files);
-    const allImages = [featuredImage, ...files].filter(Boolean);
-    setValue('car_photos_jsonb', allImages);
-  };
 
   return (
     <div className="row">
@@ -309,31 +296,11 @@ function CarDetailsStep() {
     </div>
 
     <div className="col-md-6 mb-20">
-        <label>Featured Image*</label>
-        <input
-            type="file"
-            onChange={handleFeaturedImageChange}
-            accept="image/*"
-            className="form-control"
-        />
-        {featuredImage && (
-            <img
-                src={URL.createObjectURL(featuredImage)}
-                alt="Featured"
-                className="mt-2 max-h-40"
-            />
-        )}
-        <ImageDropzone name="featured_image" label="Featured Image" imageLimit={1} />
+        <ImageDropzone name="featuredImage" label="Featured Image" imageLimit={1} />
     </div>
       <div className="col-md-6 mb-20">
-      <ImageDropzone name="featured_image" label="Featured Image" imageLimit={1} />
-        <label>Car Images*</label>
-        <input type="file" multiple onChange={handleCarImagesChange} accept="image/*" className="form-control" />
-        <div className="flex mt-2 flex-wrap">
-          {carImages.map((img, i) => (
-            <img key={i} src={URL.createObjectURL(img)} alt={`Car ${i}`} className="max-h-40 mr-2 mb-2" />
-          ))}
-        </div>
+        <ImageDropzone name="carImages" label="Car Images" imageLimit={10} />
+      
       </div>
     </div>
   );
