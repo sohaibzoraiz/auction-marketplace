@@ -112,14 +112,25 @@ function InspectionSlotPicker() {
                 sx={{ flexWrap: 'wrap' }}
               >
                 {availableSlots.map(({ datetime, remaining }) => {
-                  const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
+  const label = new Date(datetime).toLocaleTimeString('en-PK', {
+    timeZone: 'Asia/Karachi',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+  const helperText = remaining === 1
+    ? ' (Only 1 spot left)'
+    : remaining === 2
+    ? ' (2 spots left)'
+    : '';
                   return (
                     <ToggleButton
                       key={datetime}
                       value={datetime}
                       disabled={remaining <= 0}
                     >
-                      {label}
+                      {label}{helperText}
                     </ToggleButton>
                   );
                 })}
