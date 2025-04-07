@@ -224,7 +224,7 @@ function CarDetailsStep() {
                     value={field.value || ''}
                     onInputChange={(_, newInputValue) => field.onChange(newInputValue)}
                     renderInput={(params) => (
-                        <TextField {...params} label="Registration City*" fullWidth required />
+                        <TextField {...params} label="Registration City" fullWidth required />
                     )}
                 />
             )}
@@ -232,23 +232,80 @@ function CarDetailsStep() {
     </div>
 
     <div className="col-md-6 mb-20">
-        <label>Mileage*</label>
-        <input type="number" {...register('mileage', { required: true })} className="form-control" />
+        
+        <Controller
+  name="mileage"
+  control={control}
+  rules={{ required: true }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Mileage"
+      type="number"
+      fullWidth
+    />
+  )}
+/>
     </div>
 
     <div className="col-md-6 mb-20">
-        <label>Demand Price*</label>
-        <input type="number" {...register('demand_price', { required: true })} className="form-control" />
+    <Controller
+  name="demand_price"
+  control={control}
+  rules={{ required: true }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Demand price"
+      type="number"
+      fullWidth
+    />
+  )}
+/>
     </div>
 
     <div className="col-md-12 mb-20">
-        <label>Description*</label>
-        <textarea {...register('description', { required: true })} className="form-control" />
+    <Controller
+  name="description"
+  control={control}
+  rules={{ required: true }}
+  render={({ field }) => (
+    <TextField
+      {...field}
+      label="Description"
+      multiline
+      rows={4}
+      fullWidth
+    />
+  )}
+/>
     </div>
 
     <div className="col-md-6 mb-20">
-        <label>City*</label>
-        <input type="text" {...register('city', { required: true })} className="form-control" />
+    <Controller
+  name="city"
+  control={control}
+  rules={{ required: true }}
+  render={({ field }) => (
+    <Autocomplete
+      disableClearable
+      options={['Lahore', 'Islamabad']}
+      getOptionLabel={(option) => option}
+      isOptionEqualToValue={(option, value) => option === value}
+      value={field.value || ''}
+      onChange={(_, newValue) => field.onChange(newValue)}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="City"
+          required
+          fullWidth
+        />
+      )}
+    />
+  )}
+/>
+
     </div>
       <div className="col-md-6 mb-20">
         <label>Featured Image*</label>
