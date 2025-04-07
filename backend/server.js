@@ -63,6 +63,11 @@ app.get('/', (req, res) => {
 const dropdownRoutes = require('./routes/dropdownRoutes');
 app.use('/api/dropdowns', dropdownRoutes);
 
+// API routes for inspection requests
+const inspectionRoutes = require('./routes/inspectionRoutes');
+app.use('/api/inspections', inspectionRoutes);
+
+
 // Authentication routes
 app.post('/auth/login', require('./controllers/auth').login);
 app.post('/auth/register', upload.fields([{ name: 'profile_picture', maxCount: 1 }, { name: 'id_image', maxCount: 1 }]), async (req, res) => {
