@@ -58,6 +58,15 @@ function InspectionSlotPicker() {
   const selectedDay = slotsByDate[selectedTabIndex];
   const availableSlots = selectedDay?.slots || [];
 
+  const formatTime = (datetime) => {
+    return new Intl.DateTimeFormat('en-PK', {
+      timeZone: 'Asia/Karachi',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }).format(new Date(datetime));
+  };
+
   return (
     <Box mb={3}>
       <Typography variant="h6" gutterBottom>
@@ -90,48 +99,38 @@ function InspectionSlotPicker() {
             </Tabs>
           </Paper>
 
-        /* Time Slots */
-        <Controller
+          {/* Time Slots */}
+          <Controller
             name="inspection_time"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-                <ToggleButtonGroup
-                    value={field.value}
-                    exclusive
-                    onChange={(_, val) => field.onChange(val)}
-                    sx={{ flexWrap: 'wrap' }}
-                >
-                    {availableSlots.map(({ datetime, remaining }) => {
-                        const label = new Date(datetime).toLocaleTimeString('en-PK', {
-                            timeZone: 'Asia/Karachi',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true,
-                        });
-
-                        const helperText =
-                            remaining === 1
-                                ? ' (Only 1 spot left)'
-                                : remaining === 2
-                                ? ' (2 spots left)'
-                                : '';
-
-                        return (
-                            <ToggleButton
-                                key={datetime}
-                                value={datetime}
-                                disabled={remaining <= 0}
-                            >
-                                {label}
-                                {helperText}
-                            </ToggleButton>
-                        );
-                    })}
-                </ToggleButtonGroup>
+              <ToggleButtonGroup
+                value={field.value}
+                exclusive
+                onChange={(_, val) => field.onChange(val)}
+                sx={{ flexWrap: 'wrap' }}
+              >
+                {availableSlots.map(({ datetime, remaining }) => {
+                  const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
+                  const helperText = remaining === 1
+    ? ' (Only 1 spot left)'
+    : remaining === 2
+    ? ' (2 spots left)'
+    : '';
+                  return (
+                    <ToggleButton
+                      key={datetime}
+                      value={datetime}
+                      disabled={remaining <= 0}
+                    >
+                      {label}{helperText}
+                    </ToggleButton>
+                  );
+                })}
+              </ToggleButtonGroup>
             )}
-        />
-                 
+          />
         </>
       )}
     </Box>
