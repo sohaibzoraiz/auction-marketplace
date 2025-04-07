@@ -7,7 +7,6 @@ import {
   Box,
   TextField,
   MenuItem,
-  Typography,
 } from '@mui/material';
 
 function AuctionDetailsStep({ userType }) {
