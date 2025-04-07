@@ -10,9 +10,24 @@ import PaymentStep from './PaymentDetails';
 function MultiStepForm({ userType }) {
   const [currentStep, setCurrentStep] = useState(1);
   const methods = useForm();
+
+  const blurActiveElement = () => {
+    const activeElement = document.activeElement;
+    if (activeElement && typeof activeElement.blur === 'function') {
+      activeElement.blur();
+    }
+  };
   
-  const goToNextStep = () => setCurrentStep(prevStep => prevStep + 1);
-  const goToPreviousStep = () => setCurrentStep(prevStep => prevStep - 1);
+  const goToNextStep = () => {
+    blurActiveElement(); // 👈 Fixes the aria-hidden + focus warning
+    setCurrentStep(prevStep => prevStep + 1);
+  };
+  
+  const goToPreviousStep = () => {
+    blurActiveElement(); // 👈 Also for going back
+    setCurrentStep(prevStep => prevStep - 1);
+  };
+  
 
   const onSubmit = (data) => {
     // Handle the form submission to backend here
@@ -33,16 +48,37 @@ function MultiStepForm({ userType }) {
 
         {/* Navigation */}
         <div className="d-flex justify-content-between mt-3">
-            {step > 1 && (
-              <button type="button" className="btn btn-secondary" onClick={() => setStep(step - 1)}>
-                Back
-              </button>
-            )}
-            <button type="submit" className="primary-btn btn-hover">
-              {step < 4 ? "Next" : "Submit"}
-              <span style={{ top: "40.5px", left: "84.2344px" }} />
-            </button>
-          </div>
+  {currentStep > 1 && (
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={goToPreviousStep}
+    >
+      Back
+    </button>
+  )}
+
+  {currentStep < 4 ? (
+    <button
+      type="button"
+      className="primary-btn btn-hover"
+      onClick={goToNextStep}
+    >
+      Next
+      <span style={{ top: "40.5px", left: "84.2344px" }} />
+    </button>
+  ) : (
+    <button
+      type="button"
+      className="primary-btn btn-hover"
+      onClick={methods.handleSubmit(onSubmit)}
+    >
+      Submit
+      <span style={{ top: "40.5px", left: "84.2344px" }} />
+    </button>
+  )}
+</div>
+
       </div>
     </FormProvider>
   );
