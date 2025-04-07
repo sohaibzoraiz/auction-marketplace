@@ -120,7 +120,7 @@ function CreateAuctionPage() {
     }
 
     return (
-        <div className="container pt-110 mb-110">
+        <>
           <Breadcrumb2 pagetitle="Register" currentPage="register" />
     <div className="container pt-110 mb-110">
         <div className="row justify-content-center">
@@ -285,7 +285,7 @@ function CreateAuctionPage() {
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
 }
 
