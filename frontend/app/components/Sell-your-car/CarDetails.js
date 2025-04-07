@@ -115,7 +115,7 @@ function CarDetailsStep() {
                 setValue('make_id', match?.id || null);
                 field.onChange(newInput);
               }}
-              renderInput={(params) => <TextField {...params} label="Make" placeholder="Select or enter make" required />}
+              renderInput={(params) => <TextField {...params} label="Make" placeholder="Select or enter make" fullWidth required />}
               freeSolo
             />
           )}
@@ -143,7 +143,7 @@ function CarDetailsStep() {
                 setValue('model_id', selected?.id || null);
                 onChange(selected?.name || '');
               }}
-              renderInput={(params) => <TextField {...params} label="Model" placeholder="Select or enter model" fullWidth />}
+              renderInput={(params) => <TextField {...params} label="Model" placeholder="Select or enter model" fullWidth required />}
             />
           )}
         />
@@ -168,7 +168,7 @@ function CarDetailsStep() {
                 setIsCustomYear(!yearOptions.includes(Number(newInput)));
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Year" placeholder="Select or enter year" fullWidth />
+                <TextField {...params} label="Year" placeholder="Select or enter year" fullWidth required/>
               )}
             />
           )}
@@ -195,7 +195,7 @@ function CarDetailsStep() {
                 setValue('generation_id', match?.generation_id || null);
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Trim" placeholder="Select or enter variant" required fullWidth />
+                <TextField {...params} label="Trim" placeholder="Select or enter variant" fullWidth required/>
               )}
             />
           )}
