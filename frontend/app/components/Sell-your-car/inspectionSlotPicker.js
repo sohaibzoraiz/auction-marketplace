@@ -99,44 +99,48 @@ function InspectionSlotPicker() {
             </Tabs>
           </Paper>
 
-          {/* Time Slots */}
-          <Controller
+        /* Time Slots */
+        <Controller
             name="inspection_time"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <ToggleButtonGroup
-                value={field.value}
-                exclusive
-                onChange={(_, val) => field.onChange(val)}
-                sx={{ flexWrap: 'wrap' }}
-              >
-                {availableSlots.map(({ datetime, remaining }) => {
-  const label = new Date(datetime).toLocaleTimeString('en-PK', {
-    timeZone: 'Asia/Karachi',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  });
+                <ToggleButtonGroup
+                    value={field.value}
+                    exclusive
+                    onChange={(_, val) => field.onChange(val)}
+                    sx={{ flexWrap: 'wrap' }}
+                >
+                    {availableSlots.map(({ datetime, remaining }) => {
+                        const label = new Date(datetime).toLocaleTimeString('en-PK', {
+                            timeZone: 'Asia/Karachi',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true,
+                        });
 
-  const helperText = remaining === 1
-    ? ' (Only 1 spot left)'
-    : remaining === 2
-    ? ' (2 spots left)'
-    : '';
-                  return (
-                    <ToggleButton
-                      key={datetime}
-                      value={datetime}
-                      disabled={remaining <= 0}
-                    >
-                      {label}{helperText}
-                    </ToggleButton>
-                  );
-                })}
-              </ToggleButtonGroup>
+                        const helperText =
+                            remaining === 1
+                                ? ' (Only 1 spot left)'
+                                : remaining === 2
+                                ? ' (2 spots left)'
+                                : '';
+
+                        return (
+                            <ToggleButton
+                                key={datetime}
+                                value={datetime}
+                                disabled={remaining <= 0}
+                            >
+                                {label}
+                                {helperText}
+                            </ToggleButton>
+                        );
+                    })}
+                </ToggleButtonGroup>
             )}
-          />
+        />
+                 
         </>
       )}
     </Box>
