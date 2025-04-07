@@ -12,7 +12,7 @@ function InspectionRequestStep() {
   return (
     <div className="row">
         <div className="section-title mb-30 text-center">
-                          <h2>Inspection<span>Details</span></h2>
+                          <h2>Inspection <span>Details</span></h2>
                         </div>
     <Box>
       {/* Inspection Date & Time */}

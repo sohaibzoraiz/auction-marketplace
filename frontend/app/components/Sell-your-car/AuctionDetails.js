@@ -47,7 +47,7 @@ function AuctionDetailsStep({ userType }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="row">
         <div className="section-title mb-30 text-center">
-                          <h2>Auction<span>Details</span></h2>
+                          <h2>Auction <span>Details</span></h2>
                         </div>
         {/* Start Date */}
         <div className="col-md-6 mb-20">

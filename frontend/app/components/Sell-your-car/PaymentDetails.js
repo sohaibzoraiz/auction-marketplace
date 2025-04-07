@@ -18,7 +18,7 @@ const PaymentsStep = () => {
   return (
     <Box display="flex" flexDirection="column" gap={3}>
         <div className="section-title mb-30 text-center">
-                          <h2>Payment<span>Details</span></h2>
+                          <h2>Payment <span>Details</span></h2>
                         </div>
       <FormControl component="fieldset">
         <FormLabel component="legend">Select Payment Method</FormLabel>

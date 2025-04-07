@@ -88,7 +88,7 @@ function CarDetailsStep() {
   return (
     <div className="row">
         <div className="section-title mb-30 text-center">
-                          <h2>Car<span>Details</span></h2>
+                          <h2>Car <span>Details</span></h2>
                         </div>
       {/* Make */}
       <div className="col-md-6 mb-20">
