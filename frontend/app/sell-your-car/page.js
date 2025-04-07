@@ -124,13 +124,13 @@ function CreateAuctionPage() {
           <Breadcrumb2 pagetitle="Register" currentPage="register" />
     <div className="container pt-110 mb-110">
         <div className="row justify-content-center">
-          
+          <div className="col-lg-8">
             <div className="section-title mb-30 text-center">
                   <h2>Sell Your<span>Car</span></h2>
                 </div>
           <MultiStepForm userType={userData.plan} />
           </div>
-        
+        </div>
         </div>
 
         <div className="row justify-content-center">

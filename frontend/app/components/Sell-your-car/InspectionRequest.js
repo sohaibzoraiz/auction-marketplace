@@ -10,7 +10,8 @@ function InspectionRequestStep() {
   const inspectionCharges = 2500;
 
   return (
-    <Box className="row" sx={{ gap: 2 }}>
+    <div className="row">
+    <Box>
       {/* Inspection Date & Time */}
       <div className="col-md-12 mb-20">
       <Box>
@@ -83,6 +84,7 @@ function InspectionRequestStep() {
         </Box>
       </Box>
     </Box>
+    </div>
   );
 }
 
