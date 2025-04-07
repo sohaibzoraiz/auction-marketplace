@@ -174,7 +174,7 @@ async function getAllAuctionListings(req, res) {
     
     try {
         const result = await pool.query(
-            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report,c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
+            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
             "FROM cars c JOIN auctions a ON c.id = a.car_id"
         );
 
@@ -189,7 +189,7 @@ async function getAllAuctionListings(req, res) {
 async function getLatestListings(req, res) {
     try {
         const result = await pool.query(
-            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
+            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description,  c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
             "FROM cars c JOIN auctions a ON c.id = a.car_id " +
             "WHERE a.end_time > NOW() " + // Only include future auctions
             "ORDER BY a.end_time DESC " +  // Sort by the soonest ending auction
@@ -243,7 +243,7 @@ async function getSingleAuctionListing(req, res) {
         const { carMake, yearMake, id } = req.query;
 
         const result = await pool.query(
-            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.inspection_company_name, c.inspection_report, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
+            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
             "FROM cars c JOIN auctions a ON c.id = a.car_id WHERE c.car_make = $1 AND c.year_model = $2 AND c.id = $3",
             [carMake, yearMake, id]
         );
