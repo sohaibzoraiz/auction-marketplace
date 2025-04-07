@@ -32,23 +32,17 @@ function MultiStepForm({ userType }) {
         {currentStep === 4 && <PaymentStep />}
 
         {/* Navigation */}
-        <div className="form-navigation">
-          {currentStep > 1 && (
-            <button type="button" onClick={goToPreviousStep} className="btn btn-secondary">
-              Previous
+        <div className="d-flex justify-content-between mt-3">
+            {step > 1 && (
+              <button type="button" className="btn btn-secondary" onClick={() => setStep(step - 1)}>
+                Back
+              </button>
+            )}
+            <button type="submit" className="primary-btn btn-hover">
+              {step < 4 ? "Next" : "Submit"}
+              <span style={{ top: "40.5px", left: "84.2344px" }} />
             </button>
-          )}
-          {currentStep < 4 && (
-            <button type="button" onClick={goToNextStep} className="btn btn-primary">
-              Next
-            </button>
-          )}
-          {currentStep === 4 && (
-            <button type="button" onClick={methods.handleSubmit(onSubmit)} className="btn btn-success">
-              Submit
-            </button>
-          )}
-        </div>
+          </div>
       </div>
     </FormProvider>
   );
