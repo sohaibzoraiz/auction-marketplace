@@ -7,7 +7,7 @@ const getAvailableInspectionSlots = async (req, res) => {
 
   //const slotsPerDay = 7;
   const startHour = 9;
-  const endHour = 16;
+  const endHour = 17;
   const maxSpots = 2;
   const days = 5;
 
