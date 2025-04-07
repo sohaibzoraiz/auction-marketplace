@@ -104,16 +104,18 @@ function InspectionSlotPicker() {
               >
                 {availableSlots.map(({ datetime, remaining }) => (
                   <ToggleButton
-                    key={datetime}
-                    value={datetime}
-                    disabled={remaining <= 0}
-                  >
-                    {new Date(datetime).toLocaleTimeString('en-PK', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: true,
-                    })}
-                  </ToggleButton>
+                  key={datetime}
+                  value={datetime}
+                  disabled={remaining <= 0}
+                >
+                  {new Date(datetime).toLocaleTimeString('en-PK', {
+                    timeZone: 'Asia/Karachi', // Fix for correct local time
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                  })}
+                </ToggleButton>
+                
                 ))}
               </ToggleButtonGroup>
             )}
