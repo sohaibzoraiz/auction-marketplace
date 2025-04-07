@@ -1,4 +1,5 @@
 const pool = require('../db');
+const moment = require('moment-timezone');
 
 const getAvailableInspectionSlots = async (req, res) => {
   const today = new Date();
@@ -19,9 +20,8 @@ const getAvailableInspectionSlots = async (req, res) => {
     const dateStr = date.toISOString().split('T')[0];
 
     for (let hour = startHour; hour < endHour; hour++) {
-      const slotTime = new Date(date);
-      slotTime.setHours(hour, 0, 0, 0);
-      const slotISO = slotTime.toISOString();
+        const slotISO = moment.tz(`${dateStr} ${hour}:00`, 'YYYY-MM-DD HH:mm', 'Asia/Karachi').toISOString();
+
 
       // Query existing bookings for this slot
       const result = await pool.query(
