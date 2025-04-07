@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext, Controller } from 'react-hook-form';
 import { Box, Typography, IconButton, Grid } from '@mui/material';
@@ -10,20 +10,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
   const { control, setValue, getValues } = useFormContext();
 
-  const handleDrop = useCallback((acceptedFiles, name, imageLimit) => {
-    const currentFiles = getValues(name) || [];
-    const updated = imageLimit === 1
-      ? [acceptedFiles[0]]
-      : [...currentFiles, ...acceptedFiles].slice(0, imageLimit);
-    setValue(name, updated, { shouldValidate: true });
-  }, [getValues, setValue]);
-
-  const removeImage = (fileToRemove, name) => {
-    const currentFiles = getValues(name) || [];
-    const updated = currentFiles.filter(file => file !== fileToRemove);
-    setValue(name, updated, { shouldValidate: true });
-  };
-
   return (
     <Controller
       name={name}
@@ -32,9 +18,13 @@ const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
       render={({ field, fieldState }) => {
         const files = Array.isArray(field.value) ? field.value : field.value ? [field.value] : [];
 
-        const onDrop = useCallback((acceptedFiles) => {
-          handleDrop(acceptedFiles, name, imageLimit);
-        }, [handleDrop, name, imageLimit]);
+        const onDrop = (acceptedFiles) => {
+          const currentFiles = getValues(name) || [];
+          const updated = imageLimit === 1
+            ? [acceptedFiles[0]]
+            : [...currentFiles, ...acceptedFiles].slice(0, imageLimit);
+          setValue(name, updated, { shouldValidate: true });
+        };
 
         const { getRootProps, getInputProps, isDragActive } = useDropzone({
           accept: { 'image/*': [] },
@@ -42,10 +32,15 @@ const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
           onDrop,
         });
 
+        const removeImage = (fileToRemove) => {
+          const currentFiles = getValues(name) || [];
+          const updated = currentFiles.filter(file => file !== fileToRemove);
+          setValue(name, updated, { shouldValidate: true });
+        };
+
         return (
           <Box mb={2}>
             <Typography variant="subtitle1" gutterBottom>{label}</Typography>
-
             <Box
               {...getRootProps()}
               sx={{
@@ -76,7 +71,7 @@ const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
                       />
                       <IconButton
                         size="small"
-                        onClick={() => removeImage(file, name)}
+                        onClick={() => removeImage(file)}
                         sx={{ position: 'absolute', top: -10, right: -10, bgcolor: 'white' }}
                       >
                         <DeleteIcon fontSize="small" />
