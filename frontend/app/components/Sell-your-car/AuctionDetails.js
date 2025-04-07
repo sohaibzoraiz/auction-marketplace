@@ -2,149 +2,121 @@
 
 import React, { useEffect, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import {
-  Box,
-  TextField,
-  MenuItem,
-} from '@mui/material';
 
 function AuctionDetailsStep({ userType }) {
   const { control, watch, setValue } = useFormContext();
 
-  const inspectionTime = watch('inspection_time');
-  const startTime = watch('start_time');
+  const startDate = watch('start_time');
+  const endDate = watch('end_time');
 
-  const [minStart, setMinStart] = useState('');
-  const [minEnd, setMinEnd] = useState('');
-  const [maxEnd, setMaxEnd] = useState('');
+  const [minEndDate, setMinEndDate] = useState(null);
+  const [maxEndDate, setMaxEndDate] = useState(null);
 
-  // Set min start date (next day of inspection)
   useEffect(() => {
-    if (inspectionTime) {
-      const nextDay = dayjs(inspectionTime).add(1, 'day').startOf('day');
-      setMinStart(nextDay.format('YYYY-MM-DD'));
-      setValue('start_time', '');
-    }
-  }, [inspectionTime]);
-
-  // Set end date range based on start date
-  useEffect(() => {
-    if (startTime) {
-      const start = dayjs(startTime);
+    if (startDate) {
+      const start = dayjs(startDate);
       const min = userType === 'premium' ? start : start.add(7, 'day');
       const max = userType === 'premium' ? start.add(30, 'day') : start.add(15, 'day');
 
-      setMinEnd(min.format('YYYY-MM-DD'));
-      setMaxEnd(max.format('YYYY-MM-DD'));
+      setMinEndDate(min);
+      setMaxEndDate(max);
 
-      const currentEnd = dayjs(watch('end_time'));
-      if (currentEnd.isBefore(min) || currentEnd.isAfter(max)) {
-        setValue('end_time', '');
+      // Reset end date if invalid
+      if (endDate && (dayjs(endDate).isBefore(min) || dayjs(endDate).isAfter(max))) {
+        setValue('end_time', null);
       }
     }
-  }, [startTime, userType]);
-
-  // Helper to normalize date-only to 00:00:00 local time
-  const normalizeDate = (dateStr) => {
-    const date = dayjs(dateStr).startOf('day');
-    return date.toISOString();
-  };
+  }, [startDate, userType]);
 
   return (
-    <Box className="row" mb={3}>
-      {/* Start Date */}
-      <Box className="col-md-6 mb-20">
-        <Controller
-          name="start_time"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="date"
-              label="Tentative Start Date"
-              fullWidth
-              required
-              inputProps={{ min: minStart }}
-              onChange={(e) => {
-                const iso = normalizeDate(e.target.value);
-                field.onChange(iso);
-              }}
-            />
-          )}
-        />
-      </Box>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div className="row">
+        <div className="col-md-6 mb-20">
+          <Controller
+            name="start_time"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <DatePicker
+                label="Tentative Start Date"
+                {...field}
+                disablePast
+                onChange={(date) => {
+                  setValue('start_time', date?.startOf('day').toISOString());
+                }}
+                renderInput={(params) => <TextField fullWidth {...params} />}
+              />
+            )}
+          />
+        </div>
 
-      {/* End Date */}
-      <Box className="col-md-6 mb-20">
-        <Controller
-          name="end_time"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="date"
-              label="End Date"
-              fullWidth
-              required
-              inputProps={{
-                min: minEnd,
-                max: maxEnd
-              }}
-              helperText={
-                userType === 'premium'
-                  ? 'You can select up to 30 days from start date'
-                  : 'You can select between 7 to 15 days from start date'
-              }
-              onChange={(e) => {
-                const iso = normalizeDate(e.target.value);
-                field.onChange(iso);
-              }}
-            />
-          )}
-        />
-      </Box>
+        <div className="col-md-6 mb-20">
+          <Controller
+            name="end_time"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <DatePicker
+                label="Auction End Date"
+                {...field}
+                disablePast
+                minDate={minEndDate}
+                maxDate={maxEndDate}
+                onChange={(date) => {
+                  setValue('end_time', date?.startOf('day').toISOString());
+                }}
+                renderInput={(params) => <TextField fullWidth {...params} />}
+              />
+            )}
+          />
+          <Typography variant="caption" color="textSecondary">
+            {userType === 'premium'
+              ? 'You can select up to 30 days from start date'
+              : 'You can select between 7 to 15 days from start date'}
+          </Typography>
+        </div>
 
-      {/* Reserve Price */}
-      <Box className="col-md-6 mb-20">
-        <Controller
-          name="reserve_price"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="number"
-              label="Reserve Price"
-              fullWidth
-              required
-            />
-          )}
-        />
-      </Box>
+        <div className="col-md-6 mb-20">
+          <Controller
+            name="reserve_price"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextField
+                label="Reserve Price"
+                fullWidth
+                type="number"
+                {...field}
+              />
+            )}
+          />
+        </div>
 
-      {/* Featured Auction */}
-      <Box className="col-md-6 mb-20">
-        <Controller
-          name="is_featured"
-          control={control}
-          defaultValue={false}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              select
-              label="Featured Auction?"
-              fullWidth
-            >
-              <MenuItem value={false}>No</MenuItem>
-              <MenuItem value={true}>Yes</MenuItem>
-            </TextField>
-          )}
-        />
-      </Box>
-    </Box>
+        <div className="col-md-6 mb-20">
+          <Controller
+            name="is_featured"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <TextField
+                select
+                label="Featured Auction?"
+                fullWidth
+                SelectProps={{ native: true }}
+                {...field}
+              >
+                <option value={false}>No</option>
+                <option value={true}>Yes</option>
+              </TextField>
+            )}
+          />
+        </div>
+      </div>
+    </LocalizationProvider>
   );
 }
 
