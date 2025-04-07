@@ -1,37 +1,43 @@
+// components/common/ImageDropzone.js
 'use client';
 
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useFormContext } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import { Box, Typography, IconButton, Grid } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
-  const { setValue, getValues, register, formState } = useFormContext();
+  const { control, getValues, setValue } = useFormContext();
+  const { field, fieldState } = useController({ name, control, rules: { required: true } });
 
-  const currentFiles = getValues(name) || [];
+  const files = Array.isArray(field.value)
+    ? field.value
+    : field.value
+    ? [field.value]
+    : [];
 
   const onDrop = (acceptedFiles) => {
-    const updated =
-      imageLimit === 1
-        ? [acceptedFiles[0]]
-        : [...currentFiles, ...acceptedFiles].slice(0, imageLimit);
-    setValue(name, updated, { shouldValidate: true });
+    const newFiles =
+      imageLimit === 1 ? [acceptedFiles[0]] : [...files, ...acceptedFiles].slice(0, imageLimit);
+    field.onChange(newFiles);
+    setValue(name, newFiles, { shouldValidate: true });
   };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: { 'image/*': [] },
-    multiple: imageLimit > 1,
-    onDrop,
-  });
 
   const removeImage = (fileToRemove) => {
-    const updated = currentFiles.filter((file) => file !== fileToRemove);
+    const updated = files.filter((f) => f !== fileToRemove);
+    field.onChange(updated);
     setValue(name, updated, { shouldValidate: true });
   };
 
-  const error = formState.errors?.[name];
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+    onDrop,
+    accept: { 'image/*': [] },
+    multiple: imageLimit > 1,
+    noClick: true,
+    noKeyboard: true,
+  });
 
   return (
     <Box mb={2}>
@@ -44,20 +50,21 @@ const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
           padding: 2,
           borderRadius: 2,
           textAlign: 'center',
-          bgcolor: isDragActive ? '#f9f9f9' : 'inherit',
           cursor: 'pointer',
+          bgcolor: isDragActive ? '#f9f9f9' : 'inherit',
         }}
+        onClick={open}
       >
-        <input {...getInputProps()} {...register(name, { required: true })} />
+        <input {...getInputProps()} />
         <UploadFileIcon sx={{ fontSize: 40, color: '#888' }} />
         <Typography variant="body2" mt={1}>
-          {isDragActive ? 'Drop the image(s) here...' : `Click or drag to upload (Max ${imageLimit})`}
+          Click or drag to upload (Max {imageLimit})
         </Typography>
       </Box>
 
-      {currentFiles.length > 0 && (
+      {files.length > 0 && (
         <Grid container spacing={2} mt={1}>
-          {currentFiles.map((file, index) => (
+          {files.map((file, index) => (
             <Grid item key={index}>
               <Box position="relative">
                 <img
@@ -78,9 +85,9 @@ const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
         </Grid>
       )}
 
-      {error && (
+      {fieldState.error && (
         <Typography color="error" variant="caption">
-          {error.message || 'This field is required.'}
+          This field is required.
         </Typography>
       )}
     </Box>
