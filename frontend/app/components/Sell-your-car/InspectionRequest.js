@@ -2,18 +2,18 @@
 
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-//import { TextField } from '@mui/material';
-import InspectionSlotPicker from './inspectionSlotPicker'; // Adjust path as needed
+import { TextField, Typography, Box } from '@mui/material';
+import InspectionSlotPicker from '../common/InspectionSlotPicker'; // Adjust path if needed
 
 function InspectionRequestStep() {
-  const { register, control } = useFormContext();
+  const { control } = useFormContext();
   const inspectionCharges = 2500;
 
   return (
-    <div className="row">
-      {/* Inspection Slot Picker */}
-      <div className="col-md-6 mb-20">
-        <label>Inspection Date and Time*</label>
+    <Box className="row" sx={{ gap: 2 }}>
+      {/* Inspection Date & Time */}
+      <Box className="col-md-6 mb-20">
+        <Typography variant="subtitle1">Inspection Date and Time*</Typography>
         <Controller
           name="inspection_time"
           control={control}
@@ -22,42 +22,61 @@ function InspectionRequestStep() {
             <>
               <InspectionSlotPicker value={field.value} onChange={field.onChange} />
               {fieldState.error && (
-                <div className="text-danger mt-1">Please select a date and time</div>
+                <Typography variant="caption" color="error">
+                  Please select a date and time
+                </Typography>
               )}
             </>
           )}
         />
-      </div>
+      </Box>
 
-      {/* Address Field */}
-      <div className="col-md-6 mb-20">
-        <label>Inspection Address*</label>
-        <input
-          type="text"
-          {...register('inspection_address', { required: true })}
-          className="form-control"
+      {/* Inspection Address */}
+      <Box className="col-md-6 mb-20">
+        <Controller
+          name="inspection_address"
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              label="Inspection Address*"
+              fullWidth
+              error={!!fieldState.error}
+              helperText={fieldState.error && "Inspection address is required"}
+            />
+          )}
         />
-      </div>
+      </Box>
 
       {/* Contact Number */}
-      <div className="col-md-6 mb-20">
-        <label>Contact Number*</label>
-        <input
-          type="tel"
-          {...register('inspection_contact', { required: true })}
-          className="form-control"
+      <Box className="col-md-6 mb-20">
+        <Controller
+          name="inspection_contact"
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              label="Contact Number*"
+              type="tel"
+              fullWidth
+              error={!!fieldState.error}
+              helperText={fieldState.error && "Contact number is required"}
+            />
+          )}
         />
-      </div>
+      </Box>
 
-      {/* Inspection Charges */}
-      <div className="col-md-12 mb-20">
-        <h3>Inspection Charges</h3>
-        <div>
-          <span>Inspection Fee</span>
-          <span> PKR {inspectionCharges}</span>
-        </div>
-      </div>
-    </div>
+      {/* Charges Summary */}
+      <Box className="col-md-12 mb-20">
+        <Typography variant="h6">Inspection Charges</Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Typography>Inspection Fee</Typography>
+          <Typography>PKR {inspectionCharges}</Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
