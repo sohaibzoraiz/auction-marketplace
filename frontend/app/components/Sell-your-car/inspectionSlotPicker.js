@@ -113,18 +113,14 @@ function InspectionSlotPicker() {
               >
                 {availableSlots.map(({ datetime, remaining }) => {
                   const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
-                  const helperText = remaining === 1
-    ? ' (Only 1 spot left)'
-    : remaining === 2
-    ? ' (2 spots left)'
-    : '';
+             
                   return (
                     <ToggleButton
                       key={datetime}
                       value={datetime}
                       disabled={remaining <= 0}
                     >
-                      {label}{helperText}
+                      {label}
                     </ToggleButton>
                   );
                 })}

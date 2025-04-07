@@ -1,27 +1,44 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
+import {
+  Box,
+  TextField,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 
 function AuctionDetailsStep({ userType }) {
-  const { register, watch, setValue } = useFormContext();
+  const { control, watch, setValue } = useFormContext();
 
+  const inspectionTime = watch('inspection_time');
   const startTime = watch('start_time');
 
-  const [minEndDate, setMinEndDate] = useState('');
-  const [maxEndDate, setMaxEndDate] = useState('');
+  const [minStart, setMinStart] = useState('');
+  const [minEnd, setMinEnd] = useState('');
+  const [maxEnd, setMaxEnd] = useState('');
 
+  // Set min start date (next day of inspection)
+  useEffect(() => {
+    if (inspectionTime) {
+      const nextDay = dayjs(inspectionTime).add(1, 'day').startOf('day');
+      setMinStart(nextDay.format('YYYY-MM-DD'));
+      setValue('start_time', '');
+    }
+  }, [inspectionTime]);
+
+  // Set end date range based on start date
   useEffect(() => {
     if (startTime) {
       const start = dayjs(startTime);
       const min = userType === 'premium' ? start : start.add(7, 'day');
       const max = userType === 'premium' ? start.add(30, 'day') : start.add(15, 'day');
 
-      setMinEndDate(min.format('YYYY-MM-DDTHH:mm'));
-      setMaxEndDate(max.format('YYYY-MM-DDTHH:mm'));
+      setMinEnd(min.format('YYYY-MM-DD'));
+      setMaxEnd(max.format('YYYY-MM-DD'));
 
-      // Reset end_time if it's now outside the allowed range
       const currentEnd = dayjs(watch('end_time'));
       if (currentEnd.isBefore(min) || currentEnd.isAfter(max)) {
         setValue('end_time', '');
@@ -29,50 +46,106 @@ function AuctionDetailsStep({ userType }) {
     }
   }, [startTime, userType]);
 
+  // Helper to normalize date-only to 00:00:00 local time
+  const normalizeDate = (dateStr) => {
+    const date = dayjs(dateStr).startOf('day');
+    return date.toISOString();
+  };
+
   return (
-    <div className="row">
-      <div className="col-md-6 mb-20">
-        <label>Tentative Start Time*</label>
-        <input
-          type="datetime-local"
-          {...register('start_time', { required: true })}
-          className="form-control"
+    <Box className="row" mb={3}>
+      {/* Start Date */}
+      <Box className="col-md-6 mb-20">
+        <Controller
+          name="start_time"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="date"
+              label="Tentative Start Date"
+              fullWidth
+              required
+              inputProps={{ min: minStart }}
+              onChange={(e) => {
+                const iso = normalizeDate(e.target.value);
+                field.onChange(iso);
+              }}
+            />
+          )}
         />
-      </div>
+      </Box>
 
-      <div className="col-md-6 mb-20">
-        <label>End Time*</label>
-        <input
-          type="datetime-local"
-          {...register('end_time', { required: true })}
-          min={minEndDate}
-          max={maxEndDate}
-          className="form-control"
+      {/* End Date */}
+      <Box className="col-md-6 mb-20">
+        <Controller
+          name="end_time"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="date"
+              label="End Date"
+              fullWidth
+              required
+              inputProps={{
+                min: minEnd,
+                max: maxEnd
+              }}
+              helperText={
+                userType === 'premium'
+                  ? 'You can select up to 30 days from start date'
+                  : 'You can select between 7 to 15 days from start date'
+              }
+              onChange={(e) => {
+                const iso = normalizeDate(e.target.value);
+                field.onChange(iso);
+              }}
+            />
+          )}
         />
-        {userType === 'premium' ? (
-          <small className="text-muted">You can select up to 30 days from start date</small>
-        ) : (
-          <small className="text-muted">You can select between 7 to 15 days from start date</small>
-        )}
-      </div>
+      </Box>
 
-      <div className="col-md-6 mb-20">
-        <label>Reserve Price*</label>
-        <input
-          type="number"
-          {...register('reserve_price', { required: true })}
-          className="form-control"
+      {/* Reserve Price */}
+      <Box className="col-md-6 mb-20">
+        <Controller
+          name="reserve_price"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="number"
+              label="Reserve Price"
+              fullWidth
+              required
+            />
+          )}
         />
-      </div>
+      </Box>
 
-      <div className="col-md-6 mb-20">
-        <label>Featured Auction?</label>
-        <select {...register('is_featured')} className="form-control">
-          <option value={false}>No</option>
-          <option value={true}>Yes</option>
-        </select>
-      </div>
-    </div>
+      {/* Featured Auction */}
+      <Box className="col-md-6 mb-20">
+        <Controller
+          name="is_featured"
+          control={control}
+          defaultValue={false}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              select
+              label="Featured Auction?"
+              fullWidth
+            >
+              <MenuItem value={false}>No</MenuItem>
+              <MenuItem value={true}>Yes</MenuItem>
+            </TextField>
+          )}
+        />
+      </Box>
+    </Box>
   );
 }
 
