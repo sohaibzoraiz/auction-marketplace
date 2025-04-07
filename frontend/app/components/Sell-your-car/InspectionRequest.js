@@ -12,8 +12,9 @@ function InspectionRequestStep() {
   return (
     <Box className="row" sx={{ gap: 2 }}>
       {/* Inspection Date & Time */}
-      <Box className="col-md-6 mb-20">
-        <Typography variant="subtitle1">Inspection Date and Time*</Typography>
+      <div className="col-md-12 mb-20">
+      <Box>
+        <Typography variant="subtitle1">Inspection Date and Time</Typography>
         <Controller
           name="inspection_time"
           control={control}
@@ -30,9 +31,11 @@ function InspectionRequestStep() {
           )}
         />
       </Box>
+      </div>
 
       {/* Inspection Address */}
-      <Box className="col-md-6 mb-20">
+      <div className="col-md-6 mb-20">
+      <Box>
         <Controller
           name="inspection_address"
           control={control}
@@ -48,9 +51,11 @@ function InspectionRequestStep() {
           )}
         />
       </Box>
+        </div>
 
       {/* Contact Number */}
-      <Box className="col-md-6 mb-20">
+      <div className="col-md-6 mb-20">
+      <Box>
         <Controller
           name="inspection_contact"
           control={control}
@@ -67,6 +72,7 @@ function InspectionRequestStep() {
           )}
         />
       </Box>
+      </div>
 
       {/* Charges Summary */}
       <Box className="col-md-12 mb-20">
