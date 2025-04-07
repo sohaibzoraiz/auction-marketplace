@@ -27,8 +27,8 @@ function MultiStepForm({ userType }) {
       <div className="multi-step-form">
         {/* Render Steps Based on Current Step */}
         {currentStep === 1 && <CarDetailsStep />}
-        {currentStep === 2 && <AuctionDetailsStep userType={userType} />}
-        {currentStep === 3 && <InspectionRequestStep />}
+        {currentStep === 2 && <InspectionRequestStep/>}
+        {currentStep === 3 && <AuctionDetailsStep userType={userType}/>}
         {currentStep === 4 && <PaymentStep />}
 
         {/* Navigation */}
