@@ -12,9 +12,21 @@ function AuctionDetailsStep({ userType }) {
 
   const startDate = watch('start_time');
   const endDate = watch('end_time');
+  const inspectionTime = watch('inspection_time');
 
+  const [minStartDate, setMinStartDate] = useState(dayjs().add(1, 'day'));
   const [minEndDate, setMinEndDate] = useState(null);
   const [maxEndDate, setMaxEndDate] = useState(null);
+
+  useEffect(() => {
+    if (inspectionTime) {
+      const minStart = dayjs(inspectionTime).add(1, 'day').startOf('day');
+      setMinStartDate(minStart);
+      if (startDate && dayjs(startDate).isBefore(minStart)) {
+        setValue('start_time', null);
+      }
+    }
+  }, [inspectionTime]);
 
   useEffect(() => {
     if (startDate) {
@@ -25,7 +37,6 @@ function AuctionDetailsStep({ userType }) {
       setMinEndDate(min);
       setMaxEndDate(max);
 
-      // Reset end date if invalid
       if (endDate && (dayjs(endDate).isBefore(min) || dayjs(endDate).isAfter(max))) {
         setValue('end_time', null);
       }
@@ -35,44 +46,43 @@ function AuctionDetailsStep({ userType }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="row">
+        {/* Start Date */}
         <div className="col-md-6 mb-20">
-        <Controller
-  name="start_time"
-  control={control}
-  rules={{ required: true }}
-  render={({ field }) => (
-    <DatePicker
-      label="Tentative Start Date"
-      value={field.value ? dayjs(field.value) : null} // ← Convert to dayjs
-      onChange={(date) => {
-        field.onChange(date?.startOf('day').toISOString()); // ← Store as ISO
-      }}
-      disablePast
-      renderInput={(params) => <TextField fullWidth {...params} />}
-    />
-  )}
-/>
+          <Controller
+            name="start_time"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <DatePicker
+                label="Tentative Start Date"
+                disablePast
+                minDate={minStartDate}
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
+                slotProps={{ textField: { fullWidth: true }, popper: { placement: 'bottom-start' } }}
+              />
+            )}
+          />
         </div>
 
+        {/* End Date */}
         <div className="col-md-6 mb-20">
-        <Controller
-  name="end_time"
-  control={control}
-  rules={{ required: true }}
-  render={({ field }) => (
-    <DatePicker
-      label="Auction End Date"
-      value={field.value ? dayjs(field.value) : null} // ← Convert to dayjs
-      onChange={(date) => {
-        field.onChange(date?.startOf('day').toISOString()); // ← Store as ISO
-      }}
-      minDate={minEndDate}
-      maxDate={maxEndDate}
-      disablePast
-      renderInput={(params) => <TextField fullWidth {...params} />}
-    />
-  )}
-/>
+          <Controller
+            name="end_time"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <DatePicker
+                label="Auction End Date"
+                disablePast
+                minDate={minEndDate}
+                maxDate={maxEndDate}
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
+                slotProps={{ textField: { fullWidth: true } }}
+              />
+            )}
+          />
           <Typography variant="caption" color="textSecondary">
             {userType === 'premium'
               ? 'You can select up to 30 days from start date'
@@ -80,6 +90,7 @@ function AuctionDetailsStep({ userType }) {
           </Typography>
         </div>
 
+        {/* Reserve Price */}
         <div className="col-md-6 mb-20">
           <Controller
             name="reserve_price"
@@ -88,14 +99,15 @@ function AuctionDetailsStep({ userType }) {
             render={({ field }) => (
               <TextField
                 label="Reserve Price"
-                fullWidth
                 type="number"
+                fullWidth
                 {...field}
               />
             )}
           />
         </div>
 
+        {/* Featured Auction */}
         <div className="col-md-6 mb-20">
           <Controller
             name="is_featured"
