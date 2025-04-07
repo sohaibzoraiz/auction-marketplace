@@ -4,9 +4,9 @@ const getAvailableInspectionSlots = async (req, res) => {
   const today = new Date();
   today.setDate(today.getDate() + 1); // start from next day
 
-  const slotsPerDay = 8;
+  //const slotsPerDay = 7;
   const startHour = 9;
-  const endHour = 17;
+  const endHour = 16;
   const maxSpots = 2;
   const days = 5;
 
