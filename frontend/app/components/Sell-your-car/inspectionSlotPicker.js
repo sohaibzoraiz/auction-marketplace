@@ -25,7 +25,7 @@ function InspectionSlotPicker() {
       try {
         const res = await axios.get('https://api.carmandi.com.pk/api/inspection/slots');
 
-        // Group by date
+        // Group slots by date
         const grouped = {};
         res.data.forEach(({ datetime, remaining }) => {
           const dateStr = new Date(datetime).toISOString().split('T')[0];
@@ -57,6 +57,15 @@ function InspectionSlotPicker() {
 
   const selectedDay = slotsByDate[selectedTabIndex];
   const availableSlots = selectedDay?.slots || [];
+
+  const formatTime = (datetime) => {
+    return new Intl.DateTimeFormat('en-PK', {
+      timeZone: 'Asia/Karachi',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }).format(new Date(datetime));
+  };
 
   return (
     <Box mb={3}>
@@ -90,7 +99,7 @@ function InspectionSlotPicker() {
             </Tabs>
           </Paper>
 
-          {/* Slot Buttons */}
+          {/* Time Slots */}
           <Controller
             name="inspection_time"
             control={control}
@@ -102,21 +111,18 @@ function InspectionSlotPicker() {
                 onChange={(_, val) => field.onChange(val)}
                 sx={{ flexWrap: 'wrap' }}
               >
-                {availableSlots.map(({ datetime, remaining }) => (
-                  <ToggleButton
-                  key={datetime}
-                  value={datetime}
-                  disabled={remaining <= 0}
-                >
-                  {new Date(datetime).toLocaleTimeString('en-PK', {
-                    timeZone: 'Asia/Karachi', // Fix for correct local time
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true,
-                  })}
-                </ToggleButton>
-                
-                ))}
+                {availableSlots.map(({ datetime, remaining }) => {
+                  const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
+                  return (
+                    <ToggleButton
+                      key={datetime}
+                      value={datetime}
+                      disabled={remaining <= 0}
+                    >
+                      {label}
+                    </ToggleButton>
+                  );
+                })}
               </ToggleButtonGroup>
             )}
           />
