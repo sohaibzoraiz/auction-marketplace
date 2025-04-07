@@ -9,7 +9,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
-  const { control, getValues, setValue } = useFormContext();
+  const { control, setValue } = useFormContext();
   const { field, fieldState } = useController({ name, control, rules: { required: true } });
 
   const files = Array.isArray(field.value)
