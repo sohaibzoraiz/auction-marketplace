@@ -58,15 +58,6 @@ function InspectionSlotPicker() {
   const selectedDay = slotsByDate[selectedTabIndex];
   const availableSlots = selectedDay?.slots || [];
 
-  const formatTime = (datetime) => {
-    return new Intl.DateTimeFormat('en-PK', {
-      timeZone: 'Asia/Karachi',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    }).format(new Date(datetime));
-  };
-
   return (
     <Box mb={3}>
       <Typography variant="h6" gutterBottom>
