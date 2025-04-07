@@ -326,6 +326,7 @@ function CarDetailsStep() {
         <ImageDropzone name="featured_image" label="Featured Image" imageLimit={1} />
     </div>
       <div className="col-md-6 mb-20">
+      <ImageDropzone name="featured_image" label="Featured Image" imageLimit={1} />
         <label>Car Images*</label>
         <input type="file" multiple onChange={handleCarImagesChange} accept="image/*" className="form-control" />
         <div className="flex mt-2 flex-wrap">
