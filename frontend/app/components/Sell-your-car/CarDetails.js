@@ -5,7 +5,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { Autocomplete, TextField } from '@mui/material';
 import { getCities } from 'countries-cities';
-import {imageDropzone} from '../components/common/dropBox';
+import {ImageDropzone} from '../../components/common/dropBox';
 
 
 
