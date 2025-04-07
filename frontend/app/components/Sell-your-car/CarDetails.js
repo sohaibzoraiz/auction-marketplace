@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { Autocomplete, TextField } from '@mui/material';
+import { getCities } from 'countries-cities';
+
+
 
 function CarDetailsStep() {
   const { register, setValue, watch, control } = useFormContext();
@@ -16,6 +19,7 @@ function CarDetailsStep() {
   const [yearOptions, setYearOptions] = useState([]);
   const [isCustomYear, setIsCustomYear] = useState(false);
   const [generationsAvailable, setGenerationsAvailable] = useState(true);
+  const pakCities = getCities('Pakistan');
 
   const selectedMakeId = watch('make_id');
   const selectedModelId = watch('model_id');
@@ -204,29 +208,48 @@ function CarDetailsStep() {
         <input type="hidden" {...register('generation_id')} />
       </div>
 
-      {/* Other Fields */}
-      <div className="col-md-6 mb-20">
-        <label>Registration City*</label>
-        <input type="text" {...register('registration_city', { required: true })} className="form-control" />
-      </div>
-      <div className="col-md-6 mb-20">
+    {/* Other Fields */}
+    <div className="col-md-6 mb-20">
+        
+        <Controller
+            name="registration_city"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+                <Autocomplete
+                    freeSolo
+                    options={pakCities}
+                    getOptionLabel={(option) => option}
+                    isOptionEqualToValue={(option, value) => option === value}
+                    value={field.value || ''}
+                    onInputChange={(_, newInputValue) => field.onChange(newInputValue)}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Registration City*" fullWidth required />
+                    )}
+                />
+            )}
+        />
+    </div>
+
+    <div className="col-md-6 mb-20">
         <label>Mileage*</label>
         <input type="number" {...register('mileage', { required: true })} className="form-control" />
-      </div>
-      <div className="col-md-6 mb-20">
+    </div>
+
+    <div className="col-md-6 mb-20">
         <label>Demand Price*</label>
         <input type="number" {...register('demand_price', { required: true })} className="form-control" />
-      </div>
-      <div className="col-md-12 mb-20">
+    </div>
+
+    <div className="col-md-12 mb-20">
         <label>Description*</label>
         <textarea {...register('description', { required: true })} className="form-control" />
-      </div>
-      <div className="col-md-6 mb-20">
+    </div>
+
+    <div className="col-md-6 mb-20">
         <label>City*</label>
         <input type="text" {...register('city', { required: true })} className="form-control" />
-      </div>
-
-      {/* Featured Image */}
+    </div>
       <div className="col-md-6 mb-20">
         <label>Featured Image*</label>
         <input type="file" onChange={handleFeaturedImageChange} accept="image/*" className="form-control" />
