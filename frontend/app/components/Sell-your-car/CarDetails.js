@@ -1,61 +1,51 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { Autocomplete, TextField } from '@mui/material';
-import { Controller } from 'react-hook-form';
 
 function CarDetailsStep() {
   const { register, setValue, watch, control } = useFormContext();
 
   const [featuredImage, setFeaturedImage] = useState(null);
   const [carImages, setCarImages] = useState([]);
-
   const [makes, setMakes] = useState([]);
   const [models, setModels] = useState([]);
   const [variants, setVariants] = useState([]);
   const [yearOptions, setYearOptions] = useState([]);
   const [isCustomYear, setIsCustomYear] = useState(false);
-
-  const [showMakeInput, setShowMakeInput] = useState(false);
-  const [showModelInput, setShowModelInput] = useState(false);
-  const [showVariantInput, setShowVariantInput] = useState(false);
-  const [showYearInput, setShowYearInput] = useState(false);
   const [generationsAvailable, setGenerationsAvailable] = useState(true);
 
   const selectedMakeId = watch('make_id');
   const selectedModelId = watch('model_id');
   const selectedYear = watch('year_model');
 
-  // Load makes
+  // Load Makes
   useEffect(() => {
-    axios.get('https://api.carmandi.com.pk/api/dropdowns/makes')
-      .then(res => setMakes(res.data));
+    axios.get('https://api.carmandi.com.pk/api/dropdowns/makes').then(res => setMakes(res.data));
   }, []);
 
-  // Load models on make change
+  // Load Models
   useEffect(() => {
-    if (selectedMakeId && selectedMakeId !== 'other') {
-      axios.get('https://api.carmandi.com.pk/api/dropdowns/models', {
-        params: { make_id: selectedMakeId }
-      }).then(res => setModels(res.data));
+    if (selectedMakeId) {
+      axios.get('https://api.carmandi.com.pk/api/dropdowns/models', { params: { make_id: selectedMakeId } })
+        .then(res => setModels(res.data));
     } else {
       setModels([]);
     }
-    setVariants([]);
     setYearOptions([]);
+    setVariants([]);
   }, [selectedMakeId]);
 
-  // Load years on model change
+  // Load Years
   useEffect(() => {
-    if (selectedModelId && selectedModelId !== 'other') {
+    if (selectedModelId) {
       axios.get('https://api.carmandi.com.pk/api/dropdowns/years', {
         params: { make_id: selectedMakeId, model_id: selectedModelId }
       }).then(res => {
         const uniqueYears = new Set();
         let hasGenerations = false;
-
         res.data.forEach(row => {
           if (row.start_year != null && row.end_year != null) {
             hasGenerations = true;
@@ -64,23 +54,19 @@ function CarDetailsStep() {
             }
           }
         });
-
         setYearOptions(Array.from(uniqueYears).sort((a, b) => b - a));
         setGenerationsAvailable(hasGenerations);
-        setShowYearInput(!hasGenerations); // fallback if no year data
       });
     } else {
       setYearOptions([]);
       setGenerationsAvailable(false);
-      setShowYearInput(false);
     }
-
     setVariants([]);
   }, [selectedModelId]);
 
-  // Load variants on year or model change
+  // Load Variants
   useEffect(() => {
-    if (selectedModelId && selectedModelId !== 'other') {
+    if (selectedModelId) {
       if (generationsAvailable && selectedYear && !isCustomYear) {
         axios.get('https://api.carmandi.com.pk/api/dropdowns/variants', {
           params: { model_id: selectedModelId, year: selectedYear }
@@ -93,7 +79,6 @@ function CarDetailsStep() {
     }
   }, [selectedModelId, selectedYear, generationsAvailable]);
 
-  // Image handlers
   const handleFeaturedImageChange = (e) => {
     const file = e.target.files[0];
     setFeaturedImage(file);
@@ -110,256 +95,116 @@ function CarDetailsStep() {
 
   return (
     <div className="row">
-
-      {/* MAKE */}
+      {/* Make */}
       <div className="col-md-6 mb-20">
-        <label>Make*</label>
-        <select
-          className="form-control"
-          value={selectedMakeId || ''}
-          onChange={(e) => {
-            const val = e.target.value;
-            const isOther = val === 'other';
-            setShowMakeInput(isOther);
-            const selected = makes.find(m => m.id.toString() === val);
-            setValue('make_id', isOther ? null : selected?.id || null);
-            setValue('car_make', isOther ? '' : selected?.name || '');
-          }}
-        >
-          <option value="">Select Make</option>
-          {makes.map(make => (
-            <option key={make.id} value={make.id}>{make.name}</option>
-          ))}
-          <option value="other">Other</option>
-        </select>
-        {showMakeInput && (
-          <input type="text" {...register('car_make_other')} placeholder="Enter other make" className="form-control mt-2" />
-        )}
         <Controller
-  name="car_make"
-  control={control}
-  defaultValue=""
-  render={({ field }) => (
-    <Autocomplete
-      options={makes}
-      getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
-      isOptionEqualToValue={(option, value) => option.name === value.name}
-      onChange={(event, newValue) => {
-        if (newValue && newValue.id) {
-          setValue('make_id', newValue.id);
-          field.onChange(newValue.name);
-        } else {
-          setValue('make_id', null);
-          field.onChange('');
-        }
-      }}
-      onInputChange={(event, newInputValue, reason) => {
-        if (reason === 'input') {
-          const match = makes.find(m => m.name.toLowerCase() === newInputValue.toLowerCase());
-          if (match) {
-            setValue('make_id', match.id);
-            field.onChange(match.name);
-          } else {
-            setValue('make_id', null);
-          }
-        }
-      }}
-      renderInput={(params) => (
-        <TextField {...params} label="Make*" required />
-      )}
-      freeSolo
-    />
-  )}
-/>
-<input type="hidden" {...register('make_id')} />
-       {/*} <input type="hidden" {...register('make_id')} />
-        <input type="hidden" {...register('car_make')} />*/}
-
-      </div>
-
-      {/* MODEL */}
-      
-
-
-      <div className="col-md-6 mb-20">
-        <label>Model*</label>
-        <select
-          className="form-control"
-          value={selectedModelId || ''}
-          onChange={(e) => {
-            const val = e.target.value;
-            const isOther = val === 'other';
-            setShowModelInput(isOther);
-            const selected = models.find(m => m.id.toString() === val);
-            setValue('model_id', isOther ? null : selected?.id || null);
-            setValue('model', isOther ? '' : selected?.name || '');
-          }}
-        >
-          <option value="">Select Model</option>
-          {models.map(model => (
-            <option key={model.id} value={model.id}>{model.name}</option>
-          ))}
-          <option value="other">Other</option>
-        </select>
-        {showModelInput && (
-          <input type="text" {...register('model_other')} placeholder="Enter other model" className="form-control mt-2" />
-        )}
-        <Controller
-  name="model"
-  control={control}
-  rules={{ required: true }}
-  render={({ field: { onChange, value } }) => (
-    <Autocomplete
-      options={models}
-      getOptionLabel={(option) => option?.name || ''}
-      value={models.find(m => m.name === value) || null}
-      onInputChange={(e, newInput) => {
-        const matchedModel = models.find(m => m.name.toLowerCase() === newInput.toLowerCase());
-        setValue('model_id', matchedModel ? matchedModel.id : null);
-        onChange(newInput);
-      }}
-      onChange={(e, selectedOption) => {
-        setValue('model_id', selectedOption ? selectedOption.id : null);
-        onChange(selectedOption?.name || '');
-      }}
-      renderInput={(params) => (
-        <TextField {...params} label="Model*" fullWidth />
-      )}
-    />
-  )}
-/>
-<input type="hidden" {...register('model_id')} />
-        {/*<input type="hidden" {...register('model_id')} />
-        <input type="hidden" {...register('model')} />*/}
-      </div>
-
-      {/* YEAR */}
-      <div className="col-md-6 mb-20">
-        <label>Year Model*</label>
-        {generationsAvailable ? (
-          <>
-            <select
-              {...register('year_model', {
-                required: true,
-                onChange: (e) => {
-                  const val = e.target.value;
-                  setShowYearInput(val === 'other');
-                  setValue('year_model', val);
-                },
-              })}
-              className="form-control"
-            >
-              <option value="">Select Year</option>
-              {yearOptions.map(y => (
-                <option key={y} value={y}>{y}</option>
-              ))}
-              <option value="other">Other</option>
-            </select>
-            {showYearInput && (
-              <input type="text" {...register('year_model_other')} placeholder="Enter other year" className="form-control mt-2" />
-            )}
-          </>
-        ) : (
-          <>
-            <input type="text" {...register('year_model')} placeholder="Enter year" className="form-control" />
-          </>
-        )}
-        <Controller
-  name="year_model"
-  control={control}
-  rules={{ required: true }}
-  render={({ field }) => (
-    <Autocomplete
-      freeSolo
-      options={yearOptions} // ← now just an array of numbers
-      getOptionLabel={(option) => option?.toString() ?? ''}
-      isOptionEqualToValue={(option, value) => option === value}
-      value={field.value || ''}
-      onInputChange={(_, newInputValue) => {
-        field.onChange(newInputValue);
-        setValue('year_model', newInputValue);
-
-        // Check if user typed a year not in dropdown
-        setIsCustomYear(!yearOptions.includes(Number(newInputValue)));
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Year*"
-          placeholder="Select or enter year"
-          fullWidth
+          name="car_make"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <Autocomplete
+              options={makes}
+              getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
+              isOptionEqualToValue={(option, value) => option.name === value.name}
+              onChange={(_, newValue) => {
+                setValue('make_id', newValue?.id || null);
+                field.onChange(newValue?.name || '');
+              }}
+              onInputChange={(_, newInput) => {
+                const match = makes.find(m => m.name.toLowerCase() === newInput.toLowerCase());
+                setValue('make_id', match?.id || null);
+                field.onChange(newInput);
+              }}
+              renderInput={(params) => <TextField {...params} label="Make*" required />}
+              freeSolo
+            />
+          )}
         />
-      )}
-    />
-  )}
-/>
-
-
-
-
+        <input type="hidden" {...register('make_id')} />
       </div>
 
-      {/* TRIM / VERSION */}
+      {/* Model */}
       <div className="col-md-6 mb-20">
-        <label>Trim*</label>
-        <select
-          className="form-control"
-          value={watch('version_id') || ''}
-          onChange={(e) => {
-            const val = e.target.value;
-            const isOther = val === 'other';
-            setShowVariantInput(isOther);
-            const selected = variants.find(v => v.id.toString() === val);
-            setValue('variant', selected?.version_name || '');
-            setValue('version_id', isOther ? null : selected?.id || null);
-            setValue('generation_id', isOther ? null : selected?.generation_id || null); // ✅ Now set generation_id here
-          }}
-        >
-          <option value="">Select Variant</option>
-          {variants.map(v => (
-            <option key={v.id} value={v.id}>{v.version_name}</option>
-          ))}
-          <option value="other">Other</option>
-        </select>
-        {showVariantInput && (
-          <input type="text" {...register('variant_other')} placeholder="Enter other variant" className="form-control mt-2" />
-        )}
         <Controller
-    name="variant"
-    control={control}
-    defaultValue=""
-    render={({ field }) => (
-      <Autocomplete
-        freeSolo
-        options={variants.map(v => v.version_name)}
-        getOptionLabel={(option) => option}
-        isOptionEqualToValue={(option, value) => option === value}
-        value={field.value || ''}
-        onInputChange={(_, newInputValue) => {
-          field.onChange(newInputValue);
-          const matched = variants.find(v => v.version_name === newInputValue);
-          setValue('version_id', matched ? matched.id : null);
-          setValue('generation_id', matched ? matched.generation_id : null); // ✅ set generation_id here
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Trim*"
-            placeholder="Select or enter variant"
-            required
-            fullWidth
-          />
-        )}
-      />
-    )}
-  />
-  <input type="hidden" {...register('version_id')} />
-  <input type="hidden" {...register('generation_id')} />
-        {/*<input type="hidden" {...register('version_id')} />
-        <input type="hidden" {...register('variant')} />*/}
+          name="model"
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, value } }) => (
+            <Autocomplete
+              options={models}
+              getOptionLabel={(option) => option?.name || ''}
+              value={models.find(m => m.name === value) || null}
+              onInputChange={(_, newInput) => {
+                const match = models.find(m => m.name.toLowerCase() === newInput.toLowerCase());
+                setValue('model_id', match?.id || null);
+                onChange(newInput);
+              }}
+              onChange={(_, selected) => {
+                setValue('model_id', selected?.id || null);
+                onChange(selected?.name || '');
+              }}
+              renderInput={(params) => <TextField {...params} label="Model*" fullWidth />}
+            />
+          )}
+        />
+        <input type="hidden" {...register('model_id')} />
       </div>
 
-      {/* Remaining fields */}
+      {/* Year */}
+      <div className="col-md-6 mb-20">
+        <Controller
+          name="year_model"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Autocomplete
+              freeSolo
+              options={yearOptions}
+              getOptionLabel={(option) => option?.toString() || ''}
+              isOptionEqualToValue={(option, value) => option === value}
+              value={field.value || ''}
+              onInputChange={(_, newInput) => {
+                field.onChange(newInput);
+                setIsCustomYear(!yearOptions.includes(Number(newInput)));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Year*" placeholder="Select or enter year" fullWidth />
+              )}
+            />
+          )}
+        />
+      </div>
+
+      {/* Trim / Variant */}
+      <div className="col-md-6 mb-20">
+        <Controller
+          name="variant"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <Autocomplete
+              freeSolo
+              options={variants.map(v => v.version_name)}
+              getOptionLabel={(option) => option}
+              isOptionEqualToValue={(option, value) => option === value}
+              value={field.value || ''}
+              onInputChange={(_, newInputValue) => {
+                field.onChange(newInputValue);
+                const match = variants.find(v => v.version_name === newInputValue);
+                setValue('version_id', match?.id || null);
+                setValue('generation_id', match?.generation_id || null);
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Trim*" placeholder="Select or enter variant" required fullWidth />
+              )}
+            />
+          )}
+        />
+        <input type="hidden" {...register('version_id')} />
+        <input type="hidden" {...register('generation_id')} />
+      </div>
+
+      {/* Other Fields */}
       <div className="col-md-6 mb-20">
         <label>Registration City*</label>
         <input type="text" {...register('registration_city', { required: true })} className="form-control" />
@@ -385,9 +230,7 @@ function CarDetailsStep() {
       <div className="col-md-6 mb-20">
         <label>Featured Image*</label>
         <input type="file" onChange={handleFeaturedImageChange} accept="image/*" className="form-control" />
-        {featuredImage && (
-          <img src={URL.createObjectURL(featuredImage)} alt="Featured" className="mt-2 max-h-40" />
-        )}
+        {featuredImage && <img src={URL.createObjectURL(featuredImage)} alt="Featured" className="mt-2 max-h-40" />}
       </div>
 
       {/* Car Images */}
