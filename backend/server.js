@@ -65,7 +65,7 @@ app.use('/api/dropdowns', dropdownRoutes);
 
 // API routes for inspection requests
 const inspectionRoutes = require('./routes/inspectionRoutes');
-app.use('/api/inspections', inspectionRoutes);
+app.use('/api/inspection', inspectionRoutes);
 
 
 // Authentication routes
