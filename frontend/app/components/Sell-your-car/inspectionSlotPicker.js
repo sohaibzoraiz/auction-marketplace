@@ -78,6 +78,7 @@ function InspectionSlotPicker() {
       ) : (
         <>
           {/* Day Tabs */}
+          <Box display="flex" justifyContent="center">
           <Paper elevation={1} sx={{ mb: 2 }}>
             <Tabs
               value={selectedTabIndex}
@@ -86,6 +87,7 @@ function InspectionSlotPicker() {
               scrollButtons
               allowScrollButtonsMobile
             >
+                
               {slotsByDate.map(({ date }) => (
                 <Tab
                   key={date}
@@ -98,6 +100,7 @@ function InspectionSlotPicker() {
               ))}
             </Tabs>
           </Paper>
+          </Box>
 
           {/* Time Slots */}
           <Controller
@@ -105,6 +108,7 @@ function InspectionSlotPicker() {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
+                <Box display="flex" justifyContent="center">
               <ToggleButtonGroup
                 value={field.value}
                 exclusive
@@ -125,6 +129,7 @@ function InspectionSlotPicker() {
                   );
                 })}
               </ToggleButtonGroup>
+              </Box>
             )} 
           />
         </>

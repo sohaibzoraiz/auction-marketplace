@@ -2,44 +2,84 @@
 
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { TextField, Typography, Box } from '@mui/material';
-import InspectionSlotPicker from './inspectionSlotPicker'; // Adjust path if needed
+import { TextField, Typography, Box, Button, CircularProgress } from '@mui/material';
+import InspectionSlotPicker from './inspectionSlotPicker';
 
 function InspectionRequestStep() {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
   const inspectionCharges = 2500;
+  const [loadingLocation, setLoadingLocation] = React.useState(false);
+
+  const handleUseMyLocation = async () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    setLoadingLocation(true);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          const address = data.display_name;
+
+          if (address) {
+            setValue('inspection_address', address);
+          } else {
+            alert("Could not fetch address");
+          }
+        } catch (error) {
+          console.error("Geocoding error:", error);
+          alert("Failed to get address from location");
+        } finally {
+          setLoadingLocation(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        alert("Unable to retrieve location");
+        setLoadingLocation(false);
+      }
+    );
+  };
 
   return (
     <div className="row">
-        <div className="section-title mb-30 text-center">
-                          <h2>Inspection <span>Details</span></h2>
-                        </div>
-    <Box>
-      {/* Inspection Date & Time */}
-      <div className="col-md-12 mb-20 align-items-center">
-      <Box>
-        <Typography variant="subtitle1">Inspection Date and Time</Typography>
-        <Controller
-          name="inspection_time"
-          control={control}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <>
-              <InspectionSlotPicker value={field.value} onChange={field.onChange} />
-              {fieldState.error && (
-                <Typography variant="caption" color="error">
-                  Please select a date and time
-                </Typography>
-              )}
-            </>
-          )}
-        />
-      </Box>
+      <div className="section-title mb-30 text-center">
+        <h2>Inspection <span>Details</span></h2>
+      </div>
+
+      {/* Inspection Date and Time */}
+      <div className="col-md-12 mb-20">
+        <Typography variant="subtitle1" align="center" className="mb-2">
+          Select Date & Time Slot
+        </Typography>
+        <Box display="flex" justifyContent="center">
+          <Controller
+            name="inspection_time"
+            control={control}
+            rules={{ required: true }}
+            render={({ field, fieldState }) => (
+              <Box>
+                <InspectionSlotPicker value={field.value} onChange={field.onChange} />
+                {fieldState.error && (
+                  <Typography variant="caption" color="error" align="center">
+                    Please select a date and time
+                  </Typography>
+                )}
+              </Box>
+            )}
+          />
+        </Box>
       </div>
 
       {/* Inspection Address */}
       <div className="col-md-6 mb-20">
-      <Box>
         <Controller
           name="inspection_address"
           control={control}
@@ -54,12 +94,19 @@ function InspectionRequestStep() {
             />
           )}
         />
-      </Box>
-        </div>
+        <Button
+          className="mt-2"
+          variant="outlined"
+          size="small"
+          onClick={handleUseMyLocation}
+          disabled={loadingLocation}
+        >
+          {loadingLocation ? <CircularProgress size={20} /> : "Use My Location"}
+        </Button>
+      </div>
 
       {/* Contact Number */}
       <div className="col-md-6 mb-20">
-      <Box>
         <Controller
           name="inspection_contact"
           control={control}
@@ -75,18 +122,16 @@ function InspectionRequestStep() {
             />
           )}
         />
-      </Box>
       </div>
 
-      {/* Charges Summary */}
-      <Box className="col-md-12 mb-20">
+      {/* Charges */}
+      <div className="col-md-12 mb-20">
         <Typography variant="h6">Inspection Charges</Typography>
         <Box display="flex" justifyContent="space-between">
           <Typography>Inspection Fee</Typography>
           <Typography>PKR {inspectionCharges}</Typography>
         </Box>
-      </Box>
-    </Box>
+      </div>
     </div>
   );
 }

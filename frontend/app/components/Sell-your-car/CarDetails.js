@@ -255,24 +255,6 @@ function CarDetailsStep() {
             )}
         />
     </div>
-
-    <div className="col-md-12 mb-20">
-        <Controller
-            name="description"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-                <TextField
-                    {...field}
-                    label="Description"
-                    multiline
-                    rows={4}
-                    fullWidth
-                />
-            )}
-        />
-    </div>
-
     <div className="col-md-6 mb-20">
         <Controller
             name="city"
@@ -298,10 +280,29 @@ function CarDetailsStep() {
         />
     </div>
 
-    <div className="col-md-6 mb-20">
+    <div className="col-md-12 mb-20">
+        <Controller
+            name="description"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+                <TextField
+                    {...field}
+                    label="Description"
+                    multiline
+                    rows={4}
+                    fullWidth
+                />
+            )}
+        />
+    </div>
+
+    
+
+    <div className="col-md-12 mb-20">
         <ImageDropzone name="featuredImage" label="Featured Image" imageLimit={1} />
     </div>
-      <div className="col-md-6 mb-20">
+      <div className="col-md-12 mb-20">
         <ImageDropzone name="carImages" label="Car Images" imageLimit={10} />
       
       </div>
