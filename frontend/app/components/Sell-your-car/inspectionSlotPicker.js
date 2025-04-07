@@ -59,7 +59,7 @@ function InspectionSlotPicker() {
               scrollButtons
               allowScrollButtonsMobile
             >
-              {slots.map((day, index) => (
+              {slots.map((day) => (
                 <Tab
                   key={day.date}
                   label={new Date(day.date).toLocaleDateString('en-PK', {
