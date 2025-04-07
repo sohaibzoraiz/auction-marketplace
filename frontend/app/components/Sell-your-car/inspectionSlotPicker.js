@@ -9,22 +9,22 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   CircularProgress,
+  Tabs,
+  Tab,
+  Paper,
 } from '@mui/material';
 
 function InspectionSlotPicker() {
   const { control } = useFormContext();
   const [loading, setLoading] = useState(true);
   const [slots, setSlots] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
   useEffect(() => {
     const fetchSlots = async () => {
       try {
         const res = await axios.get('https://api.carmandi.com.pk/api/inspection/slots');
         setSlots(res.data);
-        if (res.data.length > 0) {
-          setSelectedDate(res.data[0].date);
-        }
       } catch (err) {
         console.error('Error fetching slots:', err);
       } finally {
@@ -35,11 +35,12 @@ function InspectionSlotPicker() {
     fetchSlots();
   }, []);
 
-  const handleDateChange = (_, newDate) => {
-    if (newDate) setSelectedDate(newDate);
+  const handleTabChange = (_, newIndex) => {
+    setSelectedDateIndex(newIndex);
   };
 
-  const availableSlots = slots.find(day => day.date === selectedDate)?.slots || [];
+  const selectedDay = slots[selectedDateIndex];
+  const availableSlots = selectedDay?.slots || [];
 
   return (
     <Box mb={3}>
@@ -49,21 +50,29 @@ function InspectionSlotPicker() {
         <CircularProgress />
       ) : (
         <>
-          {/* Dates */}
-          <ToggleButtonGroup
-            value={selectedDate}
-            exclusive
-            onChange={handleDateChange}
-            sx={{ mb: 2, flexWrap: 'wrap' }}
-          >
-            {slots.map(({ date }) => (
-              <ToggleButton key={date} value={date}>
-                {new Date(date).toLocaleDateString('en-PK', { weekday: 'short', month: 'short', day: 'numeric' })}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
+          {/* Day Tabs */}
+          <Paper elevation={1} sx={{ mb: 2 }}>
+            <Tabs
+              value={selectedDateIndex}
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+            >
+              {slots.map((day, index) => (
+                <Tab
+                  key={day.date}
+                  label={new Date(day.date).toLocaleDateString('en-PK', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                />
+              ))}
+            </Tabs>
+          </Paper>
 
-          {/* Slots */}
+          {/* Slot Buttons */}
           <Controller
             name="inspection_time"
             control={control}
@@ -81,7 +90,11 @@ function InspectionSlotPicker() {
                     value={time}
                     disabled={!available}
                   >
-                    {time}
+                    {new Date(time).toLocaleTimeString('en-PK', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })}
                   </ToggleButton>
                 ))}
               </ToggleButtonGroup>
