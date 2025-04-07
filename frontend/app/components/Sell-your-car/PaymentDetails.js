@@ -1,92 +1,143 @@
-'use client';
+import React from 'react';
+import { useFormContext, Controller } from 'react-hook-form';
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  TextField,
+  Typography,
+  Box
+} from '@mui/material';
 
-import React, { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-
-function PaymentStep() {
-  const { register, setValue } = useFormContext();
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const inspectionCharges = 2500; // Inspection fee of 2500 PKR
-
-  const handlePaymentSelect = (method) => {
-    setPaymentMethod(method);
-    setValue('payment_method', method); // Update payment method in the form state
-  };
+const PaymentsStep = () => {
+  const { control, watch } = useFormContext();
+  const paymentMethod = watch('payment_method');
 
   return (
-    <div className="row">
-      {/* Payment Method Selection */}
-      <div className="col-md-12 mb-20">
-        <h3>Select Payment Method</h3>
-        <button type="button" onClick={() => handlePaymentSelect('COD')} className="btn btn-primary">Cash on Delivery</button>
-        <button type="button" onClick={() => handlePaymentSelect('BankTransfer')} className="btn btn-primary">Bank Transfer</button>
-        <button type="button" onClick={() => handlePaymentSelect('Card')} className="btn btn-primary">Credit/Debit Card</button>
-      </div>
+    <Box display="flex" flexDirection="column" gap={3}>
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Select Payment Method</FormLabel>
+        <Controller
+          name="payment_method"
+          control={control}
+          defaultValue=""
+          rules={{ required: 'Please select a payment method' }}
+          render={({ field }) => (
+            <RadioGroup {...field} row>
+              <FormControlLabel value="cod" control={<Radio />} label="Cash on Delivery" />
+              <FormControlLabel value="bank" control={<Radio />} label="Bank Transfer" />
+              <FormControlLabel value="card" control={<Radio />} label="Credit / Debit Card" />
+            </RadioGroup>
+          )}
+        />
+      </FormControl>
 
-      {/* Show relevant fields based on selected payment method */}
-      {paymentMethod === 'COD' && (
-        <div className="col-md-12 mb-20">
-          <h3>Cash on Delivery Selected</h3>
-          <p>Your order will be delivered and paid for upon delivery.</p>
-        </div>
+      {/* COD message */}
+      {paymentMethod === 'cod' && (
+        <Typography variant="body1">
+          You have selected <strong>Cash on Delivery</strong>. Please be available to make the payment at the time of inspection.
+        </Typography>
       )}
 
-      {paymentMethod === 'BankTransfer' && (
-        <div className="col-md-12 mb-20">
-          <h3>Bank Transfer Selected</h3>
-          <p>Please use the following details to make your payment:</p>
-          <div>
-            <p>Account Name: XYZ Motors</p>
-            <p>Bank: ABC Bank</p>
-            <p>Account Number: 1234567890</p>
-            <p>Sort Code: 112233</p>
-          </div>
-        </div>
+      {/* Bank Transfer Info */}
+      {paymentMethod === 'bank' && (
+        <Box>
+          <Typography variant="h6">Bank Transfer Instructions</Typography>
+          <Typography variant="body2">Bank Name: Carmandi Bank Ltd.</Typography>
+          <Typography variant="body2">Account Number: 123456789</Typography>
+          <Typography variant="body2">Account Title: Carmandi Pvt Ltd.</Typography>
+          <Typography variant="body2">IBAN: PK12CARM1234567890001</Typography>
+        </Box>
       )}
 
-      {paymentMethod === 'Card' && (
-        <div className="col-md-12 mb-20">
-          <h3>Enter Payment Details</h3>
-          <div className="mb-3">
-            <label>Card Number</label>
-            <input
-              type="text"
-              placeholder="1234 5678 9101 1121"
-              {...register('card_number', { required: true })}
-              className="form-control"
-            />
-          </div>
-          <div className="mb-3">
-            <label>Expiration Date</label>
-            <input
-              type="text"
-              placeholder="MM/YY"
-              {...register('expiration_date', { required: true })}
-              className="form-control"
-            />
-          </div>
-          <div className="mb-3">
-            <label>CVV</label>
-            <input
-              type="text"
-              placeholder="123"
-              {...register('cvv', { required: true })}
-              className="form-control"
-            />
-          </div>
-        </div>
-      )}
+      {/* Credit/Debit Card Fields */}
+      {paymentMethod === 'card' && (
+        <Box display="flex" flexDirection="column" gap={2}>
+          <Controller
+            name="card_number"
+            control={control}
+            rules={{
+              required: 'Card number is required',
+              pattern: {
+                value: /^\d{16}$/,
+                message: 'Card number must be 16 digits'
+              }
+            }}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                label="Card Number"
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+                fullWidth
+                inputProps={{ maxLength: 16 }}
+              />
+            )}
+          />
 
-      {/* Inspection Charges */}
-      <div className="col-md-12 mb-20">
-        <h3>Inspection Charges</h3>
-        <div>
-          <span>Inspection Fee</span>
-          <span>PKR {inspectionCharges}</span>
-        </div>
-      </div>
-    </div>
+          <Controller
+            name="card_expiry"
+            control={control}
+            rules={{
+              required: 'Expiry date is required',
+              pattern: {
+                value: /^(0[1-9]|1[0-2])\/\d{2}$/,
+                message: 'Format should be MM/YY'
+              }
+            }}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                label="Expiry Date (MM/YY)"
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+                fullWidth
+              />
+            )}
+          />
+
+          <Controller
+            name="card_cvv"
+            control={control}
+            rules={{
+              required: 'CVV is required',
+              pattern: {
+                value: /^\d{3}$/,
+                message: 'CVV must be 3 digits'
+              }
+            }}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                label="CVV"
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+                fullWidth
+                inputProps={{ maxLength: 3 }}
+              />
+            )}
+          />
+
+          <Controller
+            name="card_holder"
+            control={control}
+            rules={{ required: 'Cardholder name is required' }}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                label="Cardholder Name"
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+                fullWidth
+              />
+            )}
+          />
+        </Box>
+      )}
+    </Box>
   );
-}
+};
 
-export default PaymentStep;
+export default PaymentsStep;
