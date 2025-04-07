@@ -1,38 +1,96 @@
-// components/DropBoxUpload.js
-import React from 'react';
-import { useDropzone } from 'react-dropzone';
+// components/ImageDropzone.js
+'use client';
 
-const DropBoxUpload = ({ name, setValue, errors, label }) => {
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*', // Only accept image files
-    onDrop: (acceptedFiles) => {
-      if (acceptedFiles.length > 0) {
-        setValue(name, acceptedFiles[0]); // Set the file using React Hook Form
-      }
-    },
-    maxFiles: 1, // Limit to 1 file
-  });
+import React, { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { useFormContext, Controller } from 'react-hook-form';
+import { Box, Typography, IconButton, Grid } from '@mui/material';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+const ImageDropzone = ({ name, label, imageLimit = 1 }) => {
+  const { control, setValue, getValues } = useFormContext();
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const currentFiles = getValues(name) || [];
+    const updated = imageLimit === 1
+      ? [acceptedFiles[0]]
+      : [...currentFiles, ...acceptedFiles].slice(0, imageLimit);
+    setValue(name, updated, { shouldValidate: true });
+  }, [getValues, setValue, name, imageLimit]);
+
+  const removeImage = (fileToRemove) => {
+    const currentFiles = getValues(name) || [];
+    const updated = currentFiles.filter(file => file !== fileToRemove);
+    setValue(name, updated, { shouldValidate: true });
+  };
 
   return (
-    <div>
-      <label>{label}</label>
-      <div
-        {...getRootProps()}
-        className="dropbox-area"
-        style={{
-          border: '2px dashed #007bff',
-          padding: '20px',
-          textAlign: 'center',
-          cursor: 'pointer',
-          backgroundColor: '#f8f9fa',
-        }}
-      >
-        <input {...getInputProps()} />
-        <p>{errors[name] ? 'Invalid file. Please upload an image.' : `Drag and drop a file here or click to upload`}</p>
-      </div>
-      {errors[name] && <p className="text-danger">{errors[name]?.message}</p>}
-    </div>
+    <Controller
+      name={name}
+      control={control}
+      rules={{ required: true }}
+      render={({ field, fieldState }) => {
+        const files = Array.isArray(field.value) ? field.value : field.value ? [field.value] : [];
+
+        const { getRootProps, getInputProps, isDragActive } = useDropzone({
+          accept: { 'image/*': [] },
+          multiple: imageLimit > 1,
+          onDrop
+        });
+
+        return (
+          <Box mb={2}>
+            <Typography variant="subtitle1" gutterBottom>{label}</Typography>
+            <Box
+              {...getRootProps()}
+              sx={{
+                border: '2px dashed #ccc',
+                padding: 2,
+                borderRadius: 2,
+                textAlign: 'center',
+                bgcolor: isDragActive ? '#f9f9f9' : 'inherit',
+                cursor: 'pointer'
+              }}
+            >
+              <input {...getInputProps()} />
+              <UploadFileIcon sx={{ fontSize: 40, color: '#888' }} />
+              <Typography variant="body2" mt={1}>
+                {isDragActive ? 'Drop the image(s) here...' : `Click or drag to upload (Max ${imageLimit})`}
+              </Typography>
+            </Box>
+
+            {files.length > 0 && (
+              <Grid container spacing={2} mt={1}>
+                {files.map((file, index) => (
+                  <Grid item key={index}>
+                    <Box position="relative">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={`preview-${index}`}
+                        style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: 4 }}
+                      />
+                      <IconButton
+                        size="small"
+                        onClick={() => removeImage(file)}
+                        sx={{ position: 'absolute', top: -10, right: -10, bgcolor: 'white' }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
+
+            {fieldState.error && (
+              <Typography color="error" variant="caption">This field is required.</Typography>
+            )}
+          </Box>
+        );
+      }}
+    />
   );
 };
 
-export default DropBoxUpload;
+export default ImageDropzone;

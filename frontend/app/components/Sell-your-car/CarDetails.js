@@ -5,6 +5,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { Autocomplete, TextField } from '@mui/material';
 import { getCities } from 'countries-cities';
+import {imageDropzone} from '../components/common/dropBox';
 
 
 
@@ -322,6 +323,7 @@ function CarDetailsStep() {
                 className="mt-2 max-h-40"
             />
         )}
+        <ImageDropzone name="featured_image" label="Featured Image" imageLimit={1} />
     </div>
       <div className="col-md-6 mb-20">
         <label>Car Images*</label>
