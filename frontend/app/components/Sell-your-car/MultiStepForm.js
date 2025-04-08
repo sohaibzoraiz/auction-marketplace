@@ -62,7 +62,7 @@ function MultiStepForm({ userType }) {
     <button
       type="button"
       className="primary-btn btn-hover"
-      onClick={goToNextStep}
+      onClick={methods.handleSubmit(goToNextStep)} // ✅ validation added here
     >
       Next
       <span style={{ top: "40.5px", left: "84.2344px" }} />
@@ -78,6 +78,7 @@ function MultiStepForm({ userType }) {
     </button>
   )}
 </div>
+
 
       </div>
     </FormProvider>
