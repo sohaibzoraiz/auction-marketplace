@@ -27,7 +27,7 @@ const SupportCenterPage = () => {
                   How Can We <span>Help You?</span>
                 </h2>
               </div>
-              <Link className="view-button2 four" href="/car-auction/auction-grid">
+              <Link className="view-button2 four" href="/auction-grid">
                 Support With Us
                 <div className="arrow">
                   <svg

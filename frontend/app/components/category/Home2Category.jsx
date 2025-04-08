@@ -163,7 +163,7 @@ const Home2Category = () => {
           </div>
           <div className="row wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
             <div className="col-lg-12 d-flex justify-content-center">
-              <Link className="view-button" href="/car-auction/category">
+              <Link className="view-button" href="/category">
                 View All Category
                 <svg viewBox="0 0 13 20">
                   <polyline points="0.5 19.5 3 19.5 12.5 10 3 0.5" />

@@ -53,13 +53,13 @@ const Footer2 = () => {
                     </div>
                     <div className="menu-container">
                       <ul className="widget-list">
-                        <li><Link href="/car-auction/auction-grid">Mercedes</Link></li>
-                        <li><Link href="/car-auction/auction-grid">Toyota Camry</Link></li>
-                        <li><Link href="/car-auction/auction-grid">BMW</Link></li>
-                        <li><Link href="/car-auction/auction-grid">Tesla</Link></li>
-                        <li><Link href="/car-auction/auction-grid">Hyundai</Link></li>
-                        <li><Link href="/car-auction/auction-grid">Nissan Rogue</Link></li>
-                        <li><Link href="/car-auction/auction-grid">Rolls Royce</Link></li>
+                        <li><Link href="/auction-grid">Mercedes</Link></li>
+                        <li><Link href="/auction-grid">Toyota Camry</Link></li>
+                        <li><Link href="/auction-grid">BMW</Link></li>
+                        <li><Link href="/auction-grid">Tesla</Link></li>
+                        <li><Link href="/auction-grid">Hyundai</Link></li>
+                        <li><Link href="/auction-grid">Nissan Rogue</Link></li>
+                        <li><Link href="/auction-grid">Rolls Royce</Link></li>
                       </ul>
                     </div>
                   </div>
@@ -71,10 +71,10 @@ const Footer2 = () => {
                     </div>
                     <div className="menu-container">
                       <ul className="widget-list">
-                        <li><Link href="/car-auction/how-to-buy">How to bid with us</Link></li>
-                        <li><Link href="/car-auction/how-to-sell">How to sell with us</Link></li>
-                        <li><Link href="/car-auction/about">About us</Link></li>
-                        <li><Link href="/car-auction/faq">F.A.Q</Link></li>
+                        <li><Link href="/how-to-buy">How to bid with us</Link></li>
+                        <li><Link href="/how-to-sell">How to sell with us</Link></li>
+                        <li><Link href="/about">About us</Link></li>
+                        <li><Link href="/faq">F.A.Q</Link></li>
                         <li><a href="#">Our Brand</a></li>
                       </ul>
                     </div>

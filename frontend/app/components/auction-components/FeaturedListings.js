@@ -48,7 +48,7 @@ function FeaturedListings({ listings }) {
             </div>
             <div className="timer-and-btn-area">
              
-              <Link href="/car-auction/auction-details" className="bid-btn">Bid Now</Link>
+              <Link href="/auction-details" className="bid-btn">Bid Now</Link>
             </div>
           </div>
         </div>

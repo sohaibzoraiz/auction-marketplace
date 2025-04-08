@@ -104,7 +104,7 @@ const Home2Banner2 = () => {
                       </div>
                       <Link
                         className="primary-btn btn-hover"
-                        href="/car-auction/auction-details"
+                        href="/auction-details"
                       >
                         Bid Now
                         <span style={{ top: "40.5px", left: "84.2344px" }} />
@@ -190,7 +190,7 @@ const Home2Banner2 = () => {
                       </div>
                       <Link
                         className="primary-btn btn-hover"
-                        href="/car-auction/auction-details"
+                        href="/auction-details"
                       >
                         Bid Now
                         <span style={{ top: "40.5px", left: "84.2344px" }} />
@@ -277,7 +277,7 @@ const Home2Banner2 = () => {
                       </div>
                       <Link
                         className="primary-btn btn-hover"
-                        href="/car-auction/auction-details"
+                        href="/auction-details"
                       >
                         Bid Now
                         <span style={{ top: "40.5px", left: "84.2344px" }} />
