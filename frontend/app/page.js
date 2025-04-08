@@ -73,7 +73,11 @@ function HomePage() {
             <Home2Category />
             <Home2latestAuction listings={latestListings}/>
             <Home2Banner2 />
-            <FeaturedListings listings={featuredListings} />
+            {featuredListings.length > 0 ? (
+                 <FeaturedSection listings={featuredListings} />
+            ) : (
+                 <div className="text-center py-10">No featured cars available right now.</div>
+            )}
             <Home2Banner3 />
             <Home2ProcessSection />
             <Home2Faq />
