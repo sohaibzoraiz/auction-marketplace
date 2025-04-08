@@ -163,7 +163,7 @@ const createAuctionListing = async (req, res) => {
   
       res.status(201).json({ 
         message: 'Auction created successfully', 
-        auction: resultAuction.rows[0] 
+        //auction: resultAuction.rows[0] 
       });
     } catch (err) {
       console.error('Error creating auction listing:', err);
