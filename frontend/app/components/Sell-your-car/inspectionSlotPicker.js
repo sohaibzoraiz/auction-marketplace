@@ -148,40 +148,44 @@ function InspectionSlotPicker() {
 
                     const button = (
                       <ToggleButton
-                        key={datetime}
-                        value={datetime}
-                        disabled={isDisabled}
-                        sx={{
-                          borderRadius: '8px',
-                          textTransform: 'none',
-                          minWidth: 100,
-                          px: 2,
-                          py: 1.2,
-                          border: '1px solid',
-                          borderColor: theme.palette.divider,
-                          transition: 'none',
-                          '&.Mui-selected': {
-                            backgroundColor: theme.palette.primary.main,
-                            color: '#fff',
-                            borderColor: theme.palette.primary.main,
-                          },
-                          '&:hover:not(:disabled)': {
-                            backgroundColor: theme.palette.action.hover,
-                          },
-                          '&:disabled': {
-                            color: '#999',
-                            borderColor: '#ccc',
-                            backgroundColor: '#f9f9f9',
-                          },
-                        }}
-                      >
-                        {label}
-                      </ToggleButton>
+  key={datetime}
+  value={datetime}
+  disabled={isDisabled}
+  sx={{
+    borderRadius: '6px',
+    textTransform: 'none',
+    minWidth: 100,
+    px: 2,
+    py: 1.2,
+    margin: '6px',
+    border: '1px solid #d0d0d0',
+    color: '#333',
+    backgroundColor: field.value === datetime ? '#1976d2' : '#fff',
+    color: field.value === datetime ? '#fff' : '#333',
+    '&:hover': {
+      backgroundColor: !isDisabled && field.value !== datetime ? '#f2f2f2' : undefined,
+    },
+    '&.Mui-selected': {
+      backgroundColor: '#1976d2',
+      color: '#fff',
+      borderColor: '#1976d2',
+    },
+    '&.Mui-disabled': {
+      backgroundColor: '#f9f9f9',
+      color: '#999',
+      borderColor: '#ccc',
+    },
+    transition: 'none', // remove flicker
+  }}
+>
+  {label}
+</ToggleButton>
+
                     );
 
                     return isDisabled ? (
                       <Tooltip key={datetime} title="This slot is fully booked" arrow>
-                        <span>{button}</span>
+                        <Box>{button}</Box> {/* Use Box instead of span to keep style */}
                       </Tooltip>
                     ) : (
                       button
