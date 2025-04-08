@@ -24,7 +24,7 @@ function InspectionSlotPicker() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  //const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const fetchSlots = async () => {
