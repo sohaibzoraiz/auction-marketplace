@@ -74,100 +74,121 @@ function InspectionSlotPicker() {
 
   return (
     <Box mb={3}>
-      <Typography variant="h6" align="center" gutterBottom>
-        Choose Inspection Slot
-      </Typography>
+  <Typography variant="h6" align="center" gutterBottom>
+    Choose Inspection Slot
+  </Typography>
 
-      {loading ? (
-        <Box display="flex" justifyContent="center"><CircularProgress /></Box>
-      ) : (
-        <>
-          {/* Day Tabs */}
-          <Box display="flex" justifyContent="center">
-            <Paper elevation={1} sx={{ width: isMobile ? '100%' : 'auto', mb: 2 }}>
-              <Tabs
-                value={selectedTabIndex}
-                onChange={handleTabChange}
-                variant="scrollable"
-                scrollButtons="auto"
-                allowScrollButtonsMobile
-                aria-label="inspection-day-tabs"
-              >
-                {slotsByDate.map(({ date }) => (
-                  <Tab
-                    key={date}
-                    label={new Date(date).toLocaleDateString('en-PK', {
-                      weekday: 'short',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  />
-                ))}
-              </Tabs>
-            </Paper>
-          </Box>
-
-          {/* Time Slots */}
-          <Controller
-            name="inspection_time"
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Box display="flex" justifyContent="center">
-                <ToggleButtonGroup
-                  value={field.value}
-                  exclusive
-                  onChange={(_, val) => field.onChange(val)}
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: 2,
-                    justifyContent: 'center',
-                    maxWidth: '100%',
-                  }}
-                >
-                  {availableSlots.map(({ datetime, remaining }) => {
-                    const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
-                    const isDisabled = remaining <= 0;
-
-                    const button = (
-                      <ToggleButton
-                        key={datetime}
-                        value={datetime}
-                        disabled={isDisabled}
-                        sx={{
-                          minWidth: 100,
-                          borderRadius: 2,
-                          textTransform: 'none',
-                          '&.Mui-selected': {
-                            backgroundColor: theme.palette.primary.main,
-                            color: '#fff',
-                            '&:hover': {
-                              backgroundColor: theme.palette.primary.dark,
-                            },
-                          },
-                        }}
-                      >
-                        {label}
-                      </ToggleButton>
-                    );
-
-                    return isDisabled ? (
-                      <Tooltip key={datetime} title="This slot is fully booked" arrow>
-                        <span>{button}</span>
-                      </Tooltip>
-                    ) : (
-                      button
-                    );
-                  })}
-                </ToggleButtonGroup>
-              </Box>
-            )}
-          />
-        </>
-      )}
+  {loading ? (
+    <Box display="flex" justifyContent="center">
+      <CircularProgress />
     </Box>
-  );
+  ) : (
+    <>
+      {/* Tabs */}
+      <Box sx={{ px: { xs: 1, md: 4 } }}>
+        <Paper elevation={1} sx={{ width: '100%', mb: 2 }}>
+          <Tabs
+            value={selectedTabIndex}
+            onChange={handleTabChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            allowScrollButtonsMobile
+            aria-label="inspection-day-tabs"
+            sx={{
+              px: 1,
+              '& .MuiTabs-scrollButtons.Mui-disabled': {
+                opacity: 0.3,
+              },
+            }}
+          >
+            {slotsByDate.map(({ date }) => (
+              <Tab
+                key={date}
+                label={new Date(date).toLocaleDateString('en-PK', {
+                  weekday: 'short',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+                sx={{ mx: 1 }}
+              />
+            ))}
+          </Tabs>
+        </Paper>
+      </Box>
+
+      {/* Slots */}
+      <Controller
+        name="inspection_time"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <Box
+            display="flex"
+            justifyContent="center"
+            sx={{ px: { xs: 1, md: 4 } }}
+          >
+            <ToggleButtonGroup
+              value={field.value}
+              exclusive
+              onChange={(_, val) => field.onChange(val)}
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: 2,
+                maxWidth: '800px',
+              }}
+            >
+              {availableSlots.map(({ datetime, remaining }) => {
+                const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
+                const isDisabled = remaining <= 0;
+
+                const button = (
+                  <ToggleButton
+                    key={datetime}
+                    value={datetime}
+                    disabled={isDisabled}
+                    sx={{
+                      borderRadius: 2,
+                      textTransform: 'none',
+                      minWidth: 100,
+                      px: 2,
+                      py: 1.5,
+                      border: '1px solid',
+                      borderColor: theme => theme.palette.divider,
+                      '&.Mui-selected': {
+                        backgroundColor: theme => theme.palette.primary.main,
+                        color: '#fff',
+                        '&:hover': {
+                          backgroundColor: theme => theme.palette.primary.dark,
+                        },
+                      },
+                      '&:disabled': {
+                        color: '#999',
+                        borderColor: '#ccc',
+                        backgroundColor: '#f9f9f9',
+                      },
+                    }}
+                  >
+                    {label}
+                  </ToggleButton>
+                );
+
+                return isDisabled ? (
+                  <Tooltip key={datetime} title="This slot is fully booked" arrow>
+                    <span>{button}</span>
+                  </Tooltip>
+                ) : (
+                  button
+                );
+              })}
+            </ToggleButtonGroup>
+          </Box>
+        )}
+      />
+    </>
+  )}
+</Box> );
 }
 
 export default InspectionSlotPicker;
