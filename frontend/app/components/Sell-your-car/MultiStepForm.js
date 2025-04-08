@@ -29,13 +29,40 @@ function MultiStepForm({ userType }) {
   };
   
 
-  const onSubmit = (data) => {
-    // Handle the form submission to backend here
-    console.log('Form Data Submitted:', data);
-    
-    // Send the form data to backend using axios or fetch
-    // axios.post('/api/submit-form', data);
+  const onSubmit = async (data) => {
+    console.log('Form data:', data);
+    try {
+      const formData = new FormData();
+  
+      // Flatten values into FormData
+      for (const key in data) {
+        if (Array.isArray(data[key])) {
+          data[key].forEach((file) => formData.append(key, file));
+        } else {
+          formData.append(key, data[key]);
+        }
+      }
+  
+      const response = await fetch('https://api.carmandi.com.pk/api/auctions/create', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include', // if using cookies/session
+      });
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(result.message || 'Something went wrong');
+      }
+  
+      alert('Auction created successfully!');
+      console.log('Auction response:', result);
+    } catch (error) {
+      console.error('Auction create error:', error);
+      alert('Failed to create auction.');
+    }
   };
+  
 
   return (
     <FormProvider {...methods}>

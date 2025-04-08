@@ -18,17 +18,28 @@ const createAuctionListing = async (req, res) => {
       // Extract other form fields from the request body
       const {
         city,
-        carMake,
-        yearModel,
-        registrationCity,
+        car_make,
+        model,
+        variant,
+        make_id,
+        model_id,
+        version_id,
+        generation_id,
+        year_model,
+        registration_city,
         mileage,
-        demandPrice,
+        demand_price,
         description,
-        inspectionCompanyName,
-        inspectionReport,
-        listingType,
-        reservePrice,
-        endTime
+        inspection_time,
+        inspection_address,
+        inspection_contact,
+        inspection_lat,
+        inspection_lng,
+        payment_method,
+        start_time,
+        end_time,
+        reserve_price,
+        is_featured
       } = req.body;
       
       const userId = req.user?.userId; // Using optional chaining for safety
@@ -48,27 +59,36 @@ const createAuctionListing = async (req, res) => {
       // Convert the image paths to JSON (S3 URLs)
       const carPhotosJsonb = JSON.stringify(imagePaths);
       
+      
       // Insert new car into the cars table
-      const result = await pool.query(
-        'INSERT INTO cars(user_id, city, car_make, year_model, registration_city, mileage, demand_price, description, inspection_company_name, inspection_report, listing_type, car_photos_jsonb) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id',
+      const carInsert = await pool.query(
+        `INSERT INTO cars (
+          user_id, city, car_make, model, variant,
+          make_id, model_id, version_id, generation_id,
+          year_model, registration_city, mileage, demand_price,
+          description, car_photos_jsonb
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING id`,
         [
           userId,
           city,
-          carMake,
-          yearModel,
-          registrationCity,
+          car_make,
+          model,
+          variant,
+          make_id,
+          model_id,
+          version_id,
+          generation_id,
+          year_model,
+          registration_city,
           mileage,
-          demandPrice,
+          demand_price,
           description,
-          inspectionCompanyName,
-          inspectionReport,
-          listingType === 'auction',
           carPhotosJsonb
         ]
       );
   
       const carId = result.rows[0].id;
-  
+      /*
       // Determine End Time (15 days for basic users, up to 30 days for premium users)
       let calculatedEndTime;
       if (userPlan === 'premium' && endTime) { 
@@ -87,12 +107,59 @@ const createAuctionListing = async (req, res) => {
   
       // Set initial current bid to 50% of demand price
       const initialCurrentBid = demandPrice / 2;
-  
-      // Insert new auction into the auctions table
-      const resultAuction = await pool.query(
-        "INSERT INTO auctions(car_id, end_time, current_bid, reserve_price) VALUES($1, $2, $3, $4) RETURNING*",
-        [carId, calculatedEndTime, initialCurrentBid, auctionReservePrice]
-      );
+      */
+
+    
+      // Step 2: Create a payment for the inspection
+    const inspectionFee = 2500; // Fixed fee for now
+    const paymentInsert = await pool.query(
+        `INSERT INTO payments (
+        user_id, payment_method, amount, payment_status, payment_type
+        ) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+        [
+        userId,
+        payment_method,
+        inspectionFee,
+        false, // Initially unpaid
+        'inspection'
+        ]
+    );
+    const paymentId = paymentInsert.rows[0].id;
+    
+    // Step 3: Insert into `inspection_requests`
+    await pool.query(
+        `INSERT INTO inspection_requests (
+        user_id, car_id, inspection_time, inspection_address, inspection_contact,
+        inspection_lat, inspection_lng, payment_id, inspection_fee
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+        [
+        req.user.userId,
+        carId,
+        inspection_time,
+        inspection_address,
+        inspection_contact,
+        inspection_lat,
+        inspection_lng,
+        paymentId,
+        inspectionFee
+        ]
+    );
+      // Step 4: Create auction entry
+      const initialBid = Math.round(parseFloat(demand_price) * 0.8);
+        await pool.query(
+            `INSERT INTO auctions (
+            car_id, start_time, end_time, current_bid, reserve_price, is_featured, winning_user_id
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [
+            carId,
+            start_time,
+            end_time,
+            initialBid, // current_bid starts as 80% of demand_price
+            reserve_price || null,
+            is_featured || false,
+            null // winning_user_id is initially null
+        ]
+    );
   
       res.status(201).json({ 
         message: 'Auction created successfully', 
