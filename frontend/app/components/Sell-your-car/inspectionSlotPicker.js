@@ -148,44 +148,65 @@ function InspectionSlotPicker() {
 
     return (
       <ToggleButton
-        key={datetime}
-        value={datetime}
-        disabled={isDisabled}
-        sx={{
-          borderRadius: '6px',
-          textTransform: 'none',
-          minWidth: 100,
-          px: 2,
-          py: 1.2,
-          border: '1px solid #d0d0d0',
-          color: '#333',
-          backgroundColor: field.value === datetime ? '#1976d2' : '#fff',
-          color: field.value === datetime ? '#fff' : '#333',
-          '&:hover': {
-            backgroundColor: !isDisabled && field.value !== datetime ? '#f2f2f2' : undefined,
-          },
-          '&.Mui-selected': {
-            backgroundColor: '#1976d2',
-            color: '#fff',
-            borderColor: '#1976d2',
-          },
-          '&.Mui-disabled': {
-            backgroundColor: '#f9f9f9',
-            color: '#999',
-            borderColor: '#ccc',
-          },
-          transition: 'none',
-        }}
-        componentsProps={{
-          root: isDisabled
-            ? {
-                title: 'This slot is fully booked',
-              }
-            : {},
-        }}
-      >
-        {label}
-      </ToggleButton>
+  key={datetime}
+  value={datetime}
+  disabled={isDisabled}
+  disableRipple
+  disableFocusRipple
+  sx={{
+    borderRadius: '6px',
+    textTransform: 'none',
+    minWidth: 100,
+    px: 2,
+    py: 1.2,
+    m: '6px',
+    border: '1px solid',
+    borderColor: '#d0d0d0',
+    color:
+      field.value === datetime
+        ? '#fff'
+        : isDisabled
+        ? '#999'
+        : '#333',
+    backgroundColor:
+      field.value === datetime
+        ? '#1976d2'
+        : isDisabled
+        ? '#f9f9f9'
+        : '#fff',
+    transition: 'none',
+    boxShadow: 'none',
+    '&.Mui-selected': {
+      backgroundColor: '#1976d2',
+      color: '#fff',
+      borderColor: '#1976d2',
+    },
+    '&:hover': {
+      backgroundColor:
+        !isDisabled && field.value !== datetime
+          ? '#f2f2f2'
+          : undefined,
+    },
+    '&:focus': {
+      outline: 'none',
+      backgroundColor:
+        field.value === datetime ? '#1976d2' : undefined,
+    },
+    '&.Mui-focusVisible': {
+      outline: 'none',
+      backgroundColor:
+        field.value === datetime ? '#1976d2' : undefined,
+    },
+    '&.Mui-disabled': {
+      backgroundColor: '#f9f9f9',
+      color: '#999',
+      borderColor: '#ccc',
+    },
+  }}
+>
+  {label}
+</ToggleButton>
+
     );
   })}
 </ToggleButtonGroup>
