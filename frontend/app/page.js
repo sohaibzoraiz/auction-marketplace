@@ -53,8 +53,11 @@ function HomePage() {
                     console.log('Non-JSON response:', text);
                 }
                 if (typeof window !== 'undefined' && window.WOW) {
-                    new window.WOW().sync();
-                }
+                    new window.WOW().init();
+                    setTimeout(() => {
+                      window.WOW?.sync?.();
+                    }, 100); // Give time for DOM to update
+                  }
             } catch (error) {
                 console.error('Error fetching listings:', error);
             }
