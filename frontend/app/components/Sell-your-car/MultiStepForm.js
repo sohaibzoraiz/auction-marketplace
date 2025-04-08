@@ -6,10 +6,20 @@ import CarDetailsStep from './CarDetails';
 import AuctionDetailsStep from './AuctionDetails';
 import InspectionRequestStep from './InspectionRequest';
 import PaymentStep from './PaymentDetails';
+import Modal from "../auction-single/modal"
 
 function MultiStepForm({ userType }) {
   const [currentStep, setCurrentStep] = useState(1);
   const methods = useForm();
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    content: "",
+    type: "",
+    buttonText: "",
+    buttonAction: () => {},
+    autoRedirect: false
+  });
 
   const blurActiveElement = () => {
     const activeElement = document.activeElement;
@@ -52,10 +62,28 @@ function MultiStepForm({ userType }) {
       const result = await response.json();
   
       if (!response.ok) {
-        throw new Error(result.message || 'Something went wrong');
+        setModalData({
+          title: "Submission Error",
+          content: "Something went wrong. Please check your form and try again.",
+          type: "Error",
+          buttonText: "Try Again",
+          buttonAction: () => setShowModal(false),
+          autoRedirect: false
+        });
+        setShowModal(true);
+        
       }
   
-      alert('Auction created successfully!');
+      setModalData({
+        title: "Listing Created!",
+        content: "Your car has been successfully listed for auction.",
+        type: "Success",
+        buttonText: "Redirecting...",
+        buttonAction: () => router.push("/"),
+        autoRedirect: false
+      });
+      setShowModal(true);
+      
       console.log('Auction response:', result);
     } catch (error) {
       console.error('Auction create error:', error);
@@ -108,7 +136,19 @@ function MultiStepForm({ userType }) {
 
 
       </div>
+      {showModal && (
+  <Modal
+    title={modalData.title}
+    content={modalData.content}
+    type={modalData.type}
+    buttonText={modalData.buttonText}
+    buttonAction={modalData.buttonAction}
+    autoRedirect={modalData.autoRedirect}
+    setShowModal={setShowModal}
+  />
+)}
     </FormProvider>
+    
   );
 }
 
