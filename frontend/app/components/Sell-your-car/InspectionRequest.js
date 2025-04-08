@@ -29,7 +29,10 @@ function InspectionRequestStep() {
           const address = data.display_name;
 
           if (address) {
-            setValue('inspection_address', address);
+            setValue('inspection_address', address, { shouldDirty: true, shouldTouch: true });
+            setValue('inspection_lat', latitude);
+            setValue('inspection_lng', longitude);
+
           } else {
             alert("Could not fetch address");
           }
@@ -102,6 +105,9 @@ function InspectionRequestStep() {
           {loadingLocation ? <CircularProgress size={20} /> : "Use My Location"}
         </Button>
       </div>
+      <input type="hidden" {...register("inspection_lat")} />
+      <input type="hidden" {...register("inspection_lng")} />
+
 
       {/* Contact Number */}
       <div className="col-md-6 mb-20">
