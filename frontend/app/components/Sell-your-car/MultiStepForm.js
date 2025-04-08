@@ -7,12 +7,13 @@ import AuctionDetailsStep from './AuctionDetails';
 import InspectionRequestStep from './InspectionRequest';
 import PaymentStep from './PaymentDetails';
 import Modal from "../auction-single/modal" ;
-const [isSubmitting, setIsSubmitting] = useState(false);
+
 
 function MultiStepForm({ userType }) {
   const [currentStep, setCurrentStep] = useState(1);
   const methods = useForm();
   const [showModal, setShowModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [modalData, setModalData] = useState({
     title: "",
     content: "",
