@@ -145,7 +145,7 @@ const createAuctionListing = async (req, res) => {
         ]
     );
       // Step 4: Create auction entry
-      const initialBid = Math.round(parseFloat(demand_price) * 0.8);
+      const initialBid = Math.round(parseFloat(reserve_price) * 0.8);
         await pool.query(
             `INSERT INTO auctions (
             car_id, start_time, end_time, current_bid, reserve_price, is_featured, winning_user_id
