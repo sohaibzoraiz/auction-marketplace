@@ -63,6 +63,9 @@ function AuctionDetailsStep({ userType }) {
                 value={field.value ? dayjs(field.value) : null}
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true }, popper: { placement: 'bottom-start' } }}
+                onClose={() => {
+                  document.activeElement?.blur();
+                }}
               />
             )}
           />
@@ -83,6 +86,9 @@ function AuctionDetailsStep({ userType }) {
                 value={field.value ? dayjs(field.value) : null}
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true } }}
+                onClose={() => {
+                  document.activeElement?.blur();
+                }}
               />
             )}
           />
