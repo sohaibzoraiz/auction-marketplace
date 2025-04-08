@@ -132,66 +132,64 @@ function InspectionSlotPicker() {
             render={({ field }) => (
               <Box className="d-flex justify-content-center px-2">
                 <ToggleButtonGroup
-                  value={field.value}
-                  exclusive
-                  onChange={(_, val) => field.onChange(val)}
-                  className="d-flex flex-wrap justify-content-center"
-                  sx={{
-                    maxWidth: 800,
-                    rowGap: 1.5,
-                    columnGap: 1.5,
-                  }}
-                >
-                  {availableSlots.map(({ datetime, remaining }) => {
-                    const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
-                    const isDisabled = remaining <= 0;
-
-                    const button = (
-                      <ToggleButton
-  key={datetime}
-  value={datetime}
-  disabled={isDisabled}
+  value={field.value}
+  exclusive
+  onChange={(_, val) => field.onChange(val)}
+  className="d-flex flex-wrap justify-content-center"
   sx={{
-    borderRadius: '6px',
-    textTransform: 'none',
-    minWidth: 100,
-    px: 2,
-    py: 1.2,
-    margin: '6px',
-    border: '1px solid #d0d0d0',
-    color: '#333',
-    backgroundColor: field.value === datetime ? '#1976d2' : '#fff',
-    color: field.value === datetime ? '#fff' : '#333',
-    '&:hover': {
-      backgroundColor: !isDisabled && field.value !== datetime ? '#f2f2f2' : undefined,
-    },
-    '&.Mui-selected': {
-      backgroundColor: '#1976d2',
-      color: '#fff',
-      borderColor: '#1976d2',
-    },
-    '&.Mui-disabled': {
-      backgroundColor: '#f9f9f9',
-      color: '#999',
-      borderColor: '#ccc',
-    },
-    transition: 'none', // remove flicker
+    maxWidth: 800,
+    rowGap: 2,
+    columnGap: 2,
   }}
 >
-  {label}
-</ToggleButton>
+  {availableSlots.map(({ datetime, remaining }) => {
+    const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
+    const isDisabled = remaining <= 0;
 
-                    );
+    return (
+      <ToggleButton
+        key={datetime}
+        value={datetime}
+        disabled={isDisabled}
+        sx={{
+          borderRadius: '6px',
+          textTransform: 'none',
+          minWidth: 100,
+          px: 2,
+          py: 1.2,
+          border: '1px solid #d0d0d0',
+          color: '#333',
+          backgroundColor: field.value === datetime ? '#1976d2' : '#fff',
+          color: field.value === datetime ? '#fff' : '#333',
+          '&:hover': {
+            backgroundColor: !isDisabled && field.value !== datetime ? '#f2f2f2' : undefined,
+          },
+          '&.Mui-selected': {
+            backgroundColor: '#1976d2',
+            color: '#fff',
+            borderColor: '#1976d2',
+          },
+          '&.Mui-disabled': {
+            backgroundColor: '#f9f9f9',
+            color: '#999',
+            borderColor: '#ccc',
+          },
+          transition: 'none',
+        }}
+        componentsProps={{
+          root: isDisabled
+            ? {
+                title: 'This slot is fully booked',
+              }
+            : {},
+        }}
+      >
+        {label}
+      </ToggleButton>
+    );
+  })}
+</ToggleButtonGroup>
 
-                    return isDisabled ? (
-                      <Tooltip key={datetime} title="This slot is fully booked" arrow>
-                        <Box>{button}</Box> {/* Use Box instead of span to keep style */}
-                      </Tooltip>
-                    ) : (
-                      button
-                    );
-                  })}
-                </ToggleButtonGroup>
               </Box>
             )}
           />
