@@ -133,39 +133,47 @@ function InspectionSlotPicker() {
             rules={{ required: true }}
             render={({ field }) => (
               <Box className="d-flex justify-content-center px-2">
-               <Grid container spacing={2} justifyContent="center">
-  {availableSlots.map(({ datetime, remaining }) => {
-    const selected = field.value === datetime;
-    const disabled = remaining <= 0;
+                <Grid container spacing={2} justifyContent="center">
+                  {availableSlots.map(({ datetime, remaining }) => {
+                    const selected = field.value === datetime;
+                    const disabled = remaining <= 0;
 
-    return (
-      <Grid item key={datetime}>
-        <Button
-          variant={selected ? 'contained' : 'outlined'}
-          color={selected ? 'primary' : 'inherit'}
-          disabled={disabled}
-          onClick={() => field.onChange(datetime)}
-          sx={{
-            minWidth: 100,
-            borderRadius: '6px',
-            px: 2,
-            py: 1,
-            backgroundColor: selected ? '#1976d2' : '#fff',
-            color: selected ? '#fff' : '#333',
-            borderColor: selected ? '#1976d2' : '#ccc',
-            '&:hover': {
-              backgroundColor: selected ? '#115293' : '#f2f2f2',
-            },
-          }}
-        >
-          {formatTime(datetime)}
-        </Button>
-      </Grid>
-    );
-  })}
-</Grid>
+                    const button = (
+                      <Button
+                        variant={selected ? 'contained' : 'outlined'}
+                        color={selected ? 'primary' : 'inherit'}
+                        disabled={disabled}
+                        onClick={() => field.onChange(datetime)}
+                        sx={{
+                          minWidth: 100,
+                          borderRadius: '6px',
+                          px: 2,
+                          py: 1.2,
+                          backgroundColor: selected ? '#1976d2' : '#fff',
+                          color: selected ? '#fff' : '#333',
+                          borderColor: selected ? '#1976d2' : '#ccc',
+                          '&:hover': {
+                            backgroundColor: selected ? '#115293' : '#f2f2f2',
+                          },
+                        }}
+                      >
+                        {formatTime(datetime)}
+                      </Button>
+                    );
 
-
+                    return (
+                      <Grid item key={datetime}>
+                        {disabled ? (
+                          <Tooltip title="This slot is fully booked" arrow>
+                            <span>{button}</span> {/* Required for disabled Tooltip to work */}
+                          </Tooltip>
+                        ) : (
+                          button
+                        )}
+                      </Grid>
+                    );
+                  })}
+                </Grid>
               </Box>
             )}
           />
