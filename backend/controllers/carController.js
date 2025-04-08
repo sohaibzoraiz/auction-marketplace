@@ -133,7 +133,7 @@ const createAuctionListing = async (req, res) => {
         inspection_lat, inspection_lng, payment_id, inspection_fee
         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
         [
-        req.user.userId,
+        userId,
         carId,
         inspection_time,
         inspection_address,
