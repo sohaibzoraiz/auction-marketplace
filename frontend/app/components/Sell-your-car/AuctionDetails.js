@@ -54,8 +54,11 @@ function AuctionDetailsStep({ userType }) {
           <Controller
             name="start_time"
             control={control}
-            rules={{ required: false }}
-            render={({ field }) => (
+            rules={{
+              required: 'Date is required',
+              validate: value => !isNaN(Date.parse(value)) || 'Invalid date format'
+            }}
+            render={({ field , fieldState}) => (
               <DatePicker
                 label="Tentative Start Date"
                 disablePast
@@ -64,6 +67,8 @@ function AuctionDetailsStep({ userType }) {
                 value={field.value ? dayjs(field.value) : null}
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true }, popper: { placement: 'bottom-start' } }}
+                error={!!fieldState.error}
+                helperText={fieldState.error ? fieldState.error.message : ''}
                 
               />
             )}
@@ -75,8 +80,11 @@ function AuctionDetailsStep({ userType }) {
           <Controller
             name="end_time"
             control={control}
-            rules={{ required: false }}
-            render={({ field }) => (
+            rules={{
+              required: 'Date is required',
+              validate: value => !isNaN(Date.parse(value)) || 'Invalid date format'
+            }}
+            render={({ field,  fieldState }) => (
               <DatePicker
                 label="Auction End Date"
                 disablePast
@@ -86,6 +94,8 @@ function AuctionDetailsStep({ userType }) {
                 value={field.value ? dayjs(field.value) : null}
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true } }}
+                error={!!fieldState.error}
+                helperText={fieldState.error ? fieldState.error.message : ''}
                 
               />
             )}
@@ -102,12 +112,17 @@ function AuctionDetailsStep({ userType }) {
           <Controller
             name="reserve_price"
             control={control}
-            rules={{ required: false }}
-            render={({ field }) => (
+            rules={{
+              required: 'Contact Number is required',
+              validate: value => value !== null && value !== '' || 'Contact Number is required'
+            }}
+            render={({ field, fieldState }) => (
               <TextField
                 label="Reserve Price"
                 type="number"
                 fullWidth
+                error={!!fieldState.error}
+                helperText={fieldState.error ? fieldState.error.message : ''}
                 {...field}
               />
             )}
