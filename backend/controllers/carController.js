@@ -67,7 +67,7 @@ const createAuctionListing = async (req, res) => {
           make_id, model_id, version_id, generation_id,
           year_model, registration_city, mileage, demand_price,
           description, car_photos_jsonb
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING id`,
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING id`,
         [
           userId,
           city,
