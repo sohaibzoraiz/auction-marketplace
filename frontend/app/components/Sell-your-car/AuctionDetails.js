@@ -64,7 +64,9 @@ function AuctionDetailsStep({ userType }) {
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true }, popper: { placement: 'bottom-start' } }}
                 onClose={() => {
-                  document.activeElement?.blur();
+                  setTimeout(() => {
+                    document.activeElement?.blur();
+                  }, 0);
                 }}
               />
             )}
@@ -87,7 +89,9 @@ function AuctionDetailsStep({ userType }) {
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true } }}
                 onClose={() => {
-                  document.activeElement?.blur();
+                  setTimeout(() => {
+                    document.activeElement?.blur();
+                  }, 0);
                 }}
               />
             )}
