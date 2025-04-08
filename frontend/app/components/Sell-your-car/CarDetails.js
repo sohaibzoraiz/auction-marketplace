@@ -134,7 +134,7 @@ function CarDetailsStep() {
             required: 'Model is required',
             validate: value => value.trim() !== '' || 'Model is required'
           }}
-          render={({ field: { onChange, value } }, fieldState) => (
+          render={({ field: { onChange, value }, fieldState }) => (
             <Autocomplete
               options={models}
               getOptionLabel={(option) => option?.name || ''}
@@ -172,7 +172,7 @@ function CarDetailsStep() {
               options={yearOptions}
               getOptionLabel={(option) => option?.toString() || ''}
               isOptionEqualToValue={(option, value) => option === value}
-              value={field.value || ''}
+              //value={field.value || ''}
               onInputChange={(_, newInput) => {
                 field.onChange(newInput);
                 setIsCustomYear(!yearOptions.includes(Number(newInput)));
@@ -202,7 +202,7 @@ function CarDetailsStep() {
               options={variants.map(v => v.version_name)}
               getOptionLabel={(option) => option}
               isOptionEqualToValue={(option, value) => option === value}
-              value={field.value || ''}
+              //value={field.value || ''}
               onInputChange={(_, newInputValue) => {
                 field.onChange(newInputValue);
                 const match = variants.find(v => v.version_name === newInputValue);
@@ -252,7 +252,7 @@ function CarDetailsStep() {
             control={control}
             rules={{
               required: 'Mileage is required',
-              validate: value => value.trim() !== '' || 'Mileage is required'
+              validate: value => value !== null && value !== '' || 'Mileage is required'
             }}
             render={({ field, fieldState }) => (
                 <TextField
@@ -273,8 +273,8 @@ function CarDetailsStep() {
             name="demand_price"
             control={control}
             rules={{
-              required: 'Mileage is required',
-              validate: value => value.trim() !== '' || 'Mileage is required'
+              required: 'Demand Price is required',
+              validate: value => value !== null && value !== '' || 'Demand Price is required'
             }}
             render={({ field, fieldState }) => (
                 <TextField
