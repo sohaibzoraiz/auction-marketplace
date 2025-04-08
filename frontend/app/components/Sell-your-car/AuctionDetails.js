@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -47,29 +47,44 @@ function AuctionDetailsStep({ userType }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="row">
         <div className="section-title mb-30 text-center">
-                          <h2>Auction <span>Details</span></h2>
-                        </div>
+          <h2>Auction <span>Details</span></h2>
+        </div>
+
         {/* Start Date */}
         <div className="col-md-6 mb-20">
           <Controller
             name="start_time"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => (
-              <DatePicker
-                label="Tentative Start Date"
-                disablePast
-                minDate={minStartDate}
-                value={field.value ? dayjs(field.value) : null}
-                onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
-                slotProps={{ textField: { fullWidth: true }, popper: { placement: 'bottom-start' } }}
-                onClose={() => {
-                  setTimeout(() => {
-                    document.activeElement?.blur();
-                  }, 0);
-                }}
-              />
-            )}
+            render={({ field }) => {
+              const inputRef = useRef();
+
+              return (
+                <DatePicker
+                  label="Tentative Start Date"
+                  disablePast
+                  minDate={minStartDate}
+                  value={field.value ? dayjs(field.value) : null}
+                  onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
+                  onClose={() => {
+                    setTimeout(() => {
+                      inputRef.current?.blur();
+                    }, 50);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      inputRef={inputRef}
+                      inputProps={{
+                        ...params.inputProps,
+                        readOnly: true,
+                      }}
+                    />
+                  )}
+                />
+              );
+            }}
           />
         </div>
 
@@ -79,22 +94,36 @@ function AuctionDetailsStep({ userType }) {
             name="end_time"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => (
-              <DatePicker
-                label="Auction End Date"
-                disablePast
-                minDate={minEndDate}
-                maxDate={maxEndDate}
-                value={field.value ? dayjs(field.value) : null}
-                onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
-                slotProps={{ textField: { fullWidth: true } }}
-                onClose={() => {
-                  setTimeout(() => {
-                    document.activeElement?.blur();
-                  }, 0);
-                }}
-              />
-            )}
+            render={({ field }) => {
+              const inputRef = useRef();
+
+              return (
+                <DatePicker
+                  label="Auction End Date"
+                  disablePast
+                  minDate={minEndDate}
+                  maxDate={maxEndDate}
+                  value={field.value ? dayjs(field.value) : null}
+                  onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
+                  onClose={() => {
+                    setTimeout(() => {
+                      inputRef.current?.blur();
+                    }, 50);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      inputRef={inputRef}
+                      inputProps={{
+                        ...params.inputProps,
+                        readOnly: true,
+                      }}
+                    />
+                  )}
+                />
+              );
+            }}
           />
           <Typography variant="caption" color="textSecondary">
             {userType === 'premium'
