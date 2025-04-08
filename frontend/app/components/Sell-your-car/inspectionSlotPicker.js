@@ -83,7 +83,7 @@ function InspectionSlotPicker() {
       ) : (
         <>
           {/* Tabs */}
-          <div className="w-100 px-3">
+          <div className="w-100 px-2">
             <Paper
               elevation={1}
               className="w-100 mb-3"
@@ -97,13 +97,13 @@ function InspectionSlotPicker() {
                 allowScrollButtonsMobile
                 aria-label="inspection-day-tabs"
                 sx={{
-                  px: 2,
                   '& .MuiTabs-scrollButtons': {
                     color: 'primary.main',
                   },
                   '& .MuiTabs-scrollButtons.Mui-disabled': {
                     opacity: 0.3,
                   },
+                  px: 1,
                 }}
               >
                 {slotsByDate.map(({ date }) => (
@@ -115,7 +115,6 @@ function InspectionSlotPicker() {
                       day: 'numeric',
                     })}
                     sx={{
-                      mx: 1,
                       textTransform: 'uppercase',
                       minWidth: 100,
                     }}
@@ -131,13 +130,17 @@ function InspectionSlotPicker() {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <Box className="d-flex justify-content-center px-3">
+              <Box className="d-flex justify-content-center px-2">
                 <ToggleButtonGroup
                   value={field.value}
                   exclusive
                   onChange={(_, val) => field.onChange(val)}
                   className="d-flex flex-wrap justify-content-center"
-                  sx={{ maxWidth: 800 }}
+                  sx={{
+                    maxWidth: 800,
+                    rowGap: 1.5,
+                    columnGap: 1.5,
+                  }}
                 >
                   {availableSlots.map(({ datetime, remaining }) => {
                     const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
@@ -153,17 +156,17 @@ function InspectionSlotPicker() {
                           textTransform: 'none',
                           minWidth: 100,
                           px: 2,
-                          py: 1.5,
-                          margin: '6px',
+                          py: 1.2,
                           border: '1px solid',
                           borderColor: theme.palette.divider,
+                          transition: 'none',
                           '&.Mui-selected': {
                             backgroundColor: theme.palette.primary.main,
                             color: '#fff',
-                            borderColor: theme.palette.primary.dark,
-                          },
-                          '&:hover': {
                             borderColor: theme.palette.primary.main,
+                          },
+                          '&:hover:not(:disabled)': {
+                            backgroundColor: theme.palette.action.hover,
                           },
                           '&:disabled': {
                             color: '#999',
