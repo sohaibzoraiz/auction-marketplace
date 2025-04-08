@@ -13,6 +13,8 @@ import {
   CircularProgress,
   Paper,
   Tooltip,
+  useTheme,
+ // useMediaQuery
 } from '@mui/material';
 
 function InspectionSlotPicker() {
@@ -21,7 +23,8 @@ function InspectionSlotPicker() {
   const [slotsByDate, setSlotsByDate] = useState([]);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
-
+  const theme = useTheme();
+  //const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const fetchSlots = async () => {
