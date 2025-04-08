@@ -60,14 +60,11 @@ function AuctionDetailsStep({ userType }) {
                 label="Tentative Start Date"
                 disablePast
                 minDate={minStartDate}
+                closeOnSelect={true}
                 value={field.value ? dayjs(field.value) : null}
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true }, popper: { placement: 'bottom-start' } }}
-                onClose={() => {
-                  setTimeout(() => {
-                    document.activeElement?.blur();
-                  }, 0);
-                }}
+                
               />
             )}
           />
@@ -85,14 +82,11 @@ function AuctionDetailsStep({ userType }) {
                 disablePast
                 minDate={minEndDate}
                 maxDate={maxEndDate}
+                closeOnSelect={true}
                 value={field.value ? dayjs(field.value) : null}
                 onChange={(date) => field.onChange(date?.startOf('day').toISOString())}
                 slotProps={{ textField: { fullWidth: true } }}
-                onClose={() => {
-                  setTimeout(() => {
-                    document.activeElement?.blur();
-                  }, 0);
-                }}
+                
               />
             )}
           />
