@@ -87,7 +87,7 @@ const createAuctionListing = async (req, res) => {
         ]
       );
   
-      const carId = result.rows[0].id;
+      const carId = carInsert.rows[0].id;
       /*
       // Determine End Time (15 days for basic users, up to 30 days for premium users)
       let calculatedEndTime;
