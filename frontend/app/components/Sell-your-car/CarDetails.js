@@ -130,8 +130,11 @@ function CarDetailsStep() {
         <Controller
           name="model"
           control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
+          rules={{
+            required: 'Model is required',
+            validate: value => value.trim() !== '' || 'Model is required'
+          }}
+          render={({ field: { onChange, value } }, fieldState) => (
             <Autocomplete
               options={models}
               getOptionLabel={(option) => option?.name || ''}
@@ -145,7 +148,8 @@ function CarDetailsStep() {
                 setValue('model_id', selected?.id || null);
                 onChange(selected?.name || '');
               }}
-              renderInput={(params) => <TextField {...params} label="Model" placeholder="Select or enter model" fullWidth />}
+              renderInput={(params) => <TextField {...params} label="Model" placeholder="Select or enter model" fullWidth error={!!fieldState.error}
+              helperText={fieldState.error?.message}/>}
               freeSolo
             />
           )}
@@ -158,8 +162,11 @@ function CarDetailsStep() {
         <Controller
           name="year_model"
           control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
+          rules={{
+            required: 'Year is required',
+            validate: value => value.trim() !== '' || 'Year is required'
+          }}
+          render={({ field,fieldState }) => (
             <Autocomplete
               freeSolo
               options={yearOptions}
@@ -171,7 +178,8 @@ function CarDetailsStep() {
                 setIsCustomYear(!yearOptions.includes(Number(newInput)));
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Year" placeholder="Select or enter year" fullWidth/>
+                <TextField {...params} label="Year" placeholder="Select or enter year" fullWidth error={!!fieldState.error}
+                helperText={fieldState.error?.message}/>
               )}
             />
           )}
@@ -184,8 +192,11 @@ function CarDetailsStep() {
           name="variant"
           control={control}
           defaultValue=""
-          rules={{ required: true }}
-          render={({ field }) => (
+          rules={{
+            required: 'Trim is required',
+            validate: value => value.trim() !== '' || 'Trim is required'
+          }}
+          render={({ field,fieldState }) => (
             <Autocomplete
               freeSolo
               options={variants.map(v => v.version_name)}
@@ -199,7 +210,8 @@ function CarDetailsStep() {
                 setValue('generation_id', match?.generation_id || null);
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Trim" placeholder="Select or enter variant" fullWidth/>
+                <TextField {...params} label="Trim" placeholder="Select or enter variant" fullWidth error={!!fieldState.error}
+                helperText={fieldState.error?.message}/>
               )}
             />
           )}
@@ -213,8 +225,11 @@ function CarDetailsStep() {
         <Controller
             name="registration_city"
             control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
+            rules={{
+              required: 'Registration City is required',
+              validate: value => value.trim() !== '' || 'Registration City is required'
+            }}
+            render={({ field, fieldState }) => (
                 <Autocomplete
                     freeSolo
                     options={pakCities}
@@ -223,7 +238,8 @@ function CarDetailsStep() {
                     value={field.value || ''}
                     onInputChange={(_, newInputValue) => field.onChange(newInputValue)}
                     renderInput={(params) => (
-                        <TextField {...params} label="Registration City" fullWidth />
+                        <TextField {...params} label="Registration City" placeholder='Please Seclect Your Cars Registration City' fullWidth error={!!fieldState.error}
+                        helperText={fieldState.error?.message} />
                     )}
                 />
             )}
@@ -234,13 +250,19 @@ function CarDetailsStep() {
         <Controller
             name="mileage"
             control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
+            rules={{
+              required: 'Mileage is required',
+              validate: value => value.trim() !== '' || 'Mileage is required'
+            }}
+            render={({ field, fieldState }) => (
                 <TextField
                     {...field}
                     label="Mileage"
                     type="number"
                     fullWidth
+                    placeholder='Enter Mileage'
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
                 />
             )}
         />
@@ -250,13 +272,19 @@ function CarDetailsStep() {
         <Controller
             name="demand_price"
             control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
+            rules={{
+              required: 'Mileage is required',
+              validate: value => value.trim() !== '' || 'Mileage is required'
+            }}
+            render={({ field, fieldState }) => (
                 <TextField
                     {...field}
                     label="Demand price"
                     type="number"
                     fullWidth
+                    placeholder='Enter Demand Price'
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
                 />
             )}
         />
@@ -265,8 +293,11 @@ function CarDetailsStep() {
         <Controller
             name="city"
             control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
+            rules={{
+              required: 'Mileage is required',
+              validate: value => value.trim() !== '' || 'Mileage is required'
+            }}
+            render={({ field, fieldState }) => (
                 <Autocomplete
                     disableClearable
                     options={['Lahore', 'Islamabad']}
@@ -279,6 +310,9 @@ function CarDetailsStep() {
                             {...params}
                             label="City"
                             fullWidth
+                            placeholder='Please Seclect Your Current City'
+                            error={!!fieldState.error}
+                            helperText={fieldState.error?.message}
                         />
                     )}
                 />
@@ -290,14 +324,19 @@ function CarDetailsStep() {
         <Controller
             name="description"
             control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
+            rules={{
+              required: 'Mileage is required',
+              validate: value => value.trim() !== '' || 'Mileage is required'
+            }}
+            render={({ field, fieldState }) => (
                 <TextField
                     {...field}
                     label="Description"
                     multiline
                     rows={4}
                     fullWidth
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
                 />
             )}
         />
