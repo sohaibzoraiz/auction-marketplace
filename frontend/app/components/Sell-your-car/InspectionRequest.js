@@ -82,20 +82,24 @@ function InspectionRequestStep() {
 
       {/* Inspection Address */}
       <div className="col-md-6 mb-20">
-        <Controller
-          name="inspection_address"
-          control={control}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              label="Inspection Address*"
-              fullWidth
-              error={!!fieldState.error}
-              helperText={fieldState.error && "Inspection address is required"}
-            />
-          )}
-        />
+      <Controller
+  name="inspection_address"
+  control={control}
+  rules={{ required: true }}
+  render={({ field, fieldState }) => (
+    <TextField
+      {...field}
+      label="Inspection Address*"
+      variant="outlined"
+      fullWidth
+      value={field.value || ''}
+      error={!!fieldState.error}
+      helperText={fieldState.error && "Inspection address is required"}
+      autoComplete="off"
+    />
+  )}
+/>
+
         <Button
           className="mt-2"
           variant="outlined"
