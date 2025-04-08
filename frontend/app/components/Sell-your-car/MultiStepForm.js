@@ -6,7 +6,8 @@ import CarDetailsStep from './CarDetails';
 import AuctionDetailsStep from './AuctionDetails';
 import InspectionRequestStep from './InspectionRequest';
 import PaymentStep from './PaymentDetails';
-import Modal from "../auction-single/modal"
+import Modal from "../auction-single/modal" ;
+const [isSubmitting, setIsSubmitting] = useState(false);
 
 function MultiStepForm({ userType }) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -41,6 +42,7 @@ function MultiStepForm({ userType }) {
 
   const onSubmit = async (data) => {
     console.log('Form data:', data);
+    setIsSubmitting(true);
     try {
       const formData = new FormData();
   
@@ -88,6 +90,8 @@ function MultiStepForm({ userType }) {
     } catch (error) {
       console.error('Auction create error:', error);
       alert('Failed to create auction.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
   
@@ -127,8 +131,9 @@ function MultiStepForm({ userType }) {
       type="button"
       className="primary-btn btn-hover"
       onClick={methods.handleSubmit(onSubmit)}
-    >
-      Submit
+      disabled={isSubmitting}
+      >
+        {isSubmitting ? "Submitting..." : "Submit"}
       <span style={{ top: "40.5px", left: "84.2344px" }} />
     </button>
   )}
