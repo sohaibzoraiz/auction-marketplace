@@ -52,7 +52,9 @@ function HomePage() {
                     const text = await latestResponse.text();
                     console.log('Non-JSON response:', text);
                 }
-                
+                if (typeof window !== 'undefined' && window.WOW) {
+                    new window.WOW().sync();
+                }
             } catch (error) {
                 console.error('Error fetching listings:', error);
             }
