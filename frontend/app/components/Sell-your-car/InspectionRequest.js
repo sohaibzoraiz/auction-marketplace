@@ -55,28 +55,26 @@ function InspectionRequestStep() {
       </div>
 
       {/* Inspection Date and Time */}
-      <div className="col-md-12 mb-20">
-        <Typography variant="subtitle1" align="center" className="mb-2">
-          Select Date & Time Slot
-        </Typography>
-        <Box display="flex" justifyContent="center">
-          <Controller
-            name="inspection_time"
-            control={control}
-            rules={{ required: true }}
-            render={({ field, fieldState }) => (
-              <Box>
-                <InspectionSlotPicker value={field.value} onChange={field.onChange} />
-                {fieldState.error && (
-                  <Typography variant="caption" color="error" align="center">
-                    Please select a date and time
-                  </Typography>
-                )}
-              </Box>
-            )}
-          />
-        </Box>
-      </div>
+      <div className="col-md-12 mb-20 text-center">
+  <Typography variant="subtitle1" className="mb-2">
+    Select Date & Time Slot
+  </Typography>
+  <Controller
+    name="inspection_time"
+    control={control}
+    rules={{ required: true }}
+    render={({ field, fieldState }) => (
+      <>
+        <InspectionSlotPicker value={field.value} onChange={field.onChange} />
+        {fieldState.error && (
+          <Typography variant="caption" color="error">
+            Please select a date and time
+          </Typography>
+        )}
+      </>
+    )}
+  />
+</div>
 
       {/* Inspection Address */}
       <div className="col-md-6 mb-20">

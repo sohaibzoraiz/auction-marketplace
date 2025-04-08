@@ -13,8 +13,7 @@ import {
   CircularProgress,
   Paper,
   Tooltip,
-  useTheme,
- // useMediaQuery
+  useTheme
 } from '@mui/material';
 
 function InspectionSlotPicker() {
@@ -24,7 +23,6 @@ function InspectionSlotPicker() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   const theme = useTheme();
-  //const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const fetchSlots = async () => {
@@ -73,7 +71,7 @@ function InspectionSlotPicker() {
   };
 
   return (
-    <Box mb={3}>
+    <Box className="w-100">
       <Typography variant="h6" align="center" gutterBottom>
         Choose Inspection Slot
       </Typography>
@@ -85,14 +83,11 @@ function InspectionSlotPicker() {
       ) : (
         <>
           {/* Tabs */}
-          <Box sx={{ px: { xs: 2, md: 4 } }}>
+          <div className="w-100 px-3">
             <Paper
               elevation={1}
-              sx={{
-                width: '100%',
-                mb: 2,
-                overflow: 'hidden',
-              }}
+              className="w-100 mb-3"
+              sx={{ overflowX: 'auto', borderRadius: 1 }}
             >
               <Tabs
                 value={selectedTabIndex}
@@ -102,13 +97,13 @@ function InspectionSlotPicker() {
                 allowScrollButtonsMobile
                 aria-label="inspection-day-tabs"
                 sx={{
+                  px: 2,
                   '& .MuiTabs-scrollButtons': {
                     color: 'primary.main',
                   },
                   '& .MuiTabs-scrollButtons.Mui-disabled': {
                     opacity: 0.3,
                   },
-                  px: 1,
                 }}
               >
                 {slotsByDate.map(({ date }) => (
@@ -128,7 +123,7 @@ function InspectionSlotPicker() {
                 ))}
               </Tabs>
             </Paper>
-          </Box>
+          </div>
 
           {/* Time Slots */}
           <Controller
@@ -136,25 +131,13 @@ function InspectionSlotPicker() {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <Box
-                display="flex"
-                justifyContent="center"
-                sx={{
-                  px: { xs: 2, md: 4 },
-                  maxWidth: '100%',
-                }}
-              >
+              <Box className="d-flex justify-content-center px-3">
                 <ToggleButtonGroup
                   value={field.value}
                   exclusive
                   onChange={(_, val) => field.onChange(val)}
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    gap: 2,
-                    maxWidth: 800,
-                  }}
+                  className="d-flex flex-wrap justify-content-center"
+                  sx={{ maxWidth: 800 }}
                 >
                   {availableSlots.map(({ datetime, remaining }) => {
                     const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
@@ -166,13 +149,13 @@ function InspectionSlotPicker() {
                         value={datetime}
                         disabled={isDisabled}
                         sx={{
-                          borderRadius: 2,
+                          borderRadius: '8px',
                           textTransform: 'none',
                           minWidth: 100,
                           px: 2,
                           py: 1.5,
+                          margin: '6px',
                           border: '1px solid',
-                          margin: '4px',
                           borderColor: theme.palette.divider,
                           '&.Mui-selected': {
                             backgroundColor: theme.palette.primary.main,
