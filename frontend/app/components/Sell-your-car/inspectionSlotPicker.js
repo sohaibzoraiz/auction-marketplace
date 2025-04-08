@@ -12,20 +12,25 @@ import {
   ToggleButton,
   CircularProgress,
   Paper,
+  Tooltip,
+  useMediaQuery
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 function InspectionSlotPicker() {
   const { control } = useFormContext();
   const [loading, setLoading] = useState(true);
-  const [slotsByDate, setSlotsByDate] = useState([]); // [{ date, slots: [ {datetime, remaining} ] }]
+  const [slotsByDate, setSlotsByDate] = useState([]);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const fetchSlots = async () => {
       try {
         const res = await axios.get('https://api.carmandi.com.pk/api/inspection/slots');
 
-        // Group slots by date
         const grouped = {};
         res.data.forEach(({ datetime, remaining }) => {
           const dateStr = new Date(datetime).toISOString().split('T')[0];
@@ -69,37 +74,38 @@ function InspectionSlotPicker() {
 
   return (
     <Box mb={3}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" align="center" gutterBottom>
         Choose Inspection Slot
       </Typography>
 
       {loading ? (
-        <CircularProgress />
+        <Box display="flex" justifyContent="center"><CircularProgress /></Box>
       ) : (
         <>
           {/* Day Tabs */}
-          
-          <Paper elevation={1} sx={{ mb: 2 }}>
-            <Tabs
-              value={selectedTabIndex}
-              onChange={handleTabChange}
-              variant="scrollable"
-              scrollButtons
-              allowScrollButtonsMobile
-            >
-                
-              {slotsByDate.map(({ date }) => (
-                <Tab
-                  key={date}
-                  label={new Date(date).toLocaleDateString('en-PK', {
-                    weekday: 'short',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                />
-              ))}
-            </Tabs>
-          </Paper>
+          <Box display="flex" justifyContent="center">
+            <Paper elevation={1} sx={{ width: isMobile ? '100%' : 'auto', mb: 2 }}>
+              <Tabs
+                value={selectedTabIndex}
+                onChange={handleTabChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+                aria-label="inspection-day-tabs"
+              >
+                {slotsByDate.map(({ date }) => (
+                  <Tab
+                    key={date}
+                    label={new Date(date).toLocaleDateString('en-PK', {
+                      weekday: 'short',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  />
+                ))}
+              </Tabs>
+            </Paper>
+          </Box>
 
           {/* Time Slots */}
           <Controller
@@ -107,27 +113,56 @@ function InspectionSlotPicker() {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <ToggleButtonGroup
-                value={field.value}
-                exclusive
-                onChange={(_, val) => field.onChange(val)}
-                sx={{ flexWrap: 'wrap' }}
-              >
-                {availableSlots.map(({ datetime, remaining }) => {
-                  const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
-             
-                  return (
-                    <ToggleButton
-                      key={datetime}
-                      value={datetime}
-                      disabled={remaining <= 0}
-                    >
-                      {label}
-                    </ToggleButton>
-                  );
-                })}
-              </ToggleButtonGroup>
-            )} 
+              <Box display="flex" justifyContent="center">
+                <ToggleButtonGroup
+                  value={field.value}
+                  exclusive
+                  onChange={(_, val) => field.onChange(val)}
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 2,
+                    justifyContent: 'center',
+                    maxWidth: '100%',
+                  }}
+                >
+                  {availableSlots.map(({ datetime, remaining }) => {
+                    const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
+                    const isDisabled = remaining <= 0;
+
+                    const button = (
+                      <ToggleButton
+                        key={datetime}
+                        value={datetime}
+                        disabled={isDisabled}
+                        sx={{
+                          minWidth: 100,
+                          borderRadius: 2,
+                          textTransform: 'none',
+                          '&.Mui-selected': {
+                            backgroundColor: theme.palette.primary.main,
+                            color: '#fff',
+                            '&:hover': {
+                              backgroundColor: theme.palette.primary.dark,
+                            },
+                          },
+                        }}
+                      >
+                        {label}
+                      </ToggleButton>
+                    );
+
+                    return isDisabled ? (
+                      <Tooltip key={datetime} title="This slot is fully booked" arrow>
+                        <span>{button}</span>
+                      </Tooltip>
+                    ) : (
+                      button
+                    );
+                  })}
+                </ToggleButtonGroup>
+              </Box>
+            )}
           />
         </>
       )}
