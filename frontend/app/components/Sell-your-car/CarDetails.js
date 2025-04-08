@@ -95,8 +95,12 @@ function CarDetailsStep() {
         <Controller
           name="car_make"
           control={control}
-          defaultValue=""
-          rules={{ required: true }}
+         // defaultValue=""
+          rules={{
+            required: 'Make is required',
+            validate: value => value.trim() !== '' || 'Make is required'
+          }}
+          
           render={({ field }) => (
             <Autocomplete
               options={makes}
@@ -111,7 +115,9 @@ function CarDetailsStep() {
                 setValue('make_id', match?.id || null);
                 field.onChange(newInput);
               }}
-              renderInput={(params) => <TextField {...params} label="Make" placeholder="Select or enter make" fullWidth />}
+              renderInput={(params) => <TextField {...params} label="Make" placeholder="Select or enter make" fullWidth error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+              />}
               freeSolo
             />
           )}
