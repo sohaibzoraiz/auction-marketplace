@@ -131,85 +131,38 @@ function InspectionSlotPicker() {
             rules={{ required: true }}
             render={({ field }) => (
               <Box className="d-flex justify-content-center px-2">
-                <ToggleButtonGroup
-  value={field.value}
-  exclusive
-  onChange={(_, val) => field.onChange(val)}
-  className="d-flex flex-wrap justify-content-center"
-  sx={{
-    maxWidth: 800,
-    rowGap: 2,
-    columnGap: 2,
-  }}
->
+               <Grid container spacing={2} justifyContent="center">
   {availableSlots.map(({ datetime, remaining }) => {
-    const label = `${formatTime(datetime)}${remaining === 1 ? ' (1 left)' : ''}`;
-    const isDisabled = remaining <= 0;
+    const selected = field.value === datetime;
+    const disabled = remaining <= 0;
 
     return (
-      <ToggleButton
-  key={datetime}
-  value={datetime}
-  disabled={isDisabled}
-  disableRipple
-  disableFocusRipple
-  sx={{
-    borderRadius: '6px',
-    textTransform: 'none',
-    minWidth: 100,
-    px: 2,
-    py: 1.2,
-    m: '6px',
-    border: '1px solid',
-    borderColor: '#d0d0d0',
-    color:
-      field.value === datetime
-        ? '#fff'
-        : isDisabled
-        ? '#999'
-        : '#333',
-    backgroundColor:
-      field.value === datetime
-        ? '#1976d2'
-        : isDisabled
-        ? '#f9f9f9'
-        : '#fff',
-    transition: 'none',
-    boxShadow: 'none',
-    '&.Mui-selected': {
-      backgroundColor: '#1976d2',
-      color: '#fff',
-      borderColor: '#1976d2',
-    },
-    '&:hover': {
-      backgroundColor:
-        !isDisabled && field.value !== datetime
-          ? '#f2f2f2'
-          : undefined,
-    },
-    '&:focus': {
-      outline: 'none',
-      backgroundColor:
-        field.value === datetime ? '#1976d2' : undefined,
-    },
-    '&.Mui-focusVisible': {
-      outline: 'none',
-      backgroundColor:
-        field.value === datetime ? '#1976d2' : undefined,
-    },
-    '&.Mui-disabled': {
-      backgroundColor: '#f9f9f9',
-      color: '#999',
-      borderColor: '#ccc',
-    },
-  }}
->
-  {label}
-</ToggleButton>
-
+      <Grid item key={datetime}>
+        <Button
+          variant={selected ? 'contained' : 'outlined'}
+          color={selected ? 'primary' : 'inherit'}
+          disabled={disabled}
+          onClick={() => field.onChange(datetime)}
+          sx={{
+            minWidth: 100,
+            borderRadius: '6px',
+            px: 2,
+            py: 1,
+            backgroundColor: selected ? '#1976d2' : '#fff',
+            color: selected ? '#fff' : '#333',
+            borderColor: selected ? '#1976d2' : '#ccc',
+            '&:hover': {
+              backgroundColor: selected ? '#115293' : '#f2f2f2',
+            },
+          }}
+        >
+          {formatTime(datetime)}
+        </Button>
+      </Grid>
     );
   })}
-</ToggleButtonGroup>
+</Grid>
+
 
               </Box>
             )}
