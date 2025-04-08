@@ -101,14 +101,14 @@ function CarDetailsStep() {
             validate: value => value.trim() !== '' || 'Make is required'
           }}
           
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <Autocomplete
               options={makes}
               getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
               isOptionEqualToValue={(option, value) => option.name === value.name}
               onChange={(_, newValue) => {
                 setValue('make_id', newValue?.id || null);
-                field.onChange(newValue?.name || '');
+              //  field.onChange(newValue?.name || '');
               }}
               onInputChange={(_, newInput) => {
                 const match = makes.find(m => m.name.toLowerCase() === newInput.toLowerCase());
