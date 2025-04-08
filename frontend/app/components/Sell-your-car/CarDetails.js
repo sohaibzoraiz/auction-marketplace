@@ -294,8 +294,8 @@ function CarDetailsStep() {
             name="city"
             control={control}
             rules={{
-              required: 'Mileage is required',
-              validate: value => value.trim() !== '' || 'Mileage is required'
+              required: 'City is required',
+              validate: value => value.trim() !== '' || 'City is required'
             }}
             render={({ field, fieldState }) => (
                 <Autocomplete

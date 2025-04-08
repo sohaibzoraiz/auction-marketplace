@@ -54,7 +54,7 @@ function AuctionDetailsStep({ userType }) {
           <Controller
             name="start_time"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             render={({ field }) => (
               <DatePicker
                 label="Tentative Start Date"
@@ -75,7 +75,7 @@ function AuctionDetailsStep({ userType }) {
           <Controller
             name="end_time"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             render={({ field }) => (
               <DatePicker
                 label="Auction End Date"
@@ -102,7 +102,7 @@ function AuctionDetailsStep({ userType }) {
           <Controller
             name="reserve_price"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             render={({ field }) => (
               <TextField
                 label="Reserve Price"

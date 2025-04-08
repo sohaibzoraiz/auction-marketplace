@@ -85,7 +85,10 @@ function InspectionRequestStep() {
       <Controller
   name="inspection_address"
   control={control}
-  rules={{ required: true }}
+  rules={{
+    required: 'Inspection Address is required',
+    validate: value => value.trim() !== '' || 'Inspection Address is required'
+  }}
   render={({ field, fieldState }) => (
     <TextField
       {...field}
@@ -119,7 +122,10 @@ function InspectionRequestStep() {
         <Controller
           name="inspection_contact"
           control={control}
-          rules={{ required: true }}
+          rules={{
+            required: 'Contact Number is required',
+            validate: value => value !== null && value !== '' || 'Contact Number is required'
+          }}
           render={({ field, fieldState }) => (
             <TextField
               {...field}
