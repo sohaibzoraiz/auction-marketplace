@@ -13,9 +13,8 @@ import {
   CircularProgress,
   Paper,
   Tooltip,
-  useMediaQuery
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+//import { useTheme } from '@mui/material/styles';
 
 function InspectionSlotPicker() {
   const { control } = useFormContext();
@@ -23,7 +22,7 @@ function InspectionSlotPicker() {
   const [slotsByDate, setSlotsByDate] = useState([]);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
-  const theme = useTheme();
+  //const theme = useTheme();
   //const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
