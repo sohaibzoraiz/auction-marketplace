@@ -262,7 +262,7 @@ function CarPage({ carMake, yearModel, id }) {
   onQuantityChange={setCurrentBid} 
   lastBidFromDB={data.current_bid} 
 />
-                    <button className="primary-btn btn-hover" onClick={() => handleBid(data.id)}>
+                    <button className="primary-btn btn-hover" onClick={() => handleBid(data.car_id)}>
                       Place Bid
                       <span style={{ top: '40.5px', left: '84.2344px' }} />
                     </button>
