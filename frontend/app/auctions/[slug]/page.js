@@ -14,6 +14,7 @@ import CountdownTimer from "../../components/auction-single/CountdownTimer";
 import HandleQuantity from "../../components/common/HandleQuantity";
 import BidHistory from "../../components/auction-single/bidHistory";
 import Modal from "../../components/auction-single/modal";
+import Image from "next/image";
 
 
 export default function Page({ params }) {
@@ -257,13 +258,34 @@ function CarPage({ carMake, yearModel, id }) {
                 <div className="payment-method">
                   <h6>Guaranted Safe Checkout</h6>
                   <ul className="payment-card-list">
-                    <li><img src="/assets/img/inner-pages/payment-img1.svg" alt="" /></li>
-                    <li><img src="/assets/img/inner-pages/payment-img2.svg" alt="" /></li>
-                    <li><img src="/assets/img/inner-pages/payment-img3.svg" alt="" /></li>
-                    <li><img src="/assets/img/inner-pages/payment-img4.svg" alt="" /></li>
-                    <li><img src="/assets/img/inner-pages/payment-img5.svg" alt="" /></li>
-                    <li><img src="/assets/img/inner-pages/payment-img6.svg" alt="" /></li>
-                    <li><img src="/assets/img/inner-pages/payment-img7.svg" alt="" /></li>
+                    <li><div className="position-relative">
+  <Image src="/assets/img/inner-pages/payment-img1.svg" fill   alt=""  />
+</div>
+</li>
+                    <li><div className="position-relative">
+  <Image src="/assets/img/inner-pages/payment-img2.svg" fill   alt=""  />
+</div>
+</li>
+                    <li><div className="position-relative">
+  <Image src="/assets/img/inner-pages/payment-img3.svg" fill   alt=""  />
+</div>
+</li>
+                    <li><div className="position-relative">
+  <Image src="/assets/img/inner-pages/payment-img4.svg" fill   alt=""  />
+</div>
+</li>
+                    <li><div className="position-relative">
+  <Image src="/assets/img/inner-pages/payment-img5.svg" fill   alt=""  />
+</div>
+</li>
+                    <li><div className="position-relative">
+  <Image src="/assets/img/inner-pages/payment-img6.svg" fill   alt=""  />
+</div>
+</li>
+                    <li><div className="position-relative">
+  <Image src="/assets/img/inner-pages/payment-img7.svg" fill   alt=""  />
+</div>
+</li>
                   </ul>
                 </div>
                 <ul className="question-and-wishlist-area">
@@ -316,7 +338,10 @@ function CarPage({ carMake, yearModel, id }) {
                   <h2>About Product</h2>
                   <p>Urna Aenean onewaryzo eleifend vitae tellus a facilisis. Nunc posuere at augue eget port. Inei odion goat tellus, dignissim fermentumara purus nec, consequat dapibus metus. Vav urna worlda mauris, goat te faucibus at egestas quis, fermentum egetonav neque. Dphare lectus nec risusonl pellentesque, opi vitae aliquet nisi dapibus. Sed volutpat mi velit.</p>
                   <div className="video-wrapper">
-                    <img src="/assets/img/inner-pages/auction-details-video-img.jpg" alt="" />
+                    <div className="position-relative">
+  <Image src="/assets/img/inner-pages/auction-details-video-img.jpg" fill   alt=""  />
+</div>
+
                     <a style={{ cursor: "pointer" }}
                       onClick={() => setOpen(true)} className="video-area video-player">
                       <div className="icon">
@@ -397,7 +422,10 @@ function CarPage({ carMake, yearModel, id }) {
                           <li>
                             <div className="single-comment-area">
                               <div className="author-img">
-                                <img src="/assets/img/inner-pages/comment-author-01.jpg" alt="" />
+                                <div className="position-relative">
+  <Image src="/assets/img/inner-pages/comment-author-01.jpg" fill   alt=""  />
+</div>
+
                               </div>
                               <div className="comment-content">
                                 <div className="author-and-review">
@@ -420,7 +448,10 @@ function CarPage({ carMake, yearModel, id }) {
                           <li>
                             <div className="single-comment-area">
                               <div className="author-img">
-                                <img src="/assets/img/inner-pages/comment-author-02.jpg" alt="" />
+                                <div className="position-relative">
+  <Image src="/assets/img/inner-pages/comment-author-02.jpg" fill   alt=""  />
+</div>
+
                               </div>
                               <div className="comment-content">
                                 <div className="author-and-review">
@@ -443,7 +474,10 @@ function CarPage({ carMake, yearModel, id }) {
                           <li>
                             <div className="single-comment-area">
                               <div className="author-img">
-                                <img src="/assets/img/inner-pages/comment-author-03.jpg" alt="" />
+                                <div className="position-relative">
+  <Image src="/assets/img/inner-pages/comment-author-03.jpg" fill   alt=""  />
+</div>
+
                               </div>
                               <div className="comment-content">
                                 <div className="author-and-review">
@@ -567,7 +601,10 @@ function CarPage({ carMake, yearModel, id }) {
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
                           <Link href="/auction-details" className="card-img">
-                            <img src="../assets/img/home2/auction-img1.jpg" alt="" />
+                            <div className="position-relative">
+  <Image src="../assets/img/home2/auction-img1.jpg" fill   alt=""  />
+</div>
+
                           </Link>
                           <div className="batch">
                             <span className="live">
@@ -627,7 +664,10 @@ function CarPage({ carMake, yearModel, id }) {
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
                           <Link href="/auction-details" className="card-img">
-                            <img src="../assets/img/home2/auction-img2.jpg" alt="" />
+                            <div className="position-relative">
+  <Image src="../assets/img/home2/auction-img2.jpg" fill   alt=""  />
+</div>
+
                           </Link>
                           <div className="batch">
                             <span className="live">
@@ -687,7 +727,10 @@ function CarPage({ carMake, yearModel, id }) {
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
                           <Link href="/auction-details" className="card-img">
-                            <img src="../assets/img/home2/auction-img3.jpg" alt="" />
+                            <div className="position-relative">
+  <Image src="../assets/img/home2/auction-img3.jpg" fill   alt=""  />
+</div>
+
                           </Link>
                           <div className="batch">
                             <span className="upcoming">
@@ -750,7 +793,10 @@ function CarPage({ carMake, yearModel, id }) {
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
                           <Link href="/auction-details" className="card-img">
-                            <img src="../assets/img/home2/auction-img4.jpg" alt="" />
+                            <div className="position-relative">
+  <Image src="../assets/img/home2/auction-img4.jpg" fill   alt=""  />
+</div>
+
                           </Link>
                           <div className="batch">
                             <span className="live">
@@ -810,7 +856,10 @@ function CarPage({ carMake, yearModel, id }) {
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
                           <Link href="/auction-details" className="card-img">
-                            <img src="../assets/img/home1/auction-img1.jpg" alt="" />
+                            <div className="position-relative">
+  <Image src="../assets/img/home1/auction-img1.jpg" fill   alt=""  />
+</div>
+
                           </Link>
                           <div className="batch">
                             <span className="live">
@@ -870,7 +919,10 @@ function CarPage({ carMake, yearModel, id }) {
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
                           <Link href="/auction-details" className="card-img">
-                            <img src="../assets/img/home1/auction-img8.jpg" alt="" />
+                            <div className="position-relative">
+  <Image src="../assets/img/home1/auction-img8.jpg" fill   alt=""  />
+</div>
+
                           </Link>
                           <div className="batch">
                             <span className="upcoming">
@@ -933,7 +985,10 @@ function CarPage({ carMake, yearModel, id }) {
                       <div className="auction-card style-2">
                         <div className="auction-card-img-wrap">
                           <Link href="/auction-details" className="card-img">
-                            <img src="../assets/img/home2/auction-img5.jpg" alt="" />
+                            <div className="position-relative">
+  <Image src="../assets/img/home2/auction-img5.jpg" fill   alt=""  />
+</div>
+
                           </Link>
                           <div className="batch">
                             <span className="live">
