@@ -3,11 +3,13 @@ import { useState, useContext, useEffect, useRef } from "react";
 import Link from "next/link";
 import { UserContext } from "../../contexts/UserContext";
 import { RiUserLine } from "react-icons/ri"; // User icon
+import { useRouter } from 'next/navigation';
 
 const UserDropdown = ({ variant }) => {
     const { userData, setUserData } = useContext(UserContext) ?? {};
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const router = useRouter();
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
