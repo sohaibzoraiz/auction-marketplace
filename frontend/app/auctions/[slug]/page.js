@@ -144,6 +144,31 @@ function CarPage({ carMake, yearModel, id }) {
    */
     const handleBid = async (carid) => {
       console.log("checking bid for car:", currentBid);
+      if (!userData) {
+        setModalData({
+            title: "Login Error",
+            content: "Please login to continue bidding.",
+            type: "LoginError",
+            buttonText: "Redirecting...",
+            buttonAction: () => window.location.href = `/login?redirect=${window.location.pathname}`,
+            autoRedirect: true
+        });
+        setShowModal(true);
+        return;
+      }
+      if (userData.id === data.winning_user_id) {
+        setModalData({
+            title: "Bid Error",
+            content: "You are Already the Winning Bidder.",
+            type: "Error",
+            buttonText: "Close",
+            buttonAction: () => setShowModal(false),
+            autoRedirect: false
+        });
+        setShowModal(true);
+        return;
+      }
+    
       if (currentBid <= data.current_bid) {
         setModalData({  
             title: "Bid Error",
@@ -156,18 +181,7 @@ function CarPage({ carMake, yearModel, id }) {
         setShowModal(true);
         return;
       }
-      if (!userData) {
-        setModalData({
-            title: "Login Error",
-            content: "Please login to continue bidding.",
-            type: "LoginError",
-            buttonText: "Redirecting...",
-            buttonAction: () => window.location.href = `/login?redirect=${window.location.pathname}`,
-            autoRedirect: true
-        });
-        setShowModal(true);
-        return;
-    }
+      
   
     if (userData.plan === 'basic' && userData.freeBids <= 0) {
       setModalData({
