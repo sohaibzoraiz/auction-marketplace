@@ -17,14 +17,14 @@ const Footer2 = () => {
               <div className="footer-top-content">
                 <h2 className="wow animate fadeInDown" data-wow-delay="200ms" data-wow-duration="1500ms">Now Here? <span>Start your Auction</span> Bid Now.</h2>
                 <div className="button-grp wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
-                  <Link className="primary-btn btn-hover black-bg two" href="/art-auction/how-to-buy">
+                  <Link className="primary-btn btn-hover black-bg two" href="/how-to-buy">
                     How To Bid
                     <svg width={11} height={11} viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
                       <path fillRule="evenodd" clipRule="evenodd" d="M10.0266 9.33856L0.689022 0.000487831L-3.01181e-08 0.68951L9.33807 10.0271L2.88172 10.0271L2.88172 11.001L11.0005 11.001L11.0005 2.88221L10.0266 2.88221L10.0266 9.33856Z" />
                     </svg>
                     <span style={{ top: '19.3125px', left: '-14.7969px' }} />
                   </Link>
-                  <Link className="primary-btn btn-hover two" href="/art-auction/how-to-sell">
+                  <Link className="primary-btn btn-hover two" href="/how-to-sell">
                     How To Sell
                     <svg width={11} height={11} viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
                       <path fillRule="evenodd" clipRule="evenodd" d="M10.0266 9.33856L0.689022 0.000487831L-3.01181e-08 0.68951L9.33807 10.0271L2.88172 10.0271L2.88172 11.001L11.0005 11.001L11.0005 2.88221L10.0266 2.88221L10.0266 9.33856Z" />
@@ -53,13 +53,13 @@ const Footer2 = () => {
                     </div>
                     <div className="menu-container">
                       <ul className="widget-list">
-                        <li><Link href="/auction-grid">Mercedes</Link></li>
-                        <li><Link href="/auction-grid">Toyota Camry</Link></li>
-                        <li><Link href="/auction-grid">BMW</Link></li>
-                        <li><Link href="/auction-grid">Tesla</Link></li>
-                        <li><Link href="/auction-grid">Hyundai</Link></li>
-                        <li><Link href="/auction-grid">Nissan Rogue</Link></li>
-                        <li><Link href="/auction-grid">Rolls Royce</Link></li>
+                        <li><Link href="#">Mercedes</Link></li>
+                        <li><Link href="#">Toyota Camry</Link></li>
+                        <li><Link href="#">BMW</Link></li>
+                        <li><Link href="#">Tesla</Link></li>
+                        <li><Link href="#">Hyundai</Link></li>
+                        <li><Link href="#">Nissan Rogue</Link></li>
+                        <li><Link href="#">Rolls Royce</Link></li>
                       </ul>
                     </div>
                   </div>
@@ -74,7 +74,7 @@ const Footer2 = () => {
                         <li><Link href="/how-to-buy">How to bid with us</Link></li>
                         <li><Link href="/how-to-sell">How to sell with us</Link></li>
                         <li><Link href="/about">About us</Link></li>
-                        <li><Link href="/faq">F.A.Q</Link></li>
+                        <li><Link href="#">F.A.Q</Link></li>
                         <li><a href="#">Our Brand</a></li>
                       </ul>
                     </div>
