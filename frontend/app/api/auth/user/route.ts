@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     }*/
         const cookieHeader = req.headers.get('cookie');
         if (!cookieHeader) {
-            return NextResponse.json({ user: null }, { status: 200 });
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
         
 
