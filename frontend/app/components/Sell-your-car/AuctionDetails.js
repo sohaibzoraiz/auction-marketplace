@@ -29,6 +29,12 @@ function AuctionDetailsStep({ userType }) {
   }, [inspectionTime]);
 
   useEffect(() => {
+    if (userType !== "premium") {
+      setValue("is_featured", false);
+    }
+  }, [userType, setValue]);
+
+  useEffect(() => {
     if (startDate) {
       const start = dayjs(startDate);
       const min = userType === 'premium' ? start : start.add(7, 'day');
@@ -130,25 +136,28 @@ function AuctionDetailsStep({ userType }) {
         </div>
 
         {/* Featured Auction */}
-        <div className="col-md-6 mb-20">
-          <Controller
-            name="is_featured"
-            control={control}
-            defaultValue={false}
-            render={({ field }) => (
-              <TextField
-                select
-                label="Featured Auction?"
-                fullWidth
-                SelectProps={{ native: true }}
-                {...field}
-              >
-                <option value={false}>No</option>
-                <option value={true}>Yes</option>
-              </TextField>
-            )}
-          />
-        </div>
+        {userType === "premium" && (
+          <div className="col-md-6 mb-20">
+            <Controller
+              name="is_featured"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+            <TextField
+              select
+              label="Featured Auction?"
+              fullWidth
+              SelectProps={{ native: true }}
+              {...field}
+            >
+            <option value={false}>No</option>
+            <option value={true}>Yes</option>
+            </TextField>
+              )}
+            />
+          </div>
+        )}
+
       </div>
     </LocalizationProvider>
   );
