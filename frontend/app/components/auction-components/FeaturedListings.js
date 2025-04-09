@@ -2,8 +2,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
-import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
-import { useMemo, useEffect, useRef } from "react";
+//import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
+import CountdownTimer from "./CountdownTimer"; // path as needed
+import { useMemo, useRef, useEffect } from "react";
+
 
 const useRenderCount = (name) => {
   const count = useRef(0);
@@ -16,7 +18,7 @@ const useRenderCount = (name) => {
 
 function FeaturedListings({ listings }) {
   listings = Array.isArray(listings) ? listings : [];
-  const timers = useCountdownTimer(listings);
+  //const timers = useCountdownTimer(listings);
   useRenderCount('FeaturedListings');
 
 
@@ -92,7 +94,7 @@ function FeaturedListings({ listings }) {
                 <div className="swiper-wrapper">
                 {listings.length > 0 ? (
                 listings.map((listing) => {
-                const timer = timers[listing.id] || { days: "00", hours: "00", minutes: "00", seconds: "00" };
+                //const timer = timers[listing.id] || { days: "00", hours: "00", minutes: "00", seconds: "00" };
                 return (
                   <SwiperSlide key={listing.id} className="swiper-slide">
                     <div className="auction-card style-2">
@@ -125,7 +127,7 @@ function FeaturedListings({ listings }) {
                             </a>
                           </li>
                         </ul>*/}
-                        <div className="countdown-timer">
+                        {/*<div className="countdown-timer">
                         <ul>
                             <li className="times">{timer.days}<span>Days</span></li>
                             <li className="colon">:</li>
@@ -135,7 +137,12 @@ function FeaturedListings({ listings }) {
                             <li className="colon">:</li>
                             <li className="times">{timer.seconds}<span>Sec</span></li>
                           </ul>
+                        </div>*/}
+                        {/* Replace the static timer block with this: */}
+                        <div className="countdown-timer">
+                        <CountdownTimer endTime={listing.end_time} />
                         </div>
+
                       </div>
                       <div className="auction-card-content">
                         <h6><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`}>{listing.car_make}</Link></h6>
