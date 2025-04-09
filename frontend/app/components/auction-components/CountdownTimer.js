@@ -1,5 +1,5 @@
 'use client';
-import { useNow } from './CountdownContext';
+import { useNow } from '../../contexts/CountdownContext';
 
 const getTimeLeft = (endTime, now) => {
   const difference = +new Date(endTime) - +now;
