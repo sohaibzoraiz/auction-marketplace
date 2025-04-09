@@ -316,9 +316,8 @@ async function getSingleAuctionListing(req, res) {
         const { carMake, yearMake, id } = req.query;
 
         const result = await pool.query(
-            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
-            "FROM cars c JOIN auctions a ON c.id = a.car_id WHERE c.car_make = $1 AND c.year_model = $2 AND c.id = $3",
-            [carMake, yearMake, id]
+            "SELECT c.id, c.city, c.car_make, c.model, c.variant, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.car_photos_jsonb, a.start_time, a.end_time, a.current_bid, a.reserve_price a.winning_user_id a.active_status" +
+            "FROM cars c JOIN auctions a ON c.id = a.car_id WHERE c.id = $1", [id]
         );
 
         if (result.rows.length === 0) {
