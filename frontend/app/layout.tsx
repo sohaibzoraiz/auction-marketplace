@@ -16,7 +16,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { dmsans, playfair_display } from "@/fonts/font";
 
 import ScrollTopBtn from "./components/common/ScrollTopBtn";
-import useWow from "@/customHooks/useWow";
+//import useWow from "@/customHooks/useWow";
 import Header from "./components/homepage/header.jsx";
 import Footer from "./components/footer/Footer2";
 import { UserProvider } from "./contexts/UserContext";
