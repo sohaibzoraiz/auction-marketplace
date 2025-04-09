@@ -9,7 +9,7 @@ import PaymentStep from './PaymentDetails';
 import Modal from "../auction-single/modal" ;
 
 
-function MultiStepForm({ userType }) {
+function MultiStepForm({ userType, router }) {
   const [currentStep, setCurrentStep] = useState(1);
   const methods = useForm();
   const [showModal, setShowModal] = useState(false);

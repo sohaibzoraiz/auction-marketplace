@@ -33,7 +33,7 @@ function CreateAuctionPage() {
     <div className="container pt-110 mb-110">
         <div className="row justify-content-center">
           <div className="col-lg-8">
-          <MultiStepForm userType={userData.plan} />
+          <MultiStepForm userType={userData.plan} router={router} />
           </div>
         </div>
         </div>
