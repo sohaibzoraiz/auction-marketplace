@@ -26,13 +26,15 @@ const CarAuctionGrid = ({ listings }) => {
       const observer = new IntersectionObserver(
           (entries) => {
               if (entries[0].isIntersecting && hasMore) {
-                  setVisibleListings((prev) => {
-                      const newCount = prev + 12;
-                      if (newCount >= listings.length) { // ✅ Stop loading if all listings are shown
-                          setHasMore(false);
-                      }
-                      return newCount;
-                  });
+                setVisibleListings((prev) => {
+                    const newCount = prev + 12;
+                    if (newCount >= listings.length) {
+                        setHasMore(false);
+                        return listings.length; // force to show all
+                    }
+                    return newCount;
+                });
+                
               }
           },
           { threshold: 1.0 } // Trigger only when fully visible
