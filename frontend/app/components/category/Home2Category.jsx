@@ -63,7 +63,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/mercedes-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Mercedes</Link></h5>
+                          <h5><Link href="/#">Mercedes</Link></h5>
                           <span>5,533 Item</span>
                         </div>
                       </div>
@@ -74,7 +74,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/toyota-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Toyota</Link></h5>
+                          <h5><Link href="/#">Toyota</Link></h5>
                           <span>8,842 Item</span>
                         </div>
                       </div>
@@ -85,7 +85,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/bmw-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">BMW</Link></h5>
+                          <h5><Link href="/#">BMW</Link></h5>
                           <span>6,698 Item</span>
                         </div>
                       </div>
@@ -96,7 +96,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/tesla-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Tesla</Link></h5>
+                          <h5><Link href="/#">Tesla</Link></h5>
                           <span>4,256 Item</span>
                         </div>
                       </div>
@@ -107,7 +107,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/hyundai-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Hyundai</Link></h5>
+                          <h5><Link href="/#">Hyundai</Link></h5>
                           <span>7,920 Item</span>
                         </div>
                       </div>
@@ -118,7 +118,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/nissan-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Nissan Rogue</Link></h5>
+                          <h5><Link href="/#">Nissan Rogue</Link></h5>
                           <span>9,178 Item</span>
                         </div>
                       </div>
@@ -129,7 +129,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/honda-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Honda</Link></h5>
+                          <h5><Link href="/#">Honda</Link></h5>
                           <span>5,615 Item</span>
                         </div>
                       </div>
@@ -140,7 +140,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/chevrolet-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Chevrolet</Link></h5>
+                          <h5><Link href="/#">Chevrolet</Link></h5>
                           <span>6,248 Item</span>
                         </div>
                       </div>
@@ -151,7 +151,7 @@ const Home2Category = () => {
                           <img src="../assets/img/home2/icon/land-rover-logo.svg" alt="" />
                         </div>
                         <div className="category-content">
-                          <h5><Link href="/car-auciton/auction-sidebar">Land Rover</Link></h5>
+                          <h5><Link href="/#">Land Rover</Link></h5>
                           <span>6,698 Item</span>
                         </div>
                       </div>
