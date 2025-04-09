@@ -105,7 +105,7 @@ const socketHandler = (httpServer) => {
                     socket.emit('error', 'Bid must be higher than the current bid.');
                     return;
                 }
-                await pool.query('UPDATE auctions SET (current_bid, winning_user_id) VALUES ($1, $2) WHERE car_id = $3', [amount, userId, auctionId]);
+                await pool.query('UPDATE auctions SET current_bid = $1, winning_user_id = $2 WHERE car_id = $3', [amount, userId, auctionId]);
                 // Update bids table
                 await pool.query('INSERT INTO bids (car_id, user_id, amount, created_at) VALUES ($1, $2, $3, NOW())', [auctionId, userId, amount]);
 
