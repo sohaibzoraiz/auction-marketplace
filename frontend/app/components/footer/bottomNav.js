@@ -11,7 +11,7 @@ const BottomNav = () => {
 
     return (
         <div className="bottom-nav d-lg-none">
-            <Link href="/whatsapp" className={`nav-item ${active === "whatsapp" ? "active" : ""}`} onClick={() => setActive("whatsapp")}>
+            <Link href="/#" className={`nav-item ${active === "whatsapp" ? "active" : ""}`} onClick={() => setActive("whatsapp")}>
                 <RiWhatsappLine size={24} />
                 <span>Whatsapp</span>
             </Link>
@@ -29,7 +29,7 @@ const BottomNav = () => {
             </span>
             </Link>
             <div className="separator"></div> {/* Separator */}
-            <Link href="/wishlist" className={`nav-item ${active === "wishlist" ? "active" : ""}`} onClick={() => setActive("wishlist")}>
+            <Link href="/#" className={`nav-item ${active === "wishlist" ? "active" : ""}`} onClick={() => setActive("wishlist")}>
                 <RiHeart3Line size={24} />
                 <span>Wishlist</span>
             </Link>
