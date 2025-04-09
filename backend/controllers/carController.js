@@ -293,7 +293,7 @@ async function getFeaturedAuctionListings(req, res) {
             "WHERE a.is_featured = true " +
             "AND a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
-            "ORDER BY a.created_at DESC " +
+            "ORDER BY a.start_time DESC " +
             "LIMIT 7"
           );
           
