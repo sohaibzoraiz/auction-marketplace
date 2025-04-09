@@ -65,7 +65,7 @@ const UserDropdown = ({ variant }) => {
 
             {/* Bottom Navbar Icon */}
             {variant === "bottom-nav" && (
-                <Link href="#t" className={  "nav-item"} onClick={toggleDropdown}>
+                <Link href="#" className={  "nav-item"} onClick={toggleDropdown}>
                 <RiUserLine size={24} />
                 <span>Account</span>
             </Link>
