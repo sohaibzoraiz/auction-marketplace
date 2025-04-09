@@ -25,17 +25,17 @@ const CarAuctionGrid = ({ listings }) => {
     useEffect(() => {
       const observer = new IntersectionObserver(
           (entries) => {
-              if (entries[0].isIntersecting && hasMore) {
+            if (entries[0].isIntersecting && hasMore) {
                 setVisibleListings((prev) => {
-                    const newCount = prev + 12;
-                    if (newCount >= listings.length) {
-                        setHasMore(false);
-                        return listings.length; // force to show all
-                    }
-                    return newCount;
+                  const newCount = prev + 12;
+                  if (newCount >= filteredData.length) { // ✅ use filteredData here
+                    setHasMore(false);
+                    return filteredData.length; // ✅ show all
+                  }
+                  return newCount;
                 });
-                
               }
+              
           },
           { threshold: 1.0 } // Trigger only when fully visible
       );
