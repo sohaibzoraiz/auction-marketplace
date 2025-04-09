@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { UserContext } from '../contexts/UserContext';
 import MultiStepForm from '../components/Sell-your-car/MultiStepForm';
 import Breadcrumb2 from "../components/common/Breadcrumb2";
-import { useRouter } from "next/navigation";
 
 function CreateAuctionPage() {
     const router = useRouter();
