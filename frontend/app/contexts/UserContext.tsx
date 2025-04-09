@@ -51,8 +51,8 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (!response.ok) {
         setUserData(null);
       } else {
-        const user = await response.json();
-        setUserData(user);
+        const { user } = await response.json(); // ✅ Extract properly
+        setUserData(user ?? null); // just in case
       }
     } catch (err) {
       console.error("Failed to fetch user data:", err);
