@@ -28,7 +28,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 import { ReactNode } from "react";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  useWow(); // Template animations
+  //useWow(); // Template animations
 
   useEffect(() => {
     //@ts-expect-error TypeScript doesn't have type definitions for Bootstrap JS
