@@ -3,12 +3,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
 import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
-import { useMemo } from "react";
+import { useMemo, useEffect, useRef } from "react";
+
+const useRenderCount = (name) => {
+  const count = useRef(0);
+  useEffect(() => {
+    count.current++;
+    console.log(`${name} render count: ${count.current}`);
+  });
+};
 
 
 function FeaturedListings({ listings }) {
   listings = Array.isArray(listings) ? listings : [];
   const timers = useCountdownTimer(listings);
+  useRenderCount('FeaturedListings');
+
+
   const settings = useMemo(() => ({
     slidesPerView: 1,
     speed: 1500,
