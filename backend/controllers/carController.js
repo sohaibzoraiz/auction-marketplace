@@ -286,11 +286,17 @@ async function getFeaturedAuctionListings(req, res) {
         }
            
         const result = await pool.query(
-            "SELECT c.id, c.car_make, c.year_model, c.demand_price, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
-            "FROM cars c LEFT JOIN auctions a ON c.id = a.car_id JOIN subscriptions s ON c.user_id = s.user_id " +
-            "WHERE s.subscription_plan_name = 'premium' AND s.subscription_end_date > NOW()"
-        );
-
+            "SELECT c.id, c.car_make, c.year_model, c.demand_price, c.car_photos_jsonb, " +
+            "a.end_time, a.current_bid, a.reserve_price " +
+            "FROM cars c " +
+            "LEFT JOIN auctions a ON c.id = a.car_id " +
+            "WHERE a.is_featured = true " +
+            "AND a.start_time <= NOW() " +
+            "AND a.end_time > NOW() " +
+            "ORDER BY a.created_at DESC " +
+            "LIMIT 7"
+          );
+          
         if (result.rows.length === 0) {
             res.status(404).json({ message: 'No featured listings found' });
         } else {
