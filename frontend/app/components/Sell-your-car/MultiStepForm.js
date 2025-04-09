@@ -9,10 +9,8 @@ import PaymentStep from './PaymentDetails';
 import Modal from "../auction-single/modal" ;
 
 
-
 function MultiStepForm({ userType }) {
   const [currentStep, setCurrentStep] = useState(1);
-  
   const methods = useForm();
   const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,8 +82,8 @@ function MultiStepForm({ userType }) {
         content: "Your car has been successfully listed for auction.",
         type: "Success",
         buttonText: "Redirecting...",
-        buttonAction: () => window.location.href = "/",
-        autoRedirect: true
+        buttonAction: () => router.push("/"),
+        autoRedirect: false
       });
       setShowModal(true);
       
