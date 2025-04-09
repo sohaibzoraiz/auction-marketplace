@@ -7,12 +7,12 @@ import AuctionDetailsStep from './AuctionDetails';
 import InspectionRequestStep from './InspectionRequest';
 import PaymentStep from './PaymentDetails';
 import Modal from "../auction-single/modal" ;
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 
 
 function MultiStepForm({ userType }) {
   const [currentStep, setCurrentStep] = useState(1);
-  const router = useRouter();
+  //const router = useRouter();
   const methods = useForm();
   const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,7 +84,7 @@ function MultiStepForm({ userType }) {
         content: "Your car has been successfully listed for auction.",
         type: "Success",
         buttonText: "Redirecting...",
-        buttonAction: () => router.push("/"),
+        buttonAction: () => window.location.href = "/",
         autoRedirect: true
       });
       setShowModal(true);
