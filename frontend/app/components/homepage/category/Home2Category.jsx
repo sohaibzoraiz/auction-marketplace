@@ -1,11 +1,21 @@
 "use client";
-import categoryData from "../../../data/category.json";
+import categoryData from "../../../../data/category.json";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect } from "react";
+
+
+const useRenderCount = (name) => {
+  const count = useRef(0);
+  useEffect(() => {
+    count.current++;
+    console.log(`${name} render count: ${count.current}`);
+  });
+};
 
 const Home2Category = () => {
+  useRenderCount('Catagory Slider');
   const settings = useMemo(() => ({
     slidesPerView: "auto",
     speed: 1500,

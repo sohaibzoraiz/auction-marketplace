@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 import Home2Banner from "./components/homepage/slider/Home2Banner";
-import Home2Category from "./components/category/Home2Category";
+import Home2Category from "./components/homepage/category/Home2Category";
 import Home2Banner2 from "./components/homepage/slider/Home2Banner2";
 import Home2Banner3 from "./components/homepage/slider/Home2Banner3";
 import Home2latestAuction from "./components/auction-components/latestAuction";

@@ -16,7 +16,7 @@ const useRenderCount = (name) => {
 
 const Home2latestAuction = ({ listings = [] }) => {
   //const timers = useCountdownTimer(listings);
-  useRenderCount('FeaturedListings');
+  useRenderCount('Latestlistings');
   const settings = useMemo(() => ({
     slidesPerView: 1,
     speed: 1500,
