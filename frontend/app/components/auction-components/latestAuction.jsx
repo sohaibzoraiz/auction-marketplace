@@ -60,7 +60,7 @@ const Home2latestAuction = ({ listings = [] }) => {
                           <img src={listing.car_photos_jsonb?.[0]} alt={listing.car_make} />
                         </Link>
                         <div className="batch"><span className="live">Live</span></div>
-                        <ul className="view-and-favorite-area">
+                        {/*<ul className="view-and-favorite-area">
                           <li>
                             <a href="#">
                               <svg width={16} height={15} viewBox="0 0 16 15" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +75,7 @@ const Home2latestAuction = ({ listings = [] }) => {
                               </svg>
                             </a>
                           </li>
-                        </ul>
+                        </ul>*/}
                         <div className="countdown-timer">
                           <ul>
                             <li className="times">{timer.days}<span>Days</span></li>

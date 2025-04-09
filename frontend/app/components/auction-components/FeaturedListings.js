@@ -98,7 +98,7 @@ function FeaturedListings({ listings }) {
                           </span>
                           
                         </div>
-                        <ul className="view-and-favorite-area">
+                        {/*<ul className="view-and-favorite-area">
                           <li>
                             <a href="#">
                               <svg width={16} height={15} viewBox="0 0 16 15" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +113,7 @@ function FeaturedListings({ listings }) {
                               </svg>
                             </a>
                           </li>
-                        </ul>
+                        </ul>*/}
                         <div className="countdown-timer">
                         <ul>
                             <li className="times">{timer.days}<span>Days</span></li>
