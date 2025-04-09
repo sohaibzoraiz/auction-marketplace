@@ -17,7 +17,7 @@ const Breadcrumb2 = ({ pagetitle, currentPage }) => {
               <h1>{pagetitle}</h1>
               <ul className="breadcrumb-list">
                 <li>
-                  <Link href="/car-auction">Home</Link>
+                  <Link href="/">Home</Link>
                 </li>
                 <li>{currentPage}</li>
               </ul>
