@@ -93,8 +93,8 @@ function CarPage({ carMake, yearModel, id }) {
     
             setData((prevData) => {
                 if (!prevData || bidData.auctionId !== prevData.id) return prevData;
-                if (prevData.current_bid === bidData.amount) return prevData; // ✅ Avoid unnecessary updates
-                return { ...prevData, current_bid: bidData.amount };
+                if (prevData.current_bid === bidData.amount && prevData.winning_user_id === bidData.userId) return prevData; // ✅ Avoid unnecessary updates
+                return { ...prevData, current_bid: bidData.amount, winning_user_id: bidData.userId };
             });
     
             console.log("Updating bid for auction:", data.id);

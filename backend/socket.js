@@ -115,7 +115,7 @@ const socketHandler = (httpServer) => {
                 }
 
                 // Emit new bid to all connected clients
-                ioInstance.emit('new-bid', { auctionId, amount });
+                ioInstance.emit('new-bid', { auctionId, amount, userId });
             } catch (error) {
                 console.error('Error processing bid:', error);
                 socket.emit('error', 'Failed to process bid.');
