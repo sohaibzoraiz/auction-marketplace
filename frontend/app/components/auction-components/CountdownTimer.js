@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useNow } from './CountdownContext';
 
-const getTimeLeft = (endTime) => {
-  const difference = +new Date(endTime) - +new Date();
+const getTimeLeft = (endTime, now) => {
+  const difference = +new Date(endTime) - +now;
   const timeLeft = {
     days: '00',
     hours: '00',
@@ -21,14 +21,8 @@ const getTimeLeft = (endTime) => {
 };
 
 const CountdownTimer = ({ endTime }) => {
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(endTime));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(getTimeLeft(endTime));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [endTime]);
+  const now = useNow();
+  const timeLeft = getTimeLeft(endTime, now);
 
   return (
     <ul>

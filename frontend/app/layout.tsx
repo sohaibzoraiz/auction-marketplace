@@ -21,6 +21,7 @@ import Header from "./components/homepage/header.jsx";
 import Footer from "./components/footer/Footer2";
 import { UserProvider } from "./contexts/UserContext";
 import { SocketProvider } from "./contexts/socketContext";
+import { CountdownProvider } from './contexts/CountdownContext';
 
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -48,7 +49,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </head>
           <body className="antialiased">
             <Header />
+            <CountdownProvider>
             <main>{children}</main>
+            </CountdownProvider>
             <Footer />
             <ScrollTopBtn />
           </body>
