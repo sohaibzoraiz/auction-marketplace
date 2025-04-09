@@ -4,19 +4,12 @@ import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import Link from "next/link";
 //import { useCountdownTimer } from "@/customHooks/useCountdownTimer";
 import CountdownTimer from "./CountdownTimer"; // path as needed
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo } from "react";
 
-const useRenderCount = (name) => {
-  const count = useRef(0);
-  useEffect(() => {
-    count.current++;
-    console.log(`${name} render count: ${count.current}`);
-  });
-};
 
 const Home2latestAuction = ({ listings = [] }) => {
   //const timers = useCountdownTimer(listings);
-  useRenderCount('Latestlistings');
+ 
   const settings = useMemo(() => ({
     slidesPerView: 1,
     speed: 1500,

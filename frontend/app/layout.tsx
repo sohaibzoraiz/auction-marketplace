@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "@/public/assets/css/bootstrap-icons.css";
 import "@/public/assets/css/boxicons.min.css";
 import "@/public/assets/css/swiper-bundle.min.css";
@@ -22,6 +22,15 @@ import Footer from "./components/footer/Footer2";
 import { UserProvider } from "./contexts/UserContext";
 import { SocketProvider } from "./contexts/socketContext";
 
+
+const useRenderCount = (name: string) => {
+  const count = useRef(0);
+  useEffect(() => {
+    count.current++;
+    console.log(`${name} render count: ${count.current}`);
+  });
+};
+
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
@@ -29,7 +38,7 @@ import { ReactNode } from "react";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   //useWow(); // Template animations
-
+  useRenderCount('RootLayout');
   useEffect(() => {
     //@ts-expect-error TypeScript doesn't have type definitions for Bootstrap JS
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
