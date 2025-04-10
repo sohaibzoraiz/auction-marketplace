@@ -6,7 +6,7 @@ import AuctionGallery from "../../components/auction-single/AuctionGallery";
 import React, { useEffect, useState, useContext, useMemo } from "react";
 import ModalVideo from "react-modal-video";
 import { UserContext } from '../../contexts/UserContext'; 
-import { SocketContext } from "../../context/SocketContext";
+import { SocketContext } from "../../contexts/socketContext";
 import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
