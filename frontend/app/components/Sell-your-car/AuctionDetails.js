@@ -120,7 +120,7 @@ function AuctionDetailsStep({ userType }) {
             control={control}
             rules={{
               required: 'Contact Number is required',
-              validate: value => value !== null && value !== '' || 'Contact Number is required'
+              validate: value => value !== null && value !== '' || 'Reserve Price is required'
             }}
             render={({ field, fieldState }) => (
               <TextField
