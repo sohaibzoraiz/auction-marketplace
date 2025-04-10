@@ -244,7 +244,7 @@ async function getAllAuctionListings(req, res) {
             "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id " + // notice space at end
             "WHERE a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
-            "AND a.active_status = 'active'"
+            "AND a.auction_status = 'active'"
           );
 
         res.json(result.rows);
@@ -261,7 +261,7 @@ async function getLatestListings(req, res) {
             "SELECT  * FROM cars c JOIN auctions a ON c.id = a.car_id " +
             "WHERE a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
-            "AND a.active_status = 'active' " +
+            "AND a.auction_status = 'active' " +
             "ORDER BY a.end_time DESC " +  // Sort by the soonest ending auction
             "LIMIT 7"  // Get only the latest 7 valid listings
         );
@@ -294,7 +294,7 @@ async function getFeaturedAuctionListings(req, res) {
             "WHERE a.is_featured = true " +
             "AND a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
-            "AND a.active_status = 'active' " +
+            "AND a.auction_status = 'active' " +
             "ORDER BY a.start_time DESC " +
             "LIMIT 7"
           );
