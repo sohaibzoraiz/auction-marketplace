@@ -124,7 +124,10 @@ function InspectionRequestStep() {
           control={control}
           rules={{
             required: 'Contact Number is required',
-            validate: value => value !== null && value !== '' || 'Contact Number is required'
+            pattern: {
+              value: /^03[0-9]{9}$/,
+              message: 'Enter a valid contact number (e.g. 03XXXXXXXXX)',
+            },
           }}
           render={({ field, fieldState }) => (
             <TextField
