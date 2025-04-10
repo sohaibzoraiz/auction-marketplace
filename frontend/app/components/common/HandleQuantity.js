@@ -113,14 +113,14 @@ function HandleQuantity({ currentPrice, onQuantityChange, lastBidFromDB }) {
       {/* Show max limit message */}
       {state.showMaxLimitMessage && (
         <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
-          Maximum bid limit reached!
+          Your bid must be greater than PKR {state.minLimit} and less than PKR {state.maxLimit}.
         </p>
       )}
 
       {/* Show min limit message */}
       {state.showMinLimitMessage && (
         <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
-          Minimum bid is PKR {state.minLimit}
+          Your bid must be greater than PKR {state.minLimit} and less than PKR {state.maxLimit}.
         </p>
       )}
     </div>
