@@ -76,7 +76,7 @@ const UserDropdown = ({ variant }) => {
 
             {/* Dropdown Menu */}
             {isOpen && (
-                <div className={`position-absolute w-100 bg-white border rounded shadow z-3 ${variant === "sidebar" || variant === "bottom-nav" ? "bottom-100" : "start-0"}`}>
+                <div ref={dropdownRef} className={`position-absolute w-100 bg-white border rounded shadow z-3 ${variant === "sidebar" || variant === "bottom-nav" ? "bottom-100" : "start-0"}`}>
 
                     <ul className="list-unstyled m-0 p-2">
                         {userData ? (
