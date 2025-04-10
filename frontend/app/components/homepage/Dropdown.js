@@ -78,9 +78,8 @@ const UserDropdown = ({ variant }) => {
             {isOpen && (
                 <div
                 ref={dropdownRef}
-
-                className={`dropdown-menu show position-absolute w-100 border rounded shadow-sm mt-1 ${variant === "sidebar" || variant === "bottom-nav" ? "bottom-100" : "start-0"}`}
-                style={{ zIndex: 1050 }}
+                className={`dropdown-menu show position-absolute w-100 border rounded shadow-sm mt-1 ${variant === "sidebar" || variant === "bottom-nav" ? "bottom-100" : "end-0"}`}
+                style={{ zIndex: 1050, minWidth: '220px' }}
               >
                 <ul className="list-unstyled m-0">
                   <ul className="list-unstyled m-0 p-2">
