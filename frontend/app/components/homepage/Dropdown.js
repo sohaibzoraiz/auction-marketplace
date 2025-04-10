@@ -86,7 +86,7 @@ const UserDropdown = ({ variant }) => {
   {userData ? (
     <>
       <li className="d-flex justify-content-between align-items-center px-2 py-1 text-muted small">
-        <span>Credits</span>
+        <span>Credits : </span>
         <strong>{userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}</strong>
       </li>
       <hr className="my-2" />
