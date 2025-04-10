@@ -241,11 +241,11 @@ async function getAllAuctionListings(req, res) {
     
     try {
         const result = await pool.query(
-            "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id" +
+            "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id " + // notice space at end
             "WHERE a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
-            "AND a.active_status = 'active' "
-        );
+            "AND a.active_status = 'active'"
+          );
 
         res.json(result.rows);
 
