@@ -241,8 +241,10 @@ async function getAllAuctionListings(req, res) {
     
     try {
         const result = await pool.query(
-            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description, c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
-            "FROM cars c JOIN auctions a ON c.id = a.car_id"
+            "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id" +
+            "AND a.start_time <= NOW() " +
+            "AND a.end_time > NOW() " +
+            "AND a.active_status = active "
         );
 
         res.json(result.rows);
@@ -256,9 +258,10 @@ async function getAllAuctionListings(req, res) {
 async function getLatestListings(req, res) {
     try {
         const result = await pool.query(
-            "SELECT c.id, c.city, c.car_make, c.year_model, c.registration_city, c.mileage, c.demand_price, c.description,  c.car_photos_jsonb, a.end_time, a.current_bid, a.reserve_price " +
-            "FROM cars c JOIN auctions a ON c.id = a.car_id " +
-            "WHERE a.end_time > NOW() " + // Only include future auctions
+            "SELECT  * FROM cars c JOIN auctions a ON c.id = a.car_id " +
+            "AND a.start_time <= NOW() " +
+            "AND a.end_time > NOW() " +
+            "AND a.active_status = active " +
             "ORDER BY a.end_time DESC " +  // Sort by the soonest ending auction
             "LIMIT 7"  // Get only the latest 7 valid listings
         );
@@ -286,13 +289,12 @@ async function getFeaturedAuctionListings(req, res) {
         }
            
         const result = await pool.query(
-            "SELECT c.id, c.car_make, c.year_model, c.demand_price, c.car_photos_jsonb, " +
-            "a.end_time, a.current_bid, a.reserve_price " +
-            "FROM cars c " +
+            "SELECT * FROM cars c " +
             "LEFT JOIN auctions a ON c.id = a.car_id " +
             "WHERE a.is_featured = true " +
             "AND a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
+            "AND a.active_status = active " +
             "ORDER BY a.start_time DESC " +
             "LIMIT 7"
           );
