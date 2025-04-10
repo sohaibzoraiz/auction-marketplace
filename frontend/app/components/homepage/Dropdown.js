@@ -82,68 +82,66 @@ const UserDropdown = ({ variant }) => {
                 style={{ zIndex: 1050 }}
               >
                 <ul className="list-unstyled m-0">
-                  {userData ? (
-                    <>
-                      <li className="dropdown-item-text text-muted">
-                        Credits: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}
-                      </li>
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          onClick={() => {
-                            setIsOpen(false);
-                            router.push("/dashboard");
-                          }}
-                        >
-                          Dashboard
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="dropdown-item text-danger"
-                          onClick={handleLogout}
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </>
-                  ) : (
-                    <>
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          onClick={() => {
-                            setIsOpen(false);
-                            router.push("/login");
-                          }}
-                        >
-                          Login
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          onClick={() => {
-                            setIsOpen(false);
-                            router.push("/register");
-                          }}
-                        >
-                          Register
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          onClick={() => {
-                            setIsOpen(false);
-                            router.push("/pricing");
-                          }}
-                        >
-                          Pricing
-                        </button>
-                      </li>
-                    </>
-                  )}
+                <ul className="list-unstyled m-0 p-2">
+  {userData ? (
+    <>
+      <li className="d-flex justify-content-between align-items-center px-2 py-1 text-muted small">
+        <span>Credits</span>
+        <strong>{userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}</strong>
+      </li>
+      <hr className="my-2" />
+      <li>
+        <Link
+          href="/dashboard"
+          className="dropdown-item"
+          onClick={() => setIsOpen(false)}
+        >
+          Dashboard
+        </Link>
+      </li>
+      <hr className="my-2" />
+      <li>
+        <button
+          className="dropdown-item text-danger"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </li>
+    </>
+  ) : (
+    <>
+      <li>
+        <Link
+          href="/login"
+          className="dropdown-item"
+          onClick={() => setIsOpen(false)}
+        >
+          Login
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/register"
+          className="dropdown-item"
+          onClick={() => setIsOpen(false)}
+        >
+          Register
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/pricing"
+          className="dropdown-item"
+          onClick={() => setIsOpen(false)}
+        >
+          Pricing
+        </Link>
+      </li>
+    </>
+  )}
+</ul>
+
                 </ul>
               </div>
                     )}
