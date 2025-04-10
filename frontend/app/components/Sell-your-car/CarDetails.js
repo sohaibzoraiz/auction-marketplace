@@ -98,7 +98,12 @@ function CarDetailsStep() {
          // defaultValue=""
           rules={{
             required: 'Make is required',
-            validate: value => value.trim() !== '' || 'Make is required'
+            validate: (value) => {
+              const trimmed = value.trim();
+              if (!trimmed) return 'Make is required';
+              const isValid = /^[A-Za-z]+(?: [A-Za-z]+)*$/.test(trimmed);
+              return isValid || 'Only letters and single spaces between words are allowed';
+            },
           }}
           
           render={({ field, fieldState }) => (
