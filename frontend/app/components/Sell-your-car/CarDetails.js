@@ -137,7 +137,12 @@ function CarDetailsStep() {
           control={control}
           rules={{
             required: 'Model is required',
-            validate: value => value.trim() !== '' || 'Model is required'
+            validate: (value) => {
+              const trimmed = value.trim();
+              if (!trimmed) return 'Model is required';
+              const hasLeadingOrTrailingSpaces = value !== trimmed;
+              return !hasLeadingOrTrailingSpaces || 'No leading or trailing spaces allowed';
+            }
           }}
           render={({ field: { onChange, value }, fieldState }) => (
             <Autocomplete
@@ -169,7 +174,7 @@ function CarDetailsStep() {
           control={control}
           rules={{
             required: 'Year is required',
-            validate: value => value.trim() !== '' || 'Year is required'
+            validate: value => /^\d{4}$/.test(value.trim()) || 'Enter a valid 4-digit year'
           }}
           render={({ field,fieldState }) => (
             <Autocomplete
@@ -198,8 +203,13 @@ function CarDetailsStep() {
           control={control}
           defaultValue=""
           rules={{
-            required: 'Trim is required',
-            validate: value => value.trim() !== '' || 'Trim is required'
+            required: 'Variant is required',
+            validate: (value) => {
+              const trimmed = value.trim();
+              if (!trimmed) return 'Variant is required';
+              const hasLeadingOrTrailingSpaces = value !== trimmed;
+              return !hasLeadingOrTrailingSpaces || 'No leading or trailing spaces allowed';
+            }
           }}
           render={({ field,fieldState }) => (
             <Autocomplete
@@ -215,7 +225,7 @@ function CarDetailsStep() {
                 setValue('generation_id', match?.generation_id || null);
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Trim" placeholder="Select or enter variant" fullWidth error={!!fieldState.error}
+                <TextField {...params} label="Variant" placeholder="Select or enter variant" fullWidth error={!!fieldState.error}
                 helperText={fieldState.error?.message}/>
               )}
             />
@@ -227,28 +237,39 @@ function CarDetailsStep() {
 
     {/* Other Fields */}
     <div className="col-md-6 mb-20">
-        <Controller
-            name="registration_city"
-            control={control}
-            rules={{
-              required: 'Registration City is required',
-              validate: value => value.trim() !== '' || 'Registration City is required'
-            }}
-            render={({ field, fieldState }) => (
-                <Autocomplete
-                    freeSolo
-                    options={pakCities}
-                    getOptionLabel={(option) => option}
-                    isOptionEqualToValue={(option, value) => option === value}
-                    value={field.value || ''}
-                    onInputChange={(_, newInputValue) => field.onChange(newInputValue)}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Registration City" placeholder='Please Seclect Your Cars Registration City' fullWidth error={!!fieldState.error}
-                        helperText={fieldState.error?.message} />
-                    )}
-                />
-            )}
-        />
+    <Controller
+  name="registration_city"
+  control={control}
+  rules={{
+    required: 'Registration City is required',
+    validate: value => value.trim() !== '' || 'Registration City is required'
+  }}
+  render={({ field, fieldState }) => {
+    const cityOptions = ['Unregistered', ...pakCities];
+    return (
+      <Autocomplete
+        options={cityOptions}
+        getOptionLabel={(option) => option}
+        isOptionEqualToValue={(option, value) => option === value}
+        value={field.value || null}
+        onChange={(_, newValue) => {
+          field.onChange(newValue || '');
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Registration City"
+            placeholder="Please Select Your Car's Registration City"
+            fullWidth
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
+      />
+    );
+  }}
+/>
+
     </div>
 
     <div className="col-md-6 mb-20">
