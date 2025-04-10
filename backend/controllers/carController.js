@@ -242,7 +242,7 @@ async function getAllAuctionListings(req, res) {
     try {
         const result = await pool.query(
             "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id" +
-            "AND a.start_time <= NOW() " +
+            "WHERE a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
             "AND a.active_status = active "
         );
@@ -259,7 +259,7 @@ async function getLatestListings(req, res) {
     try {
         const result = await pool.query(
             "SELECT  * FROM cars c JOIN auctions a ON c.id = a.car_id " +
-            "AND a.start_time <= NOW() " +
+            "WHERE a.start_time <= NOW() " +
             "AND a.end_time > NOW() " +
             "AND a.active_status = active " +
             "ORDER BY a.end_time DESC " +  // Sort by the soonest ending auction
