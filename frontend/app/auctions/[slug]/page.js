@@ -121,8 +121,8 @@ function CarPage({ carMake, yearModel, id }) {
           content: data.content || "Your bid was placed successfully.",
           type: data.type || "Success",
           buttonText: data.buttonText || "OK",
-          buttonAction: () => window.location.href = `/login?redirect=${window.location.pathname}`,
-          autoRedirect: true
+          buttonAction: () => window.location.href = `/auctions`,
+          autoRedirect: false
         });
         setShowModal(true);
       };
