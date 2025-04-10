@@ -76,26 +76,77 @@ const UserDropdown = ({ variant }) => {
 
             {/* Dropdown Menu */}
             {isOpen && (
-                <div ref={dropdownRef} className={`position-absolute w-100 bg-white border rounded shadow z-3 ${variant === "sidebar" || variant === "bottom-nav" ? "bottom-100" : "start-0"}`}>
-
-                    <ul className="list-unstyled m-0 p-2">
-                        {userData ? (
-                            <>
-                                <li className="p-2 border-bottom"> Credits: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}
-                                </li>
-                                <li className="p-2 border-bottom"><Link href="/dashboard" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Dashboard</Link></li>
-                                <li className="p-2 hover-bg-secondary"><button onClick={handleLogout}>Logout</button></li>
-                            </>
-                        ) : (
-                            <>
-                                <li className="p-2 border-bottom"><Link href="/login" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Login</Link></li>
-                                <li className="p-2 border-bottom"><Link href="/register" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Register</Link></li>
-                                <li className="p-2 hover-bg-secondary"><Link href="/pricing" className="d-block text-decoration-none" onClick={() => setIsOpen(false)}>Pricing</Link></li>
-                            </>
-                        )}
-                    </ul>
-                </div>
-            )}
+                <div
+                ref={dropdownRef}
+                className="dropdown-menu show position-absolute w-100 border rounded shadow-sm mt-1"
+                style={{ zIndex: 1050 }}
+              >
+                <ul className="list-unstyled m-0">
+                  {userData ? (
+                    <>
+                      <li className="dropdown-item-text text-muted">
+                        Credits: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => {
+                            setIsOpen(false);
+                            router.push("/dashboard");
+                          }}
+                        >
+                          Dashboard
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item text-danger"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => {
+                            setIsOpen(false);
+                            router.push("/login");
+                          }}
+                        >
+                          Login
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => {
+                            setIsOpen(false);
+                            router.push("/register");
+                          }}
+                        >
+                          Register
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => {
+                            setIsOpen(false);
+                            router.push("/pricing");
+                          }}
+                        >
+                          Pricing
+                        </button>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </div>
+                    )}
         </>
     );
 };
