@@ -119,6 +119,7 @@ const UserDropdown = ({ variant }) => {
           Login
         </Link>
       </li>
+      <hr className="my-2" />
       <li>
         <Link
           href="/register"
@@ -128,6 +129,7 @@ const UserDropdown = ({ variant }) => {
           Register
         </Link>
       </li>
+      <hr className="my-2" />
       <li>
         <Link
           href="/pricing"
