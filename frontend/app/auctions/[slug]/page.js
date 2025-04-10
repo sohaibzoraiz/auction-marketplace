@@ -56,6 +56,7 @@ function CarPage({ carMake, yearModel, id }) {
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     const { userData = {} } = useContext(UserContext) ?? {};
+    const [isPlacingBid, setIsPlacingBid] = useState(false);
     const { socket } = useContext(SocketContext); // ✅ socket comes from context
     const parsedCarPhotos = useMemo(() => {
         return data?.car_photos_jsonb ? [...data.car_photos_jsonb] : [];
@@ -185,6 +186,7 @@ function CarPage({ carMake, yearModel, id }) {
    */
     const handleBid = async (carid) => {
       console.log("checking bid for car:", currentBid);
+      setIsPlacingBid(true);
       if (!userData) {
         setModalData({
             title: "Login Error",
@@ -263,6 +265,8 @@ function CarPage({ carMake, yearModel, id }) {
       autoRedirect: false
     });
       setShowModal(true);*/
+    } finally {
+      setIsPlacingBid(false); // re-enable after completion or failure
     }
 
     };   
@@ -303,8 +307,8 @@ function CarPage({ carMake, yearModel, id }) {
   onQuantityChange={setCurrentBid} 
   lastBidFromDB={data.current_bid} 
 />
-                    <button className="primary-btn btn-hover" onClick={() => handleBid(data.car_id)}>
-                      Place Bid
+                    <button className="primary-btn btn-hover" onClick={() => handleBid(data.car_id)} disabled={isPlacingBid}>
+                    {isPlacingBid ? "Placing..." : "Place Bid"}
                       <span style={{ top: '40.5px', left: '84.2344px' }} />
                     </button>
                   </div>
