@@ -78,6 +78,7 @@ const UserDropdown = ({ variant }) => {
             {isOpen && (
                 <div
                 ref={dropdownRef}
+
                 className={`dropdown-menu show position-absolute w-100 border rounded shadow-sm mt-1 ${variant === "sidebar" || variant === "bottom-nav" ? "bottom-100" : "start-0"}`}
                 style={{ zIndex: 1050 }}
               >
@@ -85,10 +86,9 @@ const UserDropdown = ({ variant }) => {
                   <ul className="list-unstyled m-0 p-2">
   {userData ? (
     <>
-      <li className="d-flex justify-content-between align-items-center px-2 py-1 text-muted small">
-        <span>Credits : </span>
-        <strong>{userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}</strong>
-      </li>
+        <li className="dropdown-item-text text-muted small">
+          Credits: {userData.plan === "premium" ? "Unlimited" : userData.free_bids_remaining}
+        </li>
       <hr className="my-2" />
       <li>
         <Link
