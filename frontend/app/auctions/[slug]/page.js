@@ -186,7 +186,7 @@ function CarPage({ carMake, yearModel, id }) {
    */
     const handleBid = async (carid) => {
       console.log("checking bid for car:", currentBid);
-      setIsPlacingBid(true);
+      
       if (!userData) {
         setModalData({
             title: "Login Error",
@@ -238,7 +238,7 @@ function CarPage({ carMake, yearModel, id }) {
       setShowModal(true);
       return;
     }
-  
+    setIsPlacingBid(true);
     try {
     await connectSocket(); // Wait for socket connection
     await emitBid(carid, currentBid); // Emit bid event
