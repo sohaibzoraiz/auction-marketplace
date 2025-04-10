@@ -20,7 +20,7 @@ import Modal from "../../components/auction-single/modal";
 export default function Page({ params }) {
     //console.log("Page component mounted or re-rendered");
     const [resolvedParams, setResolvedParams] = useState(null);
-    const { socket } = useContext(SocketContext); // ✅ socket comes from context
+    
     
     
     useEffect(() => {
@@ -56,6 +56,7 @@ function CarPage({ carMake, yearModel, id }) {
     const [data, setData] = useState(null);
     const [currentBid, setCurrentBid] = useState(0);
     const { userData = {} } = useContext(UserContext) ?? {};
+    const { socket } = useContext(SocketContext); // ✅ socket comes from context
     const parsedCarPhotos = useMemo(() => {
         return data?.car_photos_jsonb ? [...data.car_photos_jsonb] : [];
     }, [JSON.stringify(data?.car_photos_jsonb)]);
