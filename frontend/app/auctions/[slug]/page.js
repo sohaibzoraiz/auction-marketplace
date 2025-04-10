@@ -6,6 +6,7 @@ import AuctionGallery from "../../components/auction-single/AuctionGallery";
 import React, { useEffect, useState, useContext, useMemo } from "react";
 import ModalVideo from "react-modal-video";
 import { UserContext } from '../../contexts/UserContext'; 
+import { SocketContext } from "../../context/SocketContext";
 import { connectSocket, emitBid, listenForNewBids } from "../../components/socket";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
@@ -19,6 +20,7 @@ import Modal from "../../components/auction-single/modal";
 export default function Page({ params }) {
     //console.log("Page component mounted or re-rendered");
     const [resolvedParams, setResolvedParams] = useState(null);
+    const { socket } = useContext(SocketContext); // ✅ socket comes from context
     
     
     useEffect(() => {
