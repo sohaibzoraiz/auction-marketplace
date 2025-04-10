@@ -85,14 +85,23 @@ const socketHandler = (httpServer) => {
             const userId = socket.handshake.auth.userId;
             const userPlan = socket.handshake.auth.userPlan;
             if (!socket.handshake.auth.userId) {
-                socket.emit('error', 'You must be logged in to place a bid.');
+                socket.emit('Error', {
+                    title: "Login Error",
+                    content: "Please login to continue bidding.",
+                    type: "LoginError",
+                    buttonText: "Retry",
+                  });
                 return;
             }
             // Check if user has free bids (if basic plan)
             if (userPlan === 'basic') {
                 const freeBids = await pool.query('SELECT free_bids FROM users WHERE id = $1', [userId]);
                 if (freeBids.rows[0].free_bids <= 0) {
-                    socket.emit('error', 'You have no free bids left.');
+                    socket.emit('Error', {title: "Low Credits",
+                        content: "Please buy more credits to bid.",
+                        type: "LowCredits",
+                        buttonText: "Retry",
+                    });
                     return;
                 }
             }
@@ -101,10 +110,25 @@ const socketHandler = (httpServer) => {
                 
                 // Update auctions table
                 const currentBid = await pool.query('SELECT current_bid FROM auctions WHERE car_id = $1', [auctionId]);
+                
                 if (amount <= currentBid.rows[0].current_bid) {
-                    socket.emit('error', 'Bid must be higher than the current bid.');
+                    socket.emit('Error', {title: "Bid Error",
+                        content: "Your bid must be higher than the current bid.",
+                        type: "Error",
+                        buttonText: "Close",
+                    });
                     return;
                 }
+                const winningUser = await pool.query('SELECT winning_user_id FROM auctions WHERE car_id = $1', [auctionId]);
+                if (winningUser === userId) {
+                    socket.emit('Error', {title: "Bid Error",
+                        content: "You are Already the Winning Bidder.",
+                        type: "Error",
+                        buttonText: "Close",
+                    });
+                    return;
+                }
+
                 await pool.query('UPDATE auctions SET current_bid = $1, winning_user_id = $2 WHERE car_id = $3', [amount, userId, auctionId]);
                 // Update bids table
                 await pool.query('INSERT INTO bids (car_id, user_id, amount, created_at) VALUES ($1, $2, $3, NOW())', [auctionId, userId, amount]);
@@ -115,10 +139,20 @@ const socketHandler = (httpServer) => {
                 }
 
                 // Emit new bid to all connected clients
+                socket.emit('Success', {
+                    title: "Congratulations!",
+                    content: "Your bid was successfully placed.",
+                    type: "Success",
+                    buttonText: "Go to Auctions",
+                  });
                 ioInstance.emit('new-bid', { auctionId, amount, userId });
             } catch (error) {
                 console.error('Error processing bid:', error);
-                socket.emit('error', 'Failed to process bid.');
+                socket.emit('Error', {title: "Bid Error",
+                    content: "Failed to process the bid",
+                    type: "Error",
+                    buttonText: "Retry",
+                });
             }
         });
        

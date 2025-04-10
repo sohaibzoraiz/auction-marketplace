@@ -109,6 +109,44 @@ function CarPage({ carMake, yearModel, id }) {
     }, [data?.current_bid]);  // ✅ Re-run effect only when `current_bid` changes
     
     
+    useEffect(() => {
+      if (!socket) return;
+    
+      const handleSuccess = (data) => {
+        setModalData({
+          title: data.title || "Success",
+          content: data.content || "Your bid was placed successfully.",
+          type: data.type || "Success",
+          buttonText: data.buttonText || "OK",
+          buttonAction: () => window.location.href = `/login?redirect=${window.location.pathname}`,
+          autoRedirect: true
+        });
+        setShowModal(true);
+      };
+    
+      const handleError = (data) => {
+        setModalData({
+          title: data.title || "Error",
+          content: data.content || "There was a problem placing your bid.",
+          type: data.type || "Error",
+          buttonText: "Retry",
+          buttonAction: () => setShowModal(false),
+          autoRedirect: false
+        });
+        setShowModal(true);
+      };
+    
+      socket.on("Success", handleSuccess);
+      socket.on("Error", handleError);
+    
+      return () => {
+        socket.off("Success", handleSuccess);
+        socket.off("Error", handleError);
+      };
+    }, [socket]);
+    
+    
+    
     const settingsForUpcomingAuction = useMemo(() => ({
         slidesPerView: "auto",
         speed: 1500,
@@ -200,7 +238,7 @@ function CarPage({ carMake, yearModel, id }) {
     await connectSocket(); // Wait for socket connection
     await emitBid(carid, currentBid); // Emit bid event
 
-    setModalData({
+    /*setModalData({
         title: "Congratulations!",
         content: "Your bid was successfully placed.",
         type: "Success",
@@ -208,12 +246,12 @@ function CarPage({ carMake, yearModel, id }) {
         buttonAction: () => window.location.href = "/auctions",
         autoRedirect: false
     });
-    setShowModal(true);
+    setShowModal(true);*/
 
     } catch (error) {
       console.error("Failed to connect socket:", error);
 
-    setModalData({
+    /*setModalData({
       title: "Bid Failed",
       content: "There was an error placing your bid. Please try again.",
       type: "Error",
@@ -221,7 +259,7 @@ function CarPage({ carMake, yearModel, id }) {
       buttonAction: () => setShowModal(false),
       autoRedirect: false
     });
-      setShowModal(true);
+      setShowModal(true);*/
     }
 
     };   
