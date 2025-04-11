@@ -295,7 +295,7 @@ function CarPage({ slug }) {
                 {/*<div className="batch">
                   <span>Lot: # 25896742</span>
                 </div>*/}
-                <h1>{data.car_make} {data.year_model}</h1>
+                <h1>{data.car_make} {data.model} {data.variant} {data.year_model}</h1>
                 <p>{data.description}</p>
                 <div className="price-area">
                   <span>Current Bid at: <strong>PKR {(data.current_bid ?? 0).toLocaleString()}</strong></span>
@@ -310,10 +310,10 @@ function CarPage({ slug }) {
                   <h6>Your Max Bid:</h6>
                   <div className="quantity-counter-and-btn-area">
                   <HandleQuantity 
-  currentPrice={currentBid} 
-  onQuantityChange={setCurrentBid} 
-  lastBidFromDB={data.current_bid} 
-/>
+                  currentPrice={currentBid} 
+                  onQuantityChange={setCurrentBid} 
+                  lastBidFromDB={data.current_bid} 
+                  />
                     <button className="primary-btn btn-hover" onClick={() => handleBid(data.car_id)} disabled={isPlacingBid}>
                     {isPlacingBid ? "Placing..." : "Place Bid"}
                       <span style={{ top: '40.5px', left: '84.2344px' }} />
