@@ -17,7 +17,7 @@ import BidHistory from "../../components/auction-single/bidHistory";
 import Modal from "../../components/auction-single/modal";
 
 
-/*export default function Page({ params }) {
+export default function Page({ params }) {
     //console.log("Page component mounted or re-rendered");
     const [resolvedParams, setResolvedParams] = useState(null);
     
@@ -38,19 +38,11 @@ import Modal from "../../components/auction-single/modal";
     return (
         <CarPage carMake={carMake} yearModel={yearModel} id={id} />
     );
-}*/
-export default function Page({ params }) {
-  if (!params?.slug) return null;
-
-  const parts = params.slug.split('-');
-  const id = parts[parts.length - 1]; // Last part is the ID
-
-  return <CarPage id={id} />;
 }
 
 
 
-function CarPage({ id }) {
+function CarPage({ carMake, yearModel, id }) {
     const [isOpen, setOpen] = useState(false);
     console.log("CarPage component mounted or re-rendered");
     const [showModal, setShowModal] = useState(false);
@@ -73,11 +65,11 @@ function CarPage({ id }) {
     
     //fetching car data from api
     useEffect(() => {
-        if (!id) return;
-        console.log("Fetching car data for ID:", id); // Debugging log
+        if (!carMake || !yearModel || !id) return;
+    
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://api.carmandi.com.pk/api/auctions/single?id=${id}`);
+                const response = await fetch(`https://api.carmandi.com.pk/api/auctions/single?carMake=${carMake}&yearMake=${yearModel}&id=${id}`);
                 if (!response.ok) throw new Error(`Error fetching car: ${await response.text()}`);
     
                 const result = await response.json();
@@ -91,7 +83,7 @@ function CarPage({ id }) {
         };
     
         fetchData();
-    }, [id]);
+    }, [carMake, yearModel, id]);
     
    
     useEffect(() => {
