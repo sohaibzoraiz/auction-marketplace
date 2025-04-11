@@ -228,7 +228,7 @@ const Header = () => {
                 </a>
               </li>
             </ul>
-            <form onSubmit={handleSearch}>
+            <form onSubmit={handleSearch} className="d-xl-flex d-none">
   <div className="form-inner">
     <input
       type="text"
@@ -247,14 +247,19 @@ const Header = () => {
           </div>
         </div>
         <div className="nav-right d-flex jsutify-content-end align-items-center">
-          <form className="d-xl-flex d-none">
-            <div className="form-inner">
-              <input type="text" placeholder="Search your product..." />
-              <button className="search-btn">
-                <i className="bi bi-search" />
-              </button>
-            </div>
-          </form>
+        <form onSubmit={handleSearch} className="d-xl-flex d-none">
+  <div className="form-inner">
+    <input
+      type="text"
+      placeholder="Search your product..."
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
+    <button type="submit" className="search-btn">
+      <i className="bi bi-search" />
+    </button>
+  </div>
+</form>
           <div className="search-bar d-xl-none d-lg-block d-none">
             <div className="search-btn">
               <i className="bi bi-search" />
