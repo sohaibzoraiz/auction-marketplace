@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { useState } from "react";
 //import { FaWhatsapp, FaHeart } from "react-icons/fa";
-import { RiAuctionLine,RiWhatsappLine, RiHeart3Line } from "react-icons/ri";
+import { RiAuctionLine,RiSearchLine, RiHeart3Line } from "react-icons/ri";
 import { IoCarSportSharp } from "react-icons/io5";
 import UserDropdown from "../homepage/Dropdown";
+import SearchModal from "../common/SearchModal"; // Import the SearchModal component
 
 const BottomNav = () => {
     const [active, setActive] = useState("");
