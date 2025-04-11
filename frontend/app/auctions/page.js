@@ -60,7 +60,7 @@ export default function Auctions() {
 
 
 import { Suspense } from "react";
-import AuctionsWithSearchClient from "../../components/auction-components/AuctionsWithSearchClient";
+import AuctionsWithSearchClient from "../components/auction-components/AuctionsWithSearchClient";
 
 export default function AuctionsPage() {
   return (
