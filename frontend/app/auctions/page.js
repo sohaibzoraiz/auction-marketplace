@@ -1,4 +1,4 @@
-"use client"
+/*"use client"
 import { useState, useEffect } from 'react';
 import AllListings from '../components/auction-components/AllListings';
 import Breadcrumb2 from "../components/common/Breadcrumb2";
@@ -48,7 +48,7 @@ export default function Auctions() {
         };
 
         fetchListings();
-    }, []);*/
+    }, []);
 
     return (
         <>
@@ -56,4 +56,16 @@ export default function Auctions() {
             <AllListings listings={allListings} />
         </>
     );
+}*/
+
+
+import { Suspense } from "react";
+import AuctionsWithSearchClient from "../../components/auction-components/AuctionsWithSearchClient";
+
+export default function AuctionsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AuctionsWithSearchClient />
+    </Suspense>
+  );
 }
