@@ -2,11 +2,30 @@
 import { useState, useEffect } from 'react';
 import AllListings from '../components/auction-components/AllListings';
 import Breadcrumb2 from "../components/common/Breadcrumb2";
+import { useSearchParams } from 'next/navigation';
 
 export default function Auctions() {
     const [allListings, setAllListings] = useState([]);
+    const searchParams = useSearchParams();
+    const searchQuery = searchParams.get("q");
 
     useEffect(() => {
+        const fetchListings = async () => {
+            try {
+                const queryParam = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
+                const allResponse = await fetch(`/api/auctions${queryParam}`);
+                if (!allResponse.ok) throw new Error('Failed to fetch');
+    
+                const allData = await allResponse.json();
+                setAllListings(allData);
+            } catch (error) {
+                console.error('Error fetching listings:', error);
+            }
+        };
+    
+        fetchListings();
+    }, [searchQuery]);
+    /*useEffect(() => {
         const fetchListings = async () => {
             try {
                 const allResponse = await fetch('/api/auctions');
@@ -29,7 +48,7 @@ export default function Auctions() {
         };
 
         fetchListings();
-    }, []);
+    }, []);*/
 
     return (
         <>

@@ -250,7 +250,7 @@ async function updateAuctionListing(req, res) {
     }
 }
 
-async function getAllAuctionListings(req, res) {
+/*async function getAllAuctionListings(req, res) {
     
     try {
         const result = await pool.query(
@@ -266,7 +266,71 @@ async function getAllAuctionListings(req, res) {
         console.error('Error fetching auction listings:', error);
         res.status(500).json({ message: 'Failed to fetch auction listings' });
     }
+}*/
+async function getAllAuctionListings(req, res) {
+  const { q } = req.query;
+
+  try {
+      let queryText;
+      const values = [];
+
+      if (q) {
+          const keywords = q.trim().split(/\s+/);
+
+          const whereClauses = [];
+          const scoreClauses = [];
+
+          keywords.forEach((kw, i) => {
+              const placeholder = `$${i + 1}`;
+              values.push(`%${kw}%`);
+
+              whereClauses.push(`
+                  c.car_make ILIKE ${placeholder}
+                  OR c.model ILIKE ${placeholder}
+                  OR c.variant ILIKE ${placeholder}
+                  OR c.description ILIKE ${placeholder}
+                  OR c.city ILIKE ${placeholder}
+              `);
+
+              scoreClauses.push(`
+                  (CASE WHEN c.car_make ILIKE ${placeholder} THEN 1 ELSE 0 END) +
+                  (CASE WHEN c.model ILIKE ${placeholder} THEN 1 ELSE 0 END) +
+                  (CASE WHEN c.variant ILIKE ${placeholder} THEN 1 ELSE 0 END) +
+                  (CASE WHEN c.description ILIKE ${placeholder} THEN 1 ELSE 0 END) +
+                  (CASE WHEN c.city ILIKE ${placeholder} THEN 1 ELSE 0 END)
+              `);
+          });
+
+          queryText = `
+              SELECT *, (${scoreClauses.join(' + ')}) AS match_score
+              FROM cars c
+              JOIN auctions a ON c.id = a.car_id
+              WHERE a.start_time <= NOW()
+              AND a.end_time > NOW()
+              AND a.auction_status = 'active'
+              AND (${whereClauses.join(' OR ')})
+              ORDER BY match_score DESC, a.end_time ASC
+          `;
+      } else {
+          queryText = `
+              SELECT *
+              FROM cars c
+              JOIN auctions a ON c.id = a.car_id
+              WHERE a.start_time <= NOW()
+              AND a.end_time > NOW()
+              AND a.auction_status = 'active'
+              ORDER BY a.end_time ASC
+          `;
+      }
+
+      const result = await pool.query(queryText, values);
+      res.json(result.rows);
+  } catch (error) {
+      console.error('Error fetching auction listings:', error);
+      res.status(500).json({ message: 'Failed to fetch auction listings' });
+  }
 }
+
 
 async function getLatestListings(req, res) {
     try {

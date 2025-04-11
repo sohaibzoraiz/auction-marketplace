@@ -42,6 +42,8 @@ const Header = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const pathName = usePathname()
+  const [searchQuery, setSearchQuery] = useState('');
+
   const collapseMenu = (menu) => {
     dispatch({ type: "TOGGLE_MENU", menu });
   };
@@ -53,6 +55,12 @@ const Header = () => {
   };
   const handleLanguageClick = (index) => {
     setMenuOpen(false); // Close the menu when an item is clicked
+  };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+  
+    window.location.href = `/auctions?q=${encodeURIComponent(searchQuery.trim())}`;
   };
   return (
     <div className="header-topbar-area">
@@ -220,14 +228,19 @@ const Header = () => {
                 </a>
               </li>
             </ul>
-            <form className="d-lg-none d-flex">
-              <div className="form-inner">
-                <input type="text" placeholder="Search your product..." />
-                <button className="search-btn">
-                  <i className="bi bi-search" />
-                </button>
-              </div>
-            </form>
+            <form onSubmit={handleSearch}>
+  <div className="form-inner">
+    <input
+      type="text"
+      placeholder="Search your product..."
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
+    <button type="submit" className="search-btn">
+      <i className="bi bi-search" />
+    </button>
+  </div>
+</form>
             <div className="d-lg-none d-flex position-relative w-100">
             <UserDropdown variant="sidebar" />
             </div>
