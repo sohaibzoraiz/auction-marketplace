@@ -40,20 +40,10 @@ import Modal from "../../components/auction-single/modal";
     );
 }*/
 export default function Page({ params }) {
-  const [id, setId] = useState(null);
+  if (!params?.slug) return null;
 
-  useEffect(() => {
-    params.then((resolved) => {
-      const slug = resolved?.slug;
-      if (slug) {
-        const parts = slug.split('-');
-        const extractedId = parts[parts.length - 1]; // Always take the last part
-        setId(extractedId);
-      }
-    });
-  }, [params]);
-
-  if (!id) return null;
+  const parts = params.slug.split('-');
+  const id = parts[parts.length - 1]; // Last part is the ID
 
   return <CarPage id={id} />;
 }
@@ -84,7 +74,7 @@ function CarPage({ id }) {
     //fetching car data from api
     useEffect(() => {
         if (!id) return;
-    
+        console.log("Fetching car data for ID:", id); // Debugging log
         const fetchData = async () => {
             try {
                 const response = await fetch(`https://api.carmandi.com.pk/api/auctions/single?id=${id}`);
