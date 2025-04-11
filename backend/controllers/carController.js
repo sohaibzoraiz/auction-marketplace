@@ -309,7 +309,7 @@ async function getAllAuctionListings(req, res) {
               AND a.end_time > NOW()
               AND a.auction_status = 'active'
               AND (${whereClauses.join(' OR ')})
-              ORDER BY match_score DESC, a.end_time ASC
+              ORDER BY match_score DESC
           `;
       } else {
           queryText = `
