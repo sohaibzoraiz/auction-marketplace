@@ -3,8 +3,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import AllListings from "../components/auction-components/AllListings";
-import Breadcrumb2 from "../components/common/Breadcrumb2";
+import AllListings from "./AllListings";
+import Breadcrumb2 from "../common/Breadcrumb2";
 
 export default function AuctionsWithSearchClient() {
   const [allListings, setAllListings] = useState([]);
