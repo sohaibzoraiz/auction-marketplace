@@ -15,7 +15,7 @@ export default function AuctionsWithSearchClient() {
     const fetchListings = async () => {
       try {
         const queryParam = searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : '';
-        const allResponse = await fetch(`/api/auctions${queryParam}`);
+        const allResponse = await fetch(`https://api.carmandi.com.pk/api/auctions${queryParam}`);
         if (!allResponse.ok) throw new Error('Failed to fetch');
 
         const allData = await allResponse.json();
