@@ -322,7 +322,7 @@ async function getAllAuctionListings(req, res) {
               ORDER BY a.end_time ASC
           `;
       }
-
+      console.log('Query Text:', queryText);
       const result = await pool.query(queryText, values);
       res.json(result.rows);
   } catch (error) {
