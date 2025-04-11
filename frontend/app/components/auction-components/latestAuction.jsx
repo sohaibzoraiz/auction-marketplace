@@ -59,7 +59,7 @@ const Home2latestAuction = ({ listings = [] }) => {
                   <SwiperSlide key={listing.id} className="swiper-slide">
                     <div className="auction-card style-2">
                       <div className="auction-card-img-wrap">
-                        <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="card-img">
+                        <Link href={`/auctions/${listing.slug}`} className="card-img">
                           <img src={listing.car_photos_jsonb?.[0]} alt={listing.car_make} />
                         </Link>
                         <div className="batch"><span className="live">Live</span></div>
@@ -95,10 +95,10 @@ const Home2latestAuction = ({ listings = [] }) => {
                         </div>
                       </div>
                       <div className="auction-card-content">
-                        <h6><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`}>{listing.car_make}</Link></h6>
+                        <h6><Link href={`/auctions/${listing.slug}`}>{listing.car_make}</Link></h6>
                         <div className="price-and-code-area">
                           <div className="price"><span>Current Bid at:</span> <strong>PKR {(listing.current_bid ?? 0).toLocaleString()  || "N/A"}</strong></div>
-                          <br/><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
+                          <br/><Link href={`/auctions/${listing.slug}`} className="bid-btn">Bid Now</Link>
                         </div>
                       </div>
                     </div>

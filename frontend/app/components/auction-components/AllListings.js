@@ -308,7 +308,7 @@ const CarAuctionGrid = ({ listings }) => {
                                 <div key={listing.id} className="col-lg-4 col-md-6 mb-20">
                                     <div className="auction-card">
                                     <div className="auction-card-img-wrap">
-                      <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="card-img">
+                      <Link href={`/auctions/${listing.slug}`} className="card-img">
                           <img src={listing.car_photos_jsonb?.[0]} alt={listing.car_make} />
                         </Link>
                         <div className="batch">
@@ -350,13 +350,13 @@ const CarAuctionGrid = ({ listings }) => {
                       </div>
                                         <div className="auction-card-content">
                                             <h6>
-                                                <Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`}>{listing.car_make}</Link>
+                                                <Link href={`/auctions/${listing.slug}`}>{listing.car_make}</Link>
                                             </h6>
                                             <div className="price-and-code-area">
                                                 <div className="price">
                                                     <span>Current Bid at:</span> <strong>PKR {listing.current_bid.toLocaleString()}</strong>
                                                 </div>
-                                                <br/><Link href={`/auctions/${listing.car_make}-${listing.year_model}-${listing.id}`} className="bid-btn">Bid Now</Link>
+                                                <br/><Link href={`/auctions/${listing.slug}`} className="bid-btn">Bid Now</Link>
                                             </div>
                                             
                                         </div>

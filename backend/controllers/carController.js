@@ -5,6 +5,17 @@ const pool = require('../db');  // Use the new db.js file
 const { check, validationResult } = require('express-validator');
 
 
+function generateSlug(make, model, yearModel, id) {
+  const normalize = (str) =>
+    str
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '-')           // Replace spaces with hyphens
+      .replace(/[^a-z0-9\-+]/g, '');     // Remove special characters except hyphens
+
+  return `${normalize(make)}-${normalize(model)}-${yearModel}-${id}`;
+}
+
 const createAuctionListing = async (req, res) => {
     try {
       // Get uploaded files from S3 via multer-s3
@@ -145,11 +156,12 @@ const createAuctionListing = async (req, res) => {
         ]
     );
       // Step 4: Create auction entry
+      const slug = generateSlug(car_make, model, year_model, carId);
       const initialBid = Math.round(parseFloat(reserve_price) * 0.8);
         await pool.query(
             `INSERT INTO auctions (
-            car_id, start_time, end_time, current_bid, reserve_price, is_featured, winning_user_id
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+            car_id, start_time, end_time, current_bid, reserve_price, is_featured, winning_user_id, slug
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [
             carId,
             start_time,
@@ -157,7 +169,8 @@ const createAuctionListing = async (req, res) => {
             initialBid, // current_bid starts as 80% of demand_price
             reserve_price || null,
             is_featured || false,
-            null // winning_user_id is initially null
+            null, // winning_user_id is initially null
+            slug // Use the generated slug
         ]
     );
   
@@ -315,10 +328,16 @@ async function getFeaturedAuctionListings(req, res) {
 }
 async function getSingleAuctionListing(req, res) {
     try {
-        const { carMake, yearMake, id } = req.query;
+        /*const { carMake, yearMake, id } = req.query;
 
         const result = await pool.query(
             "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id WHERE c.id = $1", [id]
+        );*/
+        const { slug } = req.query;
+
+        const result = await pool.query(
+          "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id WHERE a.slug = $1",
+          [slug]
         );
 
         if (result.rows.length === 0) {
@@ -386,7 +405,8 @@ const getBidHistory = async (req, res) => {
 
 
 
-module.exports={createAuctionListing, 
+module.exports={generateSlug, 
+createAuctionListing, 
 updateAuctionListing, 
 getAllAuctionListings,
 getLatestListings,
