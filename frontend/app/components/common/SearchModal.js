@@ -50,32 +50,39 @@ export default function SearchModal({ open, onClose }) {
       <DialogTitle>Search Cars</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
-          <Autocomplete
-            freeSolo
-            options={options}
-            loading={loading}
-            getOptionLabel={(option) => option?.title || ""}
-            onChange={(e, value) => handleSelect(value)}
-            inputValue={inputValue}
-            onInputChange={(e, value) => setInputValue(value)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search cars by name, make, model..."
-                variant="outlined"
-                fullWidth
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <>
-                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                      {params.InputProps.endAdornment}
-                    </>
-                  )
-                }}
-              />
-            )}
-          />
+        <Autocomplete
+  freeSolo
+  options={options}
+  loading={loading}
+  getOptionLabel={(option) =>
+    `${option.car_make || ""} ${option.model?.trim() || ""} ${option.variant?.trim() || ""} ${option.year_model || ""}`
+  }
+  onChange={(e, value) => handleSelect(value)}
+  inputValue={inputValue}
+  onInputChange={(e, value) => setInputValue(value)}
+  renderOption={(props, option) => (
+    <li {...props} key={option.id}>
+      <strong>{option.car_make}</strong> {option.model?.trim()} {option.variant?.trim()} ({option.year_model})
+    </li>
+  )}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Search cars by name, make, model..."
+      variant="outlined"
+      fullWidth
+      InputProps={{
+        ...params.InputProps,
+        endAdornment: (
+          <>
+            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+            {params.InputProps.endAdornment}
+          </>
+        )
+      }}
+    />
+  )}
+/>
         </form>
       </DialogContent>
     </Dialog>
