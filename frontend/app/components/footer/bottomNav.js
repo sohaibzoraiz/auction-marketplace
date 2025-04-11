@@ -8,13 +8,19 @@ import UserDropdown from "../homepage/Dropdown";
 
 const BottomNav = () => {
     const [active, setActive] = useState("");
+    const [isSearchOpen, setIsSearchOpen] = useState(false); // for modal toggle
 
     return (
         <div className="bottom-nav d-lg-none">
-            <Link href="/#" className={`nav-item ${active === "whatsapp" ? "active" : ""}`} onClick={() => setActive("whatsapp")}>
-                <RiWhatsappLine size={24} />
-                <span>Whatsapp</span>
+            <Link href="/#" className={`nav-item ${active === "Search" ? "active" : ""}`} onClick={(e) => {
+                e.preventDefault();
+                setActive("Search");
+                setIsSearchOpen(true); // open modal
+                }}>
+                <RiSearchLine  size={24} />
+                <span>Search</span>
             </Link>
+            <SearchModal open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             <div className="separator"></div> {/* Separator */}
             <Link href="/sell-your-car" className={`nav-item ${active === "sell" ? "active" : ""}`} onClick={() => setActive("sell")}>
                 <RiAuctionLine size={24} />
