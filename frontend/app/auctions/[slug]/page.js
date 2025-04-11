@@ -95,7 +95,7 @@ function CarPage({ slug }) {
     useEffect(() => {
         console.log("Data in useEffect:", data); // Debugging log
     
-        if (!data) return;
+        if (!data?.id) return;
     
         const handleNewBid = (bidData) => {
             console.log("Received new bid data:", bidData);
@@ -117,7 +117,7 @@ function CarPage({ slug }) {
             console.log("Cleaning up bid listener...");
             cleanup();
         };
-    }, [data?.current_bid]);  // ✅ Re-run effect only when `current_bid` changes
+    }, [data?.id]);  // ✅ Re-run effect only when `current_bid` changes
     
     
     useEffect(() => {
