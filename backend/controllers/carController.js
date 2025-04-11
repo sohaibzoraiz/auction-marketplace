@@ -315,7 +315,8 @@ async function getFeaturedAuctionListings(req, res) {
 }
 async function getSingleAuctionListing(req, res) {
     try {
-        const { carMake, yearMake, id } = req.query;
+       // const { carMake, yearMake, id } = req.query;
+        const id = req.query.id;
 
         const result = await pool.query(
             "SELECT * FROM cars c JOIN auctions a ON c.id = a.car_id WHERE c.id = $1", [id]
