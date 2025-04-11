@@ -228,7 +228,7 @@ const Header = () => {
                 </a>
               </li>
             </ul>
-            <form onSubmit={handleSearch} className="d-xl-flex d-none">
+            <form onSubmit={handleSearch} className="d-flex d-xl-none">
   <div className="form-inner">
     <input
       type="text"
