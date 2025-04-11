@@ -91,6 +91,7 @@ app.get('/api/listings/latest', require('./controllers/carController').getLatest
 app.get('/api/auctions', require('./controllers/carController').getAllAuctionListings);
 app.get('/api/auctions/single', require('./controllers/carController').getSingleAuctionListing);
 app.get("/api/auctions/bid-history", require('./controllers/carController').getBidHistory);
+app.get("/api/auctions/Search", require('./controllers/carController').searchAutocomplete);
 app.put('/api/auctions/:id', require('./controllers/carController').updateAuctionListing);
 app.delete('/api/auctions/:id', require('./controllers/carController').deleteAuctionListing);
 

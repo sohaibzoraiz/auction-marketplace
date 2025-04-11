@@ -465,6 +465,57 @@ const getBidHistory = async (req, res) => {
         res.status(500).json({ message: "Failed to fetch bid history" });
     }
 };
+async function searchAutocomplete(req, res) {
+  const { q } = req.query;
+
+  if (!q || q.trim() === "") {
+      return res.json([]); // empty input, return nothing
+  }
+
+  const keywords = q.trim().split(/\s+/);
+  const values = [];
+  const whereClauses = [];
+
+  keywords.forEach((kw, i) => {
+      const placeholder = `$${i + 1}`;
+      values.push(`%${kw}%`);
+      whereClauses.push(`
+          c.car_make ILIKE ${placeholder}
+          OR c.model ILIKE ${placeholder}
+          OR c.variant ILIKE ${placeholder}
+          OR c.description ILIKE ${placeholder}
+          OR c.city ILIKE ${placeholder}
+      `);
+  });
+
+  const query = `
+      SELECT 
+          a.id,
+          c.car_make,
+          c.model,
+          c.variant,
+          c.city,
+          a.slug,
+          c.year_model
+      FROM cars c
+      JOIN auctions a ON c.id = a.car_id
+      WHERE a.start_time <= NOW()
+      AND a.end_time > NOW()
+      AND a.auction_status = 'active'
+      AND (${whereClauses.join(' OR ')})
+      ORDER BY a.end_time ASC
+      LIMIT 10;
+  `;
+
+  try {
+      const result = await pool.query(query, values);
+      res.json(result.rows);
+  } catch (error) {
+      console.error('Error fetching autocomplete search results:', error);
+      res.status(500).json({ message: 'Autocomplete failed' });
+  }
+}
+
 
 
 
@@ -477,5 +528,6 @@ getLatestListings,
 getFeaturedAuctionListings, 
 getSingleAuctionListing,
 deleteAuctionListing,
-getBidHistory
+getBidHistory,
+searchAutocomplete
 };
