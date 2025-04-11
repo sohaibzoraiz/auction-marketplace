@@ -20,7 +20,7 @@ export default function SearchModal({ open, onClose }) {
     const handler = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(inputValue)}`);
+        const res = await fetch(`/api/auctions/search?q=${encodeURIComponent(inputValue)}`);
         const data = await res.json();
         setOptions(data);
       } catch (err) {
@@ -35,7 +35,7 @@ export default function SearchModal({ open, onClose }) {
 
   const handleSelect = (option) => {
     if (!option || !option.slug) return;
-    router.push(`/car/${option.slug}`);
+    router.push(`/auctions/${option.slug}`);
     onClose();
   };
 
