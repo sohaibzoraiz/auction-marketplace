@@ -20,7 +20,7 @@ export default function SearchModal({ open, onClose }) {
     const handler = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/auctions/search?q=${encodeURIComponent(inputValue)}`);
+        const res = await fetch(`https://api.carmandi.com.pk/api/auctions/search?q=${encodeURIComponent(inputValue)}`);
         const data = await res.json();
         setOptions(data);
       } catch (err) {
