@@ -503,7 +503,6 @@ async function searchAutocomplete(req, res) {
       AND a.end_time > NOW()
       AND a.auction_status = 'active'
       AND (${whereClauses.join(' OR ')})
-      ORDER BY a.end_time ASC
       LIMIT 10;
   `;
 
