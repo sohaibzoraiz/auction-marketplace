@@ -60,7 +60,7 @@ export default function Page({ params }) {
 
 
 
-function CarPage({ carMake, yearModel, id }) {
+function CarPage({ id }) {
     const [isOpen, setOpen] = useState(false);
     console.log("CarPage component mounted or re-rendered");
     const [showModal, setShowModal] = useState(false);
@@ -101,7 +101,7 @@ function CarPage({ carMake, yearModel, id }) {
         };
     
         fetchData();
-    }, [carMake, yearModel, id]);
+    }, [id]);
     
    
     useEffect(() => {
